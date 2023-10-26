@@ -1,0 +1,28 @@
+@mixin flexDirection($value: row) {
+  flex-direction: $value;
+}
+
+@mixin flexWrap($value: nowrap) {
+  flex-wrap: $value;
+}
+
+@mixin justifyContent($value) {
+  justify-content: $value;
+}
+
+@mixin alignItems($value) {
+  align-items: $value;
+}
+
+@mixin order($order: 0) {
+  order: $order;
+}
+
+@mixin flex($grow: 0, $shrink: 1, $basis: auto) {
+  flex: $grow $shrink $basis;
+}
+
+@mixin justifiedText() {
+  text-align: justify;
+  text-justify: inter-word;
+}

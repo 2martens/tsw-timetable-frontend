@@ -1,6 +1,11 @@
-import {Route} from "@angular/router";
+import {Routes} from '@angular/router';
 
-export const ROOT_ROUTES: Route[] = [
+export const ROOT_ROUTES: Routes = [
+  {
+    path: '',
+    loadComponent: () => import("./dashboard/dashboard.component").then(mod => mod.DashboardComponent),
+    pathMatch: 'full',
+  },
   {
     path: 'permission-denied',
     loadComponent: () => import("./permission-denied/permission-denied.component")
@@ -14,9 +19,4 @@ export const ROOT_ROUTES: Route[] = [
     path: 'privacy-policy',
     loadComponent: () => import("./privacy-policy/privacy-policy.component").then(mod => mod.PrivacyPolicyComponent)
   },
-  {
-    path: '',
-    loadComponent: () => import("./dashboard/dashboard.component").then(mod => mod.DashboardComponent),
-    pathMatch: 'full'
-  }
 ];

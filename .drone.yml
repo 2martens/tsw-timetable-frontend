@@ -27,7 +27,7 @@ steps:
     commands:
       - npm install
       - npm run build:production
-      - cp /drone/src/.htaccess /drone/src/dist/tsw-timetable-frontend/
+      - cp /drone/src/.htaccess /drone/src/dist/www/
   - name: rebuild-cache
     privileged: true
     image: 2martens/drone-volume-cache
@@ -44,7 +44,7 @@ steps:
     settings:
       hosts: [ "gienah.uberspace.de" ]
       user: wahlfron
-      source: /drone/src/dist/tsw-timetable-frontend/.
+      source: /drone/src/dist/www/.
       target: ~/tmp/build
       recursive: true
       delete: true

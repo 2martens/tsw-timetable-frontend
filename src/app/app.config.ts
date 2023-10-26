@@ -1,7 +1,7 @@
 import {APP_INITIALIZER, ApplicationConfig, isDevMode} from "@angular/core";
 import {KeycloakBearerInterceptor, KeycloakService} from "keycloak-angular";
 import {Location} from "@angular/common";
-import {provideRouter, withComponentInputBinding} from "@angular/router";
+import {provideRouter, RouteReuseStrategy, withComponentInputBinding} from "@angular/router";
 import {ROOT_ROUTES} from "./app.routes";
 import {provideStore} from "@ngrx/store";
 import {provideEffects} from "@ngrx/effects";
@@ -9,6 +9,7 @@ import {provideAnimations} from "@angular/platform-browser/animations";
 import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from "@angular/common/http";
 import {provideServiceWorker} from "@angular/service-worker";
 import {environment} from "../environments/environment";
+import {IonicRouteStrategy, provideIonicAngular} from "@ionic/angular/standalone";
 
 function initializeKeycloak(keycloak: KeycloakService, locationService: Location) {
   return () =>
@@ -39,6 +40,8 @@ export const appConfig: ApplicationConfig = {
       multi: true,
       deps: [KeycloakService, Location],
     },
+    {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
+    provideIonicAngular(),
     provideRouter(ROOT_ROUTES, withComponentInputBinding()),
     provideStore(),
     provideEffects(),

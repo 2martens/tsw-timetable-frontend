@@ -7,10 +7,10 @@ export enum ActionTypes {
 }
 
 export const addMessageAction = createAction(
-    ActionTypes.AddMessage,
-    props<{message: Message}>()
+  ActionTypes.AddMessage,
+  props<{ message: Message }>()
 );
 
 export const addMessageFinishedAction = createAction(
-    ActionTypes.AddMessageFinished
+  ActionTypes.AddMessageFinished
 );

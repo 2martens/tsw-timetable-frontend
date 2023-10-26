@@ -12,11 +12,11 @@ export class MessagesEffects {
   private actions$ = inject(Actions);
 
   showSnackbar$ = createEffect(() =>
-      this.actions$.pipe(
-          ofType(addMessageAction),
-          map((action) => {
-            this.snackBar.open(action.message.text, "OK");
-            return addMessageFinishedAction();
-          })
-      ));
+    this.actions$.pipe(
+      ofType(addMessageAction),
+      map((action) => {
+        this.snackBar.open(action.message.text, "OK");
+        return addMessageFinishedAction();
+      })
+    ));
 }

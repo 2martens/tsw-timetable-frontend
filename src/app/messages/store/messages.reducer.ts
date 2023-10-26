@@ -3,7 +3,7 @@ import {createReducer, on} from "@ngrx/store";
 import {addMessageAction, addMessageFinishedAction} from "./messages.actions";
 
 export interface ReducerMessagesState {
-  displayedMessage: Message|undefined;
+  displayedMessage: Message | undefined;
 }
 
 const initialState: ReducerMessagesState = {
@@ -11,14 +11,14 @@ const initialState: ReducerMessagesState = {
 }
 
 export const messagesReducer = createReducer(
-    initialState,
-    on(addMessageAction, (state,
-                                        action) => ({
-      ...state,
-      displayedMessage: action.message
-    })),
-    on(addMessageFinishedAction, (state) => ({
-      ...state,
-      displayedMessage: undefined
-    }))
+  initialState,
+  on(addMessageAction, (state,
+                        action) => ({
+    ...state,
+    displayedMessage: action.message
+  })),
+  on(addMessageFinishedAction, (state) => ({
+    ...state,
+    displayedMessage: undefined
+  }))
 );

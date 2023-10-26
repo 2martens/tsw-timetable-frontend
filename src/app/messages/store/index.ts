@@ -12,5 +12,5 @@ export const messagesReducers: ActionReducerMap<MessagesState> = {
 };
 
 export const getMessagesFeatureState = createFeatureSelector<MessagesState>(
-    featureStateName
+  featureStateName
 );
