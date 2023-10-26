@@ -1,7 +1,5 @@
 @use 'mixins';
 
-@include mixins.centralColumnLayout();
-
 p {
   @include mixins.justifiedText();
 }
