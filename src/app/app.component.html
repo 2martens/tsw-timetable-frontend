@@ -1,26 +1,36 @@
 <ion-app>
-  <ion-split-pane contentId="main-content">
+  <ion-split-pane when="md" contentId="main-content">
     <ion-menu contentId="main-content" type="overlay">
       <ion-content>
-        <ion-list id="inbox-list">
-          <ion-list-header>Inbox</ion-list-header>
-          <ion-note>hi@ionicframework.com</ion-note>
+        <ion-list id="menu-list">
+          <ion-list-header i18n>Timetable</ion-list-header>
+          <ion-note *ngIf="isLoggedIn$ | async">{{ username$ | async }}</ion-note>
 
-          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
-            <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false"
-                      routerLinkActive="selected">
+          <ng-container *ngIf="isLoggedIn$ | async; else loggedOut">
+            <ion-item *ngFor="let p of accountPages; let i = index"
+                      [routerDirection]="'root'" [routerLink]="[p.url]" [routerLinkActiveOptions]="{exact: true}"
+                      lines="none" [detail]="false"
+                      [routerLinkActive]="'selected'" [ariaCurrentWhenActive]="'page'" [button]="true">
+              <ion-icon aria-hidden="true" [slot]="'start'" [ios]="p.icon + '-outline'"
+                        [md]="p.icon + '-sharp'"></ion-icon>
+              <ion-label>{{ p.title }}</ion-label>
+            </ion-item>
+          </ng-container>
+          <ion-item-divider></ion-item-divider>
+          <ng-template #loggedOut>
+            <ion-item *ngFor="let p of loggedOutPages; let i = index"
+                      routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false"
+                      routerLinkActive="selected" [routerLinkActiveOptions]="{exact: true}" [button]="true">
               <ion-icon aria-hidden="true" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
               <ion-label>{{ p.title }}</ion-label>
             </ion-item>
-          </ion-menu-toggle>
-        </ion-list>
+          </ng-template>
 
-        <ion-list id="labels-list" *ngIf="labels.length > 0">
-          <ion-list-header>Labels</ion-list-header>
-
-          <ion-item *ngFor="let label of labels" lines="none">
-            <ion-icon aria-hidden="true" slot="start" ios="bookmark-outline" md="bookmark-sharp"></ion-icon>
-            <ion-label>{{ label }}</ion-label>
+          <ion-item *ngFor="let p of appPages; let i = index"
+                    routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false"
+                    routerLinkActive="selected" [routerLinkActiveOptions]="{exact: true}" [button]="true">
+            <ion-icon aria-hidden="true" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+            <ion-label>{{ p.title }}</ion-label>
           </ion-item>
         </ion-list>
       </ion-content>
