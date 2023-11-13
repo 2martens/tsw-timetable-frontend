@@ -1,0 +1,58 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title i18n="page title">Account Settings</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title i18n>Basic Account Information</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content i18n>
+      Opens Keycloak account management. You can change your password, login provider and 2FA over there.
+      Furthermore, you can delete your account. This will immediately delete any content you have created.
+      If you subscribed, this will also terminate your subscription so that no further payments will occur.
+    </ion-card-content>
+
+    <ion-button fill="clear" i18n href="{{ keycloakURL }}/realms/{{ realm }}/account" rel="noopener">
+      Manage Account
+      <ion-icon slot="end" [ios]="'open-outline'" [md]="'open-sharp'"></ion-icon>
+    </ion-button>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title i18n>Subscription</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content i18n>
+      Opens external payment provider website. You can subscribe, change your payment method or cancel the subscription
+      over there.
+    </ion-card-content>
+
+    <ion-button fill="clear" i18n href="https://billing.stripe.com/p/login/bIY7tE9k92fObHG7ss" rel="noopener">
+      Manage Subscription
+      <ion-icon slot="end" [ios]="'open-outline'" [md]="'open-sharp'"></ion-icon>
+    </ion-button>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title i18n>Account Data</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content i18n>
+      Will delete all your created content. That means timetables, formations, routes and everything linked to it. This
+      is irrevocable.
+    </ion-card-content>
+
+    <ion-button fill="clear" i18n color="danger">
+      Delete all user-generated content
+      <ion-icon slot="end" [ios]="'trash-outline'" [md]="'trash-sharp'"></ion-icon>
+    </ion-button>
+  </ion-card>
+</ion-content>

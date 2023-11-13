@@ -17,11 +17,16 @@ export const ROOT_ROUTES: Routes = [
   },
   {
     path: 'login',
-    loadComponent: () => import("./login/login.component").then(mod => mod.LoginComponent)
+    loadComponent: () => import("./auth/login/login.component").then(mod => mod.LoginComponent)
   },
   {
     path: 'logout',
-    loadComponent: () => import("./logout/logout.component").then(mod => mod.LogoutComponent),
+    loadComponent: () => import("./auth/logout/logout.component").then(mod => mod.LogoutComponent),
+    canActivate: [AppAuthGuard]
+  },
+  {
+    path: 'account',
+    loadComponent: () => import("./auth/account/account.component").then(mod => mod.AccountComponent),
     canActivate: [AppAuthGuard]
   },
   {

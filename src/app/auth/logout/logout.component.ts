@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {IonButtons, IonContent, IonHeader, IonMenuButton, IonTitle, IonToolbar} from "@ionic/angular/standalone";
+import {KeycloakService} from "keycloak-angular";
+import {Location} from "@angular/common";
 
 @Component({
   selector: 'app-logout',
   templateUrl: './logout.component.html',
-  styleUrls: ['./logout.component.scss'],
   imports: [
     IonButtons,
     IonContent,
@@ -17,10 +18,12 @@ import {IonButtons, IonContent, IonHeader, IonMenuButton, IonTitle, IonToolbar} 
 })
 export class LogoutComponent implements OnInit {
 
-  constructor() {
+  constructor(private readonly keycloakService: KeycloakService,
+              private readonly location: Location) {
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.keycloakService.logout(`${window.location.origin}${this.location.prepareExternalUrl('')}`);
   }
 
 }
