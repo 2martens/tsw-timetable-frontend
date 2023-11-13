@@ -1,13 +1,14 @@
 import {Component, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {IonContent} from "@ionic/angular/standalone";
-import {SafePipe} from "../safe.pipe";
+import {IonButtons, IonContent, IonHeader, IonMenuButton, IonTitle, IonToolbar} from "@ionic/angular/standalone";
 
 @Component({
   selector: 'app-pricing',
   templateUrl: './pricing.component.html',
   styleUrls: ['./pricing.component.scss'],
   standalone: true,
-  imports: [IonContent, SafePipe],
+  imports: [
+    IonContent, IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class PricingComponent {
