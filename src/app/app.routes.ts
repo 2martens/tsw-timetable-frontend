@@ -16,6 +16,10 @@ export const ROOT_ROUTES: Routes = [
     loadComponent: () => import("./privacy-policy/privacy-policy.component").then(mod => mod.PrivacyPolicyComponent)
   },
   {
+    path: 'pricing',
+    loadComponent: () => import("./pricing/pricing.component").then(mod => mod.PricingComponent)
+  },
+  {
     path: 'login',
     loadComponent: () => import("./auth/login/login.component").then(mod => mod.LoginComponent)
   },
