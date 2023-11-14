@@ -13,7 +13,7 @@ export class MessagesService {
   private static UNKNOWN_ERROR = $localize`An unknown error occurred. Sorry for the inconvenience.`;
   private static SERVICE_WORKER_ERROR = $localize`An error with the service worker occurred. Please reload the page.`
 
-  constructor(private store: Store) {
+  constructor(private readonly store: Store) {
   }
 
   logMessage(component: string, type: MessageType, details?: string) {
