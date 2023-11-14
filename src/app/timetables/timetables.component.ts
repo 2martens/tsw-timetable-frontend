@@ -21,6 +21,7 @@ import {
 } from "@ionic/angular/standalone";
 import {addIcons} from "ionicons";
 import {addOutline, addSharp, trashOutline, trashSharp} from "ionicons/icons";
+import {NgForOf} from "@angular/common";
 
 @Component({
   selector: 'app-timetables',
@@ -44,7 +45,8 @@ import {addOutline, addSharp, trashOutline, trashSharp} from "ionicons/icons";
     IonIcon,
     IonFab,
     IonFabButton,
-    IonFooter
+    IonFooter,
+    NgForOf
   ]
 })
 export class TimetablesComponent {
