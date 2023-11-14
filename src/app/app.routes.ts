@@ -1,5 +1,9 @@
 import {Routes} from '@angular/router';
 import {AppAuthGuard} from "./auth/auth.guard";
+import {provideState} from "@ngrx/store";
+import {featureStateName as formationsFeature, formationsReducers} from "./formations/store";
+import {provideEffects} from "@ngrx/effects";
+import {FormationsEffects} from "./formations/store/formations.effects";
 
 export const ROOT_ROUTES: Routes = [
   {
@@ -46,7 +50,11 @@ export const ROOT_ROUTES: Routes = [
   {
     path: 'formations',
     loadComponent: () => import("./formations/formations.component").then(mod => mod.FormationsComponent),
-    canActivate: [AppAuthGuard]
+    canActivate: [AppAuthGuard],
+    providers: [
+      provideState(formationsFeature, formationsReducers),
+      provideEffects([FormationsEffects])
+    ],
   },
   {
     path: '',

@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {
   IonButtons,
   IonContent,
@@ -20,8 +20,10 @@ import {
 } from "@ionic/angular/standalone";
 import {addIcons} from "ionicons";
 import {addOutline, addSharp, trashOutline, trashSharp} from "ionicons/icons";
-import {Formation} from "./model/formation";
-import {NgForOf} from "@angular/common";
+import {AsyncPipe, NgForOf} from "@angular/common";
+import {allFormations, FormationsState} from "./store";
+import {Store} from "@ngrx/store";
+import {loadAllFormationsAction} from "./store/formations.actions";
 
 @Component({
   selector: 'app-formations',
@@ -46,12 +48,13 @@ import {NgForOf} from "@angular/common";
     IonFab,
     IonFabButton,
     IonFooter,
-    NgForOf
+    NgForOf,
+    AsyncPipe
   ]
 })
-export class FormationsComponent {
-
-  formations: Formation[] = [];
+export class FormationsComponent implements OnInit {
+  private readonly store: Store<FormationsState> = inject(Store<FormationsState>);
+  formations$ = this.store.select(allFormations());
 
   constructor() {
     addIcons({
@@ -60,6 +63,10 @@ export class FormationsComponent {
       trashOutline,
       trashSharp,
     });
+  }
+
+  ngOnInit() {
+    this.store.dispatch(loadAllFormationsAction());
   }
 
 }

@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {
   IonButton,
   IonButtons,
@@ -32,7 +32,6 @@ import {
   addSharp,
   mapOutline,
   mapSharp,
-  time,
   timeOutline,
   timeSharp,
   trainOutline,
@@ -41,8 +40,10 @@ import {
   trashSharp
 } from "ionicons/icons";
 import {Route} from "../routes/model/route";
-import {Formation} from "../formations/model/formation";
 import {Timetable} from ".././timetables/model/timetable";
+import {allFormations, FormationsState} from "../formations/store";
+import {Store} from "@ngrx/store";
+import {loadAllFormationsAction} from "../formations/store/formations.actions";
 
 @Component({
   selector: 'app-dashboard',
@@ -77,7 +78,8 @@ import {Timetable} from ".././timetables/model/timetable";
     IonFooter
   ]
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
+  private readonly formationsStore: Store<FormationsState> = inject(Store<FormationsState>);
   loggedIn$: Observable<boolean>;
   routes: Route[] = [
     {
@@ -89,7 +91,7 @@ export class DashboardComponent {
     }
   ];
   timetables: Timetable[] = [];
-  formations: Formation[] = [];
+  formations$ = this.formationsStore.select(allFormations());
 
   constructor(private readonly keycloakService: KeycloakService) {
     this.loggedIn$ = from(this.keycloakService.isLoggedIn());
@@ -108,5 +110,7 @@ export class DashboardComponent {
     });
   }
 
-  protected readonly time = time;
+  ngOnInit() {
+    this.formationsStore.dispatch(loadAllFormationsAction());
+  }
 }
