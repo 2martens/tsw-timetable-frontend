@@ -69,4 +69,8 @@ export class FormationsComponent implements OnInit {
     this.store.dispatch(loadAllFormationsAction());
   }
 
+  addFormation() {
+    // TODO: trigger modal form overlay
+  }
+
 }
