@@ -10,6 +10,7 @@ import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from "@ang
 import {provideServiceWorker} from "@angular/service-worker";
 import {environment} from "../environments/environment";
 import {IonicRouteStrategy, provideIonicAngular} from "@ionic/angular/standalone";
+import {MessagesEffects} from "./messages/store/messages.effects";
 
 function initializeKeycloak(keycloak: KeycloakService, locationService: Location) {
   return () =>
@@ -44,7 +45,7 @@ export const appConfig: ApplicationConfig = {
     provideIonicAngular(),
     provideRouter(ROOT_ROUTES, withComponentInputBinding()),
     provideStore(),
-    provideEffects(),
+    provideEffects([MessagesEffects]),
     provideAnimations(),
     provideHttpClient(withInterceptorsFromDi()),
     KeycloakService,
