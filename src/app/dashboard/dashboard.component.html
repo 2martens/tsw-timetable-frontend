@@ -1,22 +1,123 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title i18n="page title">Timetable</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
+<ng-container *ngIf="loggedIn$ | async; else loggedOut">
+  <ion-header [translucent]="true">
     <ion-toolbar>
-      <ion-title size="large" i18n="page title">Timetable</ion-title>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title i18n="page title">Dashboard</ion-title>
     </ion-toolbar>
   </ion-header>
-
-  <div id="container">
+  <ion-content [fullscreen]="true">
+    <ion-list>
+      <ion-list-header>
+        <ion-label i18n>Routes</ion-label>
+      </ion-list-header>
+      <ion-item>
+        <ion-label i18n class="bold">Name</ion-label>
+        <ion-label i18n class="bold">Country</ion-label>
+        <ion-label i18n class="bold">First Station</ion-label>
+        <ion-label i18n class="bold">Last Station</ion-label>
+        <ion-label i18n class="bold ion-text-end"># Stations</ion-label>
+      </ion-item>
+      <ion-item-sliding>
+        <ion-item *ngFor="let route of routes">
+          <ion-label>{{ route.name }}</ion-label>
+          <ion-label>{{ route.country.name }}</ion-label>
+          <ion-label>{{ route.firstStation.name }}</ion-label>
+          <ion-label>{{ route.lastStation.name }}</ion-label>
+          <ion-label class="ion-text-end">{{ route.numberOfStations }}</ion-label>
+        </ion-item>
+        <ion-item-options side="end">
+          <ion-item-option color="danger" i18n>
+            <ion-icon slot="start" [ios]="'trash-outline'" [md]="'trash-sharp'"></ion-icon>
+            Delete
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+    <ion-list>
+      <ion-list-header>
+        <ion-label i18n>Timetables</ion-label>
+      </ion-list-header>
+      <ion-item>
+        <ion-label i18n class="bold">Name</ion-label>
+        <ion-label i18n class="bold">Route</ion-label>
+        <ion-label i18n class="bold">Date</ion-label>
+        <ion-label i18n class="bold">State</ion-label>
+        <ion-label i18n class="bold ion-text-end"># Services</ion-label>
+      </ion-item>
+      <ion-item-sliding>
+        <ion-item *ngFor="let timetable of timetables">
+          <ion-label>{{ timetable.name }}</ion-label>
+          <ion-label>{{ timetable.route }}</ion-label>
+          <ion-label>{{ timetable.date }}</ion-label>
+          <ion-label>{{ timetable.state }}</ion-label>
+          <ion-label class="ion-text-end">{{ timetable.numberOfServices }}</ion-label>
+        </ion-item>
+        <ion-item-options side="end">
+          <ion-item-option color="danger" i18n>
+            <ion-icon slot="start" [ios]="'trash-outline'" [md]="'trash-sharp'"></ion-icon>
+            Delete
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+    <ion-list>
+      <ion-list-header>
+        <ion-label i18n>Formations</ion-label>
+      </ion-list-header>
+      <ion-item>
+        <ion-label i18n class="bold">Name</ion-label>
+        <ion-label i18n class="bold">Formation</ion-label>
+        <ion-label i18n class="bold ion-text-end">Length</ion-label>
+      </ion-item>
+      <ion-item-sliding>
+        <ion-item *ngFor="let formation of formations">
+          <ion-label>{{ formation.name }}</ion-label>
+          <ion-label>{{ formation.formation }}</ion-label>
+          <ion-label class="ion-text-end">{{ formation.length }}</ion-label>
+        </ion-item>
+        <ion-item-options side="end">
+          <ion-item-option color="danger" i18n>
+            <ion-icon slot="start" [ios]="'trash-outline'" [md]="'trash-sharp'"></ion-icon>
+            Delete
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+    <ion-fab slot="fixed" horizontal="end" vertical="bottom">
+      <ion-fab-button i18n-aria-label aria-label="">
+        <ion-icon [ios]="'add-outline'" [md]="'add-sharp'"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-list side="top">
+        <ion-fab-button i18n-aria-label aria-label="Add formation" [show]="true">
+          <ion-icon [ios]="'train-outline'" [md]="'train-sharp'"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button i18n-aria-label aria-label="Add timetable" [show]="true">
+          <ion-icon [ios]="'time-outline'" [md]="'time-sharp'"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button i18n-aria-label aria-label="Add route" [show]="true">
+          <ion-icon [ios]="'map-outline'" [md]="'map-sharp'"></ion-icon>
+        </ion-fab-button>
+      </ion-fab-list>
+    </ion-fab>
+  </ion-content>
+  <ion-footer></ion-footer>
+</ng-container>
+{{ '' // logged out below }}
+<ng-template #loggedOut>
+  <ion-header [translucent]="true">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title i18n="page title">Timetable</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
     <p i18n="welcome text|A welcome to users">
       TODO
     </p>
-  </div>
-</ion-content>
+  </ion-content>
+</ng-template>
+

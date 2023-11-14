@@ -34,6 +34,21 @@ export const ROOT_ROUTES: Routes = [
     canActivate: [AppAuthGuard]
   },
   {
+    path: 'routes',
+    loadComponent: () => import("./routes/routes.component").then(mod => mod.RoutesComponent),
+    canActivate: [AppAuthGuard]
+  },
+  {
+    path: 'timetables',
+    loadComponent: () => import("./timetables/timetables.component").then(mod => mod.TimetablesComponent),
+    canActivate: [AppAuthGuard]
+  },
+  {
+    path: 'formations',
+    loadComponent: () => import("./formations/formations.component").then(mod => mod.FormationsComponent),
+    canActivate: [AppAuthGuard]
+  },
+  {
     path: '',
     loadComponent: () => import("./dashboard/dashboard.component").then(mod => mod.DashboardComponent),
     pathMatch: 'full',

@@ -53,7 +53,8 @@ import {from, Observable, of, switchMap} from "rxjs";
   styleUrls: ['app.component.scss'],
   standalone: true,
   imports: [RouterLink, RouterLinkActive, IonApp, IonSplitPane, IonMenu, IonContent, IonList,
-    IonListHeader, IonNote, IonMenuToggle, IonItem, IonIcon, IonLabel, IonRouterOutlet, NgIf, NgFor, AsyncPipe, IonItemDivider, IonHeader, IonToolbar, IonTitle],
+    IonListHeader, IonNote, IonMenuToggle, IonItem, IonIcon, IonLabel, IonRouterOutlet, NgIf, NgFor, AsyncPipe,
+    IonItemDivider, IonHeader, IonToolbar, IonTitle],
 })
 export class AppComponent {
   public loggedInPages = [
