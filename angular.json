@@ -127,16 +127,16 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "app:build:production"
+              "buildTarget": "app:build:production"
             },
             "productionDebug": {
-              "browserTarget": "app:build:productionDebug"
+              "buildTarget": "app:build:productionDebug"
             },
             "development": {
-              "browserTarget": "app:build:development"
+              "buildTarget": "app:build:development"
             },
             "developmentRemote": {
-              "browserTarget": "app:build:developmentRemote"
+              "buildTarget": "app:build:developmentRemote"
             },
             "ci": {
               "progress": false
@@ -147,7 +147,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "app:build"
+            "buildTarget": "app:build"
           }
         },
         "test": {
