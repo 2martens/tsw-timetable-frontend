@@ -45,7 +45,13 @@ export const formationsReducer = createReducer(
       if (oldFormation.id == action.payload.id) {
         return action.payload;
       } else {
-        return oldFormation;
+        const referenceChanged = oldFormation.trainSimWorldFormation !== undefined
+          && oldFormation.trainSimWorldFormation.id == action.payload.id;
+
+        return {
+          ...oldFormation,
+          trainSimWorldFormation: referenceChanged ? action.payload : undefined
+        };
       }
     })
   })),
@@ -53,6 +59,13 @@ export const formationsReducer = createReducer(
     ...state,
     items: state.items.filter((formation) => {
       return formation.id != action.payload.id
+    }).map((formation) => {
+      const referenceRemoved = formation.trainSimWorldFormation !== undefined
+        && formation.trainSimWorldFormation.id == action.payload.id;
+      return {
+        ...formation,
+        trainSimWorldFormation: referenceRemoved ? undefined : formation.trainSimWorldFormation
+      };
     })
   }))
 );
