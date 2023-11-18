@@ -21,6 +21,19 @@
     "lint": "ng lint"
   },
   "private": true,
+  "overrides": {
+    "keycloak-angular": {
+      "@angular/common": "^17.0.2",
+      "@angular/core": "^17.0.2",
+      "@angular/router": "^17.0.2"
+    },
+    "@ngrx/effects": {
+      "@angular/core": "^17.0.2"
+    },
+    "@ngrx/store": {
+      "@angular/core": "^17.0.2"
+    }
+  },
   "dependencies": {
     "@angular/animations": "^17.0.2",
     "@angular/common": "^17.0.2",
@@ -63,7 +76,7 @@
     "@types/node": "^12.11.1",
     "@typescript-eslint/eslint-plugin": "^6.10.0",
     "@typescript-eslint/parser": "^6.10.0",
-    "eslint": "^8.53.0",
+    "eslint": "^7.32.0",
     "eslint-plugin-import": "2.22.1",
     "eslint-plugin-jsdoc": "30.7.6",
     "eslint-plugin-prefer-arrow": "1.2.2",
