@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {
   IonButton,
   IonButtons,
@@ -32,6 +32,8 @@ import {
   addSharp,
   mapOutline,
   mapSharp,
+  pencilOutline,
+  pencilSharp,
   timeOutline,
   timeSharp,
   trainOutline,
@@ -40,10 +42,14 @@ import {
   trashSharp
 } from "ionicons/icons";
 import {Route} from "../routes/model/route";
-import {Timetable} from ".././timetables/model/timetable";
-import {allFormations, FormationsState} from "../formations/store";
+import {Timetable} from "../timetables/model/timetable";
+import {FormationsStoreService} from "../formations/service/formations-store.service";
+import {DEFAULT_FORMATION, Formation} from "../formations/model/formation";
+import {deleteFormationAction} from "../formations/store/formations.actions";
+import {FormationsState} from "../formations/store";
 import {Store} from "@ngrx/store";
-import {loadAllFormationsAction} from "../formations/store/formations.actions";
+import {CreateFormationComponent} from "../formations/create-formation/create-formation.component";
+import {UpdateFormationComponent} from "../formations/update-formation/update-formation.component";
 
 @Component({
   selector: 'app-dashboard',
@@ -75,11 +81,12 @@ import {loadAllFormationsAction} from "../formations/store/formations.actions";
     IonFab,
     IonFabButton,
     IonFabList,
-    IonFooter
+    IonFooter,
+    CreateFormationComponent,
+    UpdateFormationComponent
   ]
 })
-export class DashboardComponent implements OnInit {
-  private readonly formationsStore: Store<FormationsState> = inject(Store<FormationsState>);
+export class DashboardComponent {
   loggedIn$: Observable<boolean>;
   routes: Route[] = [
     {
@@ -91,9 +98,15 @@ export class DashboardComponent implements OnInit {
     }
   ];
   timetables: Timetable[] = [];
-  formations$ = this.formationsStore.select(allFormations());
 
-  constructor(private readonly keycloakService: KeycloakService) {
+  isCreateFormationModalOpen = false;
+  isUpdateFormationModalOpen = false;
+  updatedFormation: Formation = DEFAULT_FORMATION;
+  private readonly formationsStoreService: FormationsStoreService = inject(FormationsStoreService);
+  formations$ = this.formationsStoreService.getFormations$();
+
+  constructor(private readonly keycloakService: KeycloakService,
+              private readonly formationsStore: Store<FormationsState>) {
     this.loggedIn$ = from(this.keycloakService.isLoggedIn());
 
     addIcons({
@@ -107,10 +120,21 @@ export class DashboardComponent implements OnInit {
       timeSharp,
       trainOutline,
       trainSharp,
+      pencilOutline,
+      pencilSharp,
     });
   }
 
-  ngOnInit() {
-    this.formationsStore.dispatch(loadAllFormationsAction());
+  addFormation() {
+    this.isCreateFormationModalOpen = true;
+  }
+
+  updateFormation(formation: Formation) {
+    this.isUpdateFormationModalOpen = true;
+    this.updatedFormation = formation;
+  }
+
+  deleteFormation(formation: Formation) {
+    this.formationsStore.dispatch(deleteFormationAction({payload: formation}));
   }
 }

@@ -1,9 +1,8 @@
 import {Routes} from '@angular/router';
 import {AppAuthGuard} from "./auth/auth.guard";
 import {provideState} from "@ngrx/store";
-import {featureStateName as formationsFeature, formationsReducers} from "./formations/store";
+import {featureStateName as formationsFeature, formationsEffects, formationsReducers} from "./formations/store";
 import {provideEffects} from "@ngrx/effects";
-import {FormationsEffects} from "./formations/store/formations.effects";
 
 export const ROOT_ROUTES: Routes = [
   {
@@ -53,12 +52,16 @@ export const ROOT_ROUTES: Routes = [
     canActivate: [AppAuthGuard],
     providers: [
       provideState(formationsFeature, formationsReducers),
-      provideEffects([FormationsEffects])
+      provideEffects(formationsEffects)
     ],
   },
   {
     path: '',
     loadComponent: () => import("./dashboard/dashboard.component").then(mod => mod.DashboardComponent),
     pathMatch: 'full',
+    providers: [
+      provideState(formationsFeature, formationsReducers),
+      provideEffects(formationsEffects)
+    ],
   },
 ];

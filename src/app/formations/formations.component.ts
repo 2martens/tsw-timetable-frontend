@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {
   IonButtons,
   IonContent,
@@ -19,11 +19,15 @@ import {
   IonToolbar
 } from "@ionic/angular/standalone";
 import {addIcons} from "ionicons";
-import {addOutline, addSharp, trashOutline, trashSharp} from "ionicons/icons";
+import {addOutline, addSharp, pencilOutline, pencilSharp, trashOutline, trashSharp} from "ionicons/icons";
 import {AsyncPipe, NgForOf} from "@angular/common";
-import {allFormations, FormationsState} from "./store";
+import {CreateFormationComponent} from "./create-formation/create-formation.component";
+import {FormationsStoreService} from "./service/formations-store.service";
+import {DEFAULT_FORMATION, Formation} from "./model/formation";
+import {FormationsState} from "./store";
 import {Store} from "@ngrx/store";
-import {loadAllFormationsAction} from "./store/formations.actions";
+import {deleteFormationAction} from "./store/formations.actions";
+import {UpdateFormationComponent} from "./update-formation/update-formation.component";
 
 @Component({
   selector: 'app-formations',
@@ -49,28 +53,41 @@ import {loadAllFormationsAction} from "./store/formations.actions";
     IonFabButton,
     IonFooter,
     NgForOf,
-    AsyncPipe
+    AsyncPipe,
+    CreateFormationComponent,
+    UpdateFormationComponent
   ]
 })
-export class FormationsComponent implements OnInit {
-  private readonly store: Store<FormationsState> = inject(Store<FormationsState>);
-  formations$ = this.store.select(allFormations());
+export class FormationsComponent {
+  isCreateModalOpen = false;
+  isUpdateModalOpen = false;
+  updatedFormation: Formation = DEFAULT_FORMATION;
 
-  constructor() {
+  private readonly storeService: FormationsStoreService = inject(FormationsStoreService);
+  formations$ = this.storeService.getFormations$();
+
+  constructor(private readonly store: Store<FormationsState>) {
     addIcons({
       addOutline,
       addSharp,
       trashOutline,
       trashSharp,
+      pencilOutline,
+      pencilSharp,
     });
   }
 
-  ngOnInit() {
-    this.store.dispatch(loadAllFormationsAction());
+  addFormation() {
+    this.isCreateModalOpen = true;
   }
 
-  addFormation() {
-    // TODO: trigger modal form overlay
+  updateFormation(formation: Formation) {
+    this.isUpdateModalOpen = true;
+    this.updatedFormation = formation;
+  }
+
+  deleteFormation(formation: Formation) {
+    this.store.dispatch(deleteFormationAction({payload: formation}));
   }
 
 }
