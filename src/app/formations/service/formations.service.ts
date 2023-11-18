@@ -16,11 +16,19 @@ export class FormationsService {
   };
   private formationsURL = environment.backendURL + '/formation';
 
+  private knownFormations: Map<string, Formation> = new Map<string, Formation>();
+  private formations: Formation[] = [];
+
   constructor(private readonly http: HttpClient,
               private readonly messageService: MessagesService) {
   }
 
   fetchFormations(): Observable<Formation[]> {
+    if (environment.mockNetwork) {
+      this.formations = JSON.parse(localStorage.getItem("formations") || '[]');
+      return of(this.formations);
+    }
+
     return this.http.get<Formation[]>(this.formationsURL, this.httpOptions)
       .pipe(
         catchError(this.handleError<Formation[]>('fetchFormations', []))
@@ -28,6 +36,12 @@ export class FormationsService {
   }
 
   storeFormation(formation: Formation): Observable<Formation> {
+    if (environment.mockNetwork) {
+      this.knownFormations.set(formation.id, formation);
+      this.storeFormationsInLocalStorage();
+      return of(formation);
+    }
+
     return this.http.put<Formation>(
       this.formationsURL + '/' + encodeURIComponent(formation.id),
       formation,
@@ -38,12 +52,23 @@ export class FormationsService {
   }
 
   deleteFormation(formation: Formation): Observable<ArrayBuffer> {
+    if (environment.mockNetwork) {
+      this.knownFormations.delete(formation.id);
+      this.storeFormationsInLocalStorage();
+      return of(new ArrayBuffer(0));
+    }
+
     return this.http.delete<ArrayBuffer>(
       this.formationsURL + '/' + encodeURIComponent(formation.id),
       this.httpOptions
     ).pipe(
       catchError(this.handleError<ArrayBuffer>('deleteFormation', new ArrayBuffer(0)))
     )
+  }
+
+  private storeFormationsInLocalStorage() {
+    this.formations = Array.from(this.knownFormations.values());
+    localStorage.setItem("formations", JSON.stringify(this.formations));
   }
 
   /**
