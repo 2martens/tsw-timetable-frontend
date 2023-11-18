@@ -20,4 +20,4 @@ jobs:
           package-name: tsw-timetable-frontend
           bump-minor-pre-major: true
           prerelease: true
-          command: release-pr
+          command: manifest
