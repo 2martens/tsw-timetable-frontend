@@ -4,6 +4,7 @@ import {Formation} from "../model/formation";
 export enum ActionTypes {
   LoadAllFormations = '[Formations] Load All Formations',
   LoadAllFormationsFinished = '[Formations] Load All Formations Finished',
+  LoadAllFormationsCancelled = '[Formations] Load All Formations Cancelled',
 
   LoadSingleFormation = '[Formations] Load Single Formation',
   LoadSingleFormationFinished = '[Formations] Load Single Formation Finished',
@@ -20,6 +21,10 @@ export const loadAllFormationsAction = createAction(
 export const loadAllFormationsFinishedAction = createAction(
   ActionTypes.LoadAllFormationsFinished,
   props<{ payload: Formation[] }>()
+);
+
+export const loadAllFormationsCancelledAction = createAction(
+  ActionTypes.LoadAllFormationsCancelled
 );
 
 export const loadSingleFormationAction = createAction(
@@ -42,7 +47,7 @@ export const updateFormationAction = createAction(
   props<{ payload: Formation }>()
 );
 
-export const deleteFormation = createAction(
+export const deleteFormationAction = createAction(
   ActionTypes.DeleteFormation,
   props<{ payload: Formation }>()
 );

@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
-import {Formation} from "./model/formation";
+import {Formation} from "../model/formation";
 import {catchError, Observable, of} from "rxjs";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {environment} from "../../environments/environment";
-import {MessageType} from "../messages/model/message-type";
-import {MessagesService} from "../messages/messages.service";
+import {environment} from "../../../environments/environment";
+import {MessageType} from "../../messages/model/message-type";
+import {MessagesService} from "../../messages/messages.service";
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +27,25 @@ export class FormationsService {
       );
   }
 
+  storeFormation(formation: Formation): Observable<Formation> {
+    return this.http.put<Formation>(
+      this.formationsURL + '/' + encodeURIComponent(formation.id),
+      formation,
+      this.httpOptions
+    ).pipe(
+      catchError(this.handleError<Formation>('storeFormation', formation))
+    )
+  }
+
+  deleteFormation(formation: Formation): Observable<ArrayBuffer> {
+    return this.http.delete<ArrayBuffer>(
+      this.formationsURL + '/' + encodeURIComponent(formation.id),
+      this.httpOptions
+    ).pipe(
+      catchError(this.handleError<ArrayBuffer>('deleteFormation', new ArrayBuffer(0)))
+    )
+  }
+
   /**
    * Handle Http operation that failed.
    * Let the app continue.
@@ -37,7 +56,7 @@ export class FormationsService {
     return (error: any): Observable<T> => {
 
       // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
+      console.error(operation + ': ' + error); // log to console instead
 
       if (error.status == 0) {
         this.log(MessageType.UNKNOWN_ERROR);
