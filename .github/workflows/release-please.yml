@@ -18,3 +18,5 @@ jobs:
         with:
           release-type: node
           package-name: tsw-timetable-frontend
+          bump-minor-pre-major: true
+          prerelease: true
