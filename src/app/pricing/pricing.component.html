@@ -7,8 +7,72 @@
   </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true">
-  <stripe-pricing-table pricing-table-id="prctbl_1OE6xKB0O150WkrE8XDPgBbs"
-                        publishable-key="pk_test_bzMB64E5VRZxAM70qaRK4bKc000cH2VVSA"
-  >
-  </stripe-pricing-table>
+  <ion-grid>
+    <ion-row class="ion-justify-content-center">
+      <ion-segment value="monthly" (ionChange)="onSegmentChange($event)">
+        <ion-segment-button value="monthly">
+          <ion-label i18n>Monthly</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="yearly">
+          <ion-label i18n>Yearly</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-row>
+    <ion-row class="ion-justify-content-center">
+      <ion-col *ngFor="let product of products$ | async" size="auto">
+        <ion-card [class.notRecommended]="!product.isRecommended">
+          <ion-card-header>
+            <ion-card-subtitle i18n *ngIf="product.isRecommended">Recommended</ion-card-subtitle>
+            <ion-card-subtitle *ngIf="!product.isRecommended">&nbsp;</ion-card-subtitle>
+            <ion-card-title>{{ product.title }}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-grid>
+              <ion-row class="ion-align-items-center ion-justify-content-start">
+                <ion-col size="auto">
+                  <span class="price" *ngIf="mode == 'monthly'">{{ product.prices['monthly'].value }}</span>
+                  <span class="price" *ngIf="mode == 'yearly'">{{ product.prices['yearly'].value }}</span>
+                </ion-col>
+                <ion-col size="2" class="ion-justify-content-center">
+                  <span *ngIf="mode == 'monthly'" i18n>per month</span>
+                  <span *ngIf="mode == 'yearly'" i18n>per year</span>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <form #monthlyForm="ngForm" *ngIf="mode == 'monthly'"
+                      id="{{ product.prices['monthly'].lookupKey }}_subscribe" (ngSubmit)="onSubmit(monthlyForm)"
+                      method="post">
+                  <input type="hidden" name="lookup_key" [ngModel]="product.prices['monthly'].lookupKey">
+                  <ion-button form="{{ product.prices['monthly'].lookupKey }}_subscribe" type="submit">
+                    <ion-label>{{ product.action }}</ion-label>
+                  </ion-button>
+                </form>
+                <form #yearlyForm="ngForm" *ngIf="mode == 'yearly'"
+                      id="{{ product.prices['yearly'].lookupKey }}_subscribe" (ngSubmit)="onSubmit(yearlyForm)"
+                      method="post">
+                  <input type="hidden" name="lookup_key" [ngModel]="product.prices['yearly'].lookupKey">
+                  <ion-button form="{{ product.prices['yearly'].lookupKey }}_subscribe" type="submit">
+                    <ion-label>{{ product.action }}</ion-label>
+                  </ion-button>
+                </form>
+              </ion-row>
+              <ion-row>
+                <ion-list [class.notRecommended]="!product.isRecommended">
+                  <ion-list-header [class.notRecommended]="!product.isRecommended">
+                    <ion-label i18n>This includes:</ion-label>
+                  </ion-list-header>
+                  <ion-item *ngFor="let feature of product.features" lines="none"
+                            [class.notRecommended]="!product.isRecommended">
+                    <ion-icon aria-hidden="true" [ios]="'checkmark-circle-outline'" [md]="'checkmark-circle-sharp'"
+                              slot="start"></ion-icon>
+                    <ion-label>{{ feature }}</ion-label>
+                  </ion-item>
+                </ion-list>
+              </ion-row>
+            </ion-grid>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

@@ -23,7 +23,11 @@ export const ROOT_ROUTES: Routes = [
   },
   {
     path: 'pricing',
-    loadComponent: () => import("./pricing/pricing.component").then(mod => mod.PricingComponent)
+    loadComponent: () => import("./pricing/pricing.component").then(mod => mod.PricingComponent),
+    providers: [
+      provideState(pricingFeature, pricingReducer),
+      provideEffects(pricingEffects)
+    ],
   },
   {
     path: 'login',
