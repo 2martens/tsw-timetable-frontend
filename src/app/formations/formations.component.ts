@@ -24,10 +24,10 @@ import {AsyncPipe, NgForOf} from "@angular/common";
 import {CreateFormationComponent} from "./create-formation/create-formation.component";
 import {FormationsStoreService} from "./service/formations-store.service";
 import {DEFAULT_FORMATION, Formation} from "./model/formation";
-import {FormationsState} from "./store";
 import {Store} from "@ngrx/store";
 import {deleteFormationAction} from "./store/formations.actions";
 import {UpdateFormationComponent} from "./update-formation/update-formation.component";
+import {FormationsState} from "./store/formations.reducer";
 
 @Component({
   selector: 'app-formations',

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {FormationsService} from "./formations.service";
 import {Store} from "@ngrx/store";
-import {allFormations, FormationsState, needFormations} from "../store";
+import {allFormations, needFormations} from "../store";
 import {filter, finalize, Observable, share, switchMap, tap, using} from "rxjs";
 import {
   loadAllFormationsAction,
@@ -9,6 +9,7 @@ import {
   loadAllFormationsFinishedAction
 } from "../store/formations.actions";
 import {Formation} from "../model/formation";
+import {FormationsState} from "../store/formations.reducer";
 
 @Injectable({
   providedIn: 'root'
