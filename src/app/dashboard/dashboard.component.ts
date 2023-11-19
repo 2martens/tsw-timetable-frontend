@@ -46,10 +46,10 @@ import {Timetable} from "../timetables/model/timetable";
 import {FormationsStoreService} from "../formations/service/formations-store.service";
 import {DEFAULT_FORMATION, Formation} from "../formations/model/formation";
 import {deleteFormationAction} from "../formations/store/formations.actions";
-import {FormationsState} from "../formations/store";
 import {Store} from "@ngrx/store";
 import {CreateFormationComponent} from "../formations/create-formation/create-formation.component";
 import {UpdateFormationComponent} from "../formations/update-formation/update-formation.component";
+import {FormationsState} from "../formations/store/formations.reducer";
 
 @Component({
   selector: 'app-dashboard',

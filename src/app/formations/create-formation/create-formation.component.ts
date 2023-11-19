@@ -15,11 +15,12 @@ import {
 } from "@ionic/angular/standalone";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {Store} from "@ngrx/store";
-import {allFormations, FormationsState} from "../store";
+import {allFormations} from "../store";
 import {AsyncPipe, NgForOf} from "@angular/common";
 import {addFormationAction} from "../store/formations.actions";
 import {DEFAULT_FORMATION, Formation} from "../model/formation";
 import {FormationsStoreService} from "../service/formations-store.service";
+import {FormationsState} from "../store/formations.reducer";
 
 @Component({
   selector: 'app-create-formation',
