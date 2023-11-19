@@ -3,6 +3,8 @@ import {AppAuthGuard} from "./auth/auth.guard";
 import {provideState} from "@ngrx/store";
 import {featureStateName as formationsFeature, formationsEffects} from "./formations/store";
 import {provideEffects} from "@ngrx/effects";
+import {featureStateName as pricingFeature, pricingEffects} from "./pricing/store";
+import {pricingReducer} from "./pricing/store/pricing.reducer";
 import {formationsReducer} from "./formations/store/formations.reducer";
 
 export const ROOT_ROUTES: Routes = [

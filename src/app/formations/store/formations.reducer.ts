@@ -31,7 +31,7 @@ export const formationsReducer = createReducer(
     ...state,
     selectedItem: action.payload
   })),
-  on(loadAllFormationsFinishedAction, loadAllFormationsCancelledAction, (state, action) => ({
+  on(loadAllFormationsFinishedAction, loadAllFormationsCancelledAction, (state, _) => ({
     ...state,
     needFormations: false
   })),
