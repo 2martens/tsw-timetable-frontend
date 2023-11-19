@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/2martens/tsw-timetable-frontend/compare/v0.1.0...v0.1.1) (2023-11-19)
+
+
+### Security
+
+* **pricing:** Replaced links to stripe to use test mode ([4a85f08](https://github.com/2martens/tsw-timetable-frontend/commit/4a85f083fcc992a920e46c1cf80e830a9a63ad62))
+
 ## [0.1.0](https://github.com/2martens/tsw-timetable-frontend/compare/tsw-timetable-frontend-v0.0.1...tsw-timetable-frontend-v0.1.0) (2023-11-18)
 
 ### Features
