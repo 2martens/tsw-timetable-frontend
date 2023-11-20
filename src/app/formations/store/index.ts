@@ -1,17 +1,9 @@
-import {formationsReducer, ReducerFormationsState} from "./formations.reducer";
-import {ActionReducerMap, createFeatureSelector, createSelector} from "@ngrx/store";
+import {createFeatureSelector, createSelector} from "@ngrx/store";
 import {FunctionalEffect} from "@ngrx/effects";
 import {deleteFormation, storeFormation} from "./formations.effects";
+import {FormationsState} from "./formations.reducer";
 
-export const featureStateName = 'formationsFeature';
-
-export interface FormationsState {
-  formations: ReducerFormationsState;
-}
-
-export const formationsReducers: ActionReducerMap<FormationsState> = {
-  formations: formationsReducer,
-};
+export const featureStateName = 'formations';
 
 export const formationsEffects: Record<string, FunctionalEffect> = {
   storeFormation: storeFormation,
@@ -25,11 +17,11 @@ export const getFormationsFeatureState = createFeatureSelector<FormationsState>(
 
 export const needFormations = () => createSelector(
   getFormationsFeatureState,
-  (state: FormationsState) => state.formations.needFormations
+  (state: FormationsState) => state.needFormations
 );
 
 export const allFormations = () => createSelector(
   getFormationsFeatureState,
-  (state: FormationsState) => state.formations.items
+  (state: FormationsState) => state.items
 );
 

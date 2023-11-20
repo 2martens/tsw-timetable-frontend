@@ -9,12 +9,12 @@ import {
   updateFormationAction
 } from "./formations.actions";
 
-export interface ReducerFormationsState {
+export interface FormationsState {
   needFormations: boolean;
   items: Formation[];
 }
 
-export const initialState: ReducerFormationsState = {
+export const initialState: FormationsState = {
   needFormations: true,
   items: [],
 };
@@ -31,7 +31,7 @@ export const formationsReducer = createReducer(
     ...state,
     selectedItem: action.payload
   })),
-  on(loadAllFormationsFinishedAction, loadAllFormationsCancelledAction, (state, action) => ({
+  on(loadAllFormationsFinishedAction, loadAllFormationsCancelledAction, (state, _) => ({
     ...state,
     needFormations: false
   })),
