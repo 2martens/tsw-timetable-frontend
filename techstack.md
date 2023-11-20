@@ -157,19 +157,6 @@ Full tech stack [here](/techstack.md)
 </tr>
 </table>
 
-## <img src='https://img.stackshare.io/hosting.svg'/> Hosting (1)
-<table><tr>
-  <td align='center'>
-  <img width='36' height='36' src='https://img.stackshare.io/no-img-open-source.png' alt='Effe'>
-  <br>
-  <sub><a href="http://redbeardlab.github.io/2016/03/05/effe.html">Effe</a></sub>
-  <br>
-  <sub></sub>
-</td>
-
-</tr>
-</table>
-
 ## Other (2)
 <table><tr>
   <td align='center'>

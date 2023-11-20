@@ -148,18 +148,6 @@ tools:
   detection_source: package.json
   last_updated_by: Jim Martens
   last_updated_on: 2023-10-01 08:39:17.000000000 Z
-- name: Effe
-  description: A building block for an open source AWS lambda
-  website_url: http://redbeardlab.github.io/2016/03/05/effe.html
-  license: MIT
-  open_source: true
-  hosted_saas: false
-  category: Application Hosting
-  sub_category: Serverless / Task Processing
-  image_url: https://img.stackshare.io/no-img-open-source.png
-  detection_source: package.json
-  last_updated_by: Jim Martens
-  last_updated_on: 2023-10-01 08:39:17.000000000 Z
 - name: HTML
   description: Hypertext Markup Language for creating web pages.
   website_url: http://
