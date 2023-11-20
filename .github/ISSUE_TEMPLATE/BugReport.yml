@@ -8,11 +8,19 @@ body:
       value: |
         Thanks for taking the time to fill out this bug report!
   - type: textarea
+    id: what-happens
+    attributes:
+      label: What did you experience and what did you expect?
+      description: Please describe as specific as possible what happened and how you expected the behaviour to be.
+      placeholder: |
+        I logged myself in but wasn't after the redirect. I expected the login to work.
+    validations:
+      required: true
+  - type: textarea
     id: reproduction
     attributes:
       label: How can the bug be reproduced?
       description: Please describe as specific as possible how the bug can be reproduced.
-      render: Markdown
       placeholder: |
         1. Log in
         2. Enter credentials on Keycloak
