@@ -12,6 +12,7 @@ export const showMessage = createEffect((
       ofType(addMessageAction),
       switchMap((action) => {
         return from(toastController.create({
+          color: action.message.color,
           message: action.message.text,
           duration: 1500,
           position: 'bottom',

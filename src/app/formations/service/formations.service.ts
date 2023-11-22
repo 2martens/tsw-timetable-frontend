@@ -3,8 +3,7 @@ import {Formation} from "../model/formation";
 import {catchError, Observable, of} from "rxjs";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
-import {MessageType} from "../../messages/model/message-type";
-import {MessagesService} from "../../messages/messages.service";
+import {ErrorService} from "../../errors/error.service";
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +19,7 @@ export class FormationsService {
   private formations: Formation[] = [];
 
   constructor(private readonly http: HttpClient,
-              private readonly messageService: MessagesService) {
+              private readonly errorService: ErrorService) {
   }
 
   fetchFormations(): Observable<Formation[]> {
@@ -31,7 +30,8 @@ export class FormationsService {
 
     return this.http.get<Formation[]>(this.formationsURL, this.httpOptions)
       .pipe(
-        catchError(this.handleError<Formation[]>('fetchFormations', []))
+        catchError(this.errorService.handleError<Formation[]>('Formations',
+          'fetchFormations', []))
       );
   }
 
@@ -47,7 +47,8 @@ export class FormationsService {
       formation,
       this.httpOptions
     ).pipe(
-      catchError(this.handleError<Formation>('storeFormation', formation))
+      catchError(this.errorService.handleError<Formation>('Formations',
+        'storeFormation', formation))
     )
   }
 
@@ -62,46 +63,13 @@ export class FormationsService {
       this.formationsURL + '/' + encodeURIComponent(formation.id),
       this.httpOptions
     ).pipe(
-      catchError(this.handleError<ArrayBuffer>('deleteFormation', new ArrayBuffer(0)))
+      catchError(this.errorService.handleError<ArrayBuffer>('Formation',
+        'deleteFormation', new ArrayBuffer(0)))
     )
   }
 
   private storeFormationsInLocalStorage() {
     this.formations = Array.from(this.knownFormations.values());
     localStorage.setItem("formations", JSON.stringify(this.formations));
-  }
-
-  /**
-   * Handle Http operation that failed.
-   * Let the app continue.
-   * @param operation - name of the operation that failed
-   * @param result - optional value to return as the observable result
-   */
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-
-      // TODO: send the error to remote logging infrastructure
-      console.error(operation + ': ' + error); // log to console instead
-
-      if (error.status == 0) {
-        this.log(MessageType.UNKNOWN_ERROR);
-      }
-      if (error.status == 401) {
-        this.log(MessageType.UNAUTHENTICATED);
-      }
-      if (error.status == 403) {
-        this.log(MessageType.UNAUTHORIZED);
-      }
-      if (error.status == 500) {
-        this.log(MessageType.INTERNAL_SERVER_ERROR);
-      }
-
-      // Let the app keep running by returning an empty result.
-      return of(result as T);
-    };
-  }
-
-  private log(type: MessageType) {
-    this.messageService.logMessage('FormationsService', type);
   }
 }
