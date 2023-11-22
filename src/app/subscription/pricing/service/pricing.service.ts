@@ -1,14 +1,14 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {environment} from "../../../environments/environment";
+import {environment} from "../../../../environments/environment";
 import {catchError, map, Observable, of} from "rxjs";
-import {User} from "../../auth/model/user";
+import {User} from "../../../auth/model/user";
 import {PaymentLocation} from "../model/payment-location";
-import {ErrorService} from "../../errors/error.service";
+import {ErrorService} from "../../../errors/error.service";
 import {SubscriptionIntent} from "../model/subscription-intent";
 import {Store} from "@ngrx/store";
-import {addMessageAction} from "../../messages/store/messages.actions";
-import {Message} from "../../messages/model/message";
+import {addMessageAction} from "../../../messages/store/messages.actions";
+import {Message} from "../../../messages/model/message";
 
 @Injectable({
   providedIn: 'root'

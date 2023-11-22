@@ -4,8 +4,8 @@ import {provideState} from "@ngrx/store";
 import {featureStateName as formationsFeature, formationsEffects} from "./formations/store";
 import {provideEffects} from "@ngrx/effects";
 import {formationsReducer} from "./formations/store/formations.reducer";
-import {pricingReducer} from "./pricing/store/pricing.reducer";
-import {pricingEffects, pricingFeature} from "./pricing/store";
+import {pricingReducer} from "./subscription/pricing/store/pricing.reducer";
+import {pricingEffects, pricingFeature} from "./subscription/pricing/store";
 
 export const ROOT_ROUTES: Routes = [
   {
@@ -23,7 +23,7 @@ export const ROOT_ROUTES: Routes = [
   },
   {
     path: 'pricing',
-    loadComponent: () => import("./pricing/pricing.component").then(mod => mod.PricingComponent),
+    loadComponent: () => import("./subscription/pricing/pricing.component").then(mod => mod.PricingComponent),
     providers: [
       provideState(pricingFeature, pricingReducer),
       provideEffects(pricingEffects)
