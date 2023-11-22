@@ -15,6 +15,7 @@ import {authEffects, authFeature} from "./auth/store";
 import {authReducer} from "./auth/store/auth.reducer";
 import {messagesEffects, messagesFeature} from "./messages/store";
 import {messagesReducer} from "./messages/store/messages.reducer";
+import {redirectEffects} from "./redirect/store";
 
 function initializeKeycloak(keycloak: KeycloakService, locationService: Location) {
   return () =>
@@ -51,7 +52,7 @@ export const appConfig: ApplicationConfig = {
     provideStore(),
     provideState(messagesFeature, messagesReducer),
     provideState(authFeature, authReducer),
-    provideEffects(messagesEffects, authEffects),
+    provideEffects(messagesEffects, authEffects, redirectEffects),
     provideStoreDevtools({
       maxAge: 25, // Retains last 25 states
       logOnly: !isDevMode(), // Restrict extension to log-only mode
