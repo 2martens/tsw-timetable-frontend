@@ -35,6 +35,7 @@ import {Store} from "@ngrx/store";
 import {subscribeAction} from "./store/pricing.actions";
 import {Observable} from "rxjs";
 import {PricingState} from "./store/pricing.reducer";
+import {AuthService} from "../../auth/service/auth.service";
 
 @Component({
   selector: 'app-pricing',
@@ -49,9 +50,12 @@ import {PricingState} from "./store/pricing.reducer";
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class PricingComponent {
-  mode: string | number = 'monthly';
-  private readonly store: Store<PricingState> = inject(Store<PricingState>)
+  private readonly store: Store<PricingState> = inject(Store<PricingState>);
+  private readonly authService: AuthService = inject(AuthService);
+
   readonly products$: Observable<Product[]> = this.store.select(getProducts());
+  readonly isLoggedIn$: Observable<boolean> = this.authService.isLoggedIn$();
+  mode: string | number = 'monthly';
 
   constructor() {
     addIcons({

@@ -47,13 +47,14 @@
                   }
                 </ion-col>
               </ion-row>
-              <ion-row>
+              <ion-row class="ion-align-items-center">
                 @if (mode == 'monthly') {
                   <form #monthlyForm="ngForm"
                         id="{{ product.prices['monthly'].lookupKey }}_subscribe" (ngSubmit)="onSubmit(monthlyForm)"
                         method="post">
                     <input type="hidden" name="lookup_key" [ngModel]="product.prices['monthly'].lookupKey">
-                    <ion-button form="{{ product.prices['monthly'].lookupKey }}_subscribe" type="submit">
+                    <ion-button form="{{ product.prices['monthly'].lookupKey }}_subscribe" type="submit"
+                                [disabled]="!(isLoggedIn$ | async)">
                       <ion-label>{{ product.action }}</ion-label>
                     </ion-button>
                   </form>
@@ -62,10 +63,14 @@
                         id="{{ product.prices['yearly'].lookupKey }}_subscribe" (ngSubmit)="onSubmit(yearlyForm)"
                         method="post">
                     <input type="hidden" name="lookup_key" [ngModel]="product.prices['yearly'].lookupKey">
-                    <ion-button form="{{ product.prices['yearly'].lookupKey }}_subscribe" type="submit">
+                    <ion-button form="{{ product.prices['yearly'].lookupKey }}_subscribe" type="submit"
+                                [disabled]="!(isLoggedIn$ | async)">
                       <ion-label>{{ product.action }}</ion-label>
                     </ion-button>
                   </form>
+                }
+                @if (!(isLoggedIn$ | async)) {
+                  <p i18n>You are not logged in.</p>
                 }
               </ion-row>
               <ion-row>
