@@ -24,9 +24,6 @@ export class AppAuthGuard extends KeycloakAuthGuard {
     if (!this.authenticated || this.keycloak.isTokenExpired()) {
       const redirectUri = `${window.location.origin}${this.location.prepareExternalUrl(state.url)}`;
       this.store.dispatch(logInAction({redirectUrl: redirectUri}));
-      // await this.keycloak.login({
-      //   redirectUri: redirectUri,
-      // });
       return false;
     }
 
