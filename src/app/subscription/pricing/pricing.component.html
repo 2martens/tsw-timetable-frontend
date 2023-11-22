@@ -22,39 +22,51 @@
       <ion-col *ngFor="let product of products$ | async" size="auto">
         <ion-card [class.notRecommended]="!product.isRecommended">
           <ion-card-header>
-            <ion-card-subtitle i18n *ngIf="product.isRecommended">Recommended</ion-card-subtitle>
-            <ion-card-subtitle *ngIf="!product.isRecommended">&nbsp;</ion-card-subtitle>
+            @if (product.isRecommended) {
+              <ion-card-subtitle i18n>Recommended</ion-card-subtitle>
+            } @else {
+              <ion-card-subtitle>&nbsp;</ion-card-subtitle>
+            }
             <ion-card-title>{{ product.title }}</ion-card-title>
           </ion-card-header>
           <ion-card-content>
             <ion-grid>
               <ion-row class="ion-align-items-center ion-justify-content-start">
                 <ion-col size="auto">
-                  <span class="price" *ngIf="mode == 'monthly'">{{ product.prices['monthly'].value }}</span>
-                  <span class="price" *ngIf="mode == 'yearly'">{{ product.prices['yearly'].value }}</span>
+                  @if (mode == 'monthly') {
+                    <span class="price">{{ product.prices['monthly'].value }}</span>
+                  } @else if (mode == 'yearly') {
+                    <span class="price">{{ product.prices['yearly'].value }}</span>
+                  }
                 </ion-col>
                 <ion-col size="2" class="ion-justify-content-center">
-                  <span *ngIf="mode == 'monthly'" i18n>per month</span>
-                  <span *ngIf="mode == 'yearly'" i18n>per year</span>
+                  @if (mode == 'monthly') {
+                    <span i18n>per month</span>
+                  } @else if (mode == 'yearly') {
+                    <span i18n>per year</span>
+                  }
                 </ion-col>
               </ion-row>
               <ion-row>
-                <form #monthlyForm="ngForm" *ngIf="mode == 'monthly'"
-                      id="{{ product.prices['monthly'].lookupKey }}_subscribe" (ngSubmit)="onSubmit(monthlyForm)"
-                      method="post">
-                  <input type="hidden" name="lookup_key" [ngModel]="product.prices['monthly'].lookupKey">
-                  <ion-button form="{{ product.prices['monthly'].lookupKey }}_subscribe" type="submit">
-                    <ion-label>{{ product.action }}</ion-label>
-                  </ion-button>
-                </form>
-                <form #yearlyForm="ngForm" *ngIf="mode == 'yearly'"
-                      id="{{ product.prices['yearly'].lookupKey }}_subscribe" (ngSubmit)="onSubmit(yearlyForm)"
-                      method="post">
-                  <input type="hidden" name="lookup_key" [ngModel]="product.prices['yearly'].lookupKey">
-                  <ion-button form="{{ product.prices['yearly'].lookupKey }}_subscribe" type="submit">
-                    <ion-label>{{ product.action }}</ion-label>
-                  </ion-button>
-                </form>
+                @if (mode == 'monthly') {
+                  <form #monthlyForm="ngForm"
+                        id="{{ product.prices['monthly'].lookupKey }}_subscribe" (ngSubmit)="onSubmit(monthlyForm)"
+                        method="post">
+                    <input type="hidden" name="lookup_key" [ngModel]="product.prices['monthly'].lookupKey">
+                    <ion-button form="{{ product.prices['monthly'].lookupKey }}_subscribe" type="submit">
+                      <ion-label>{{ product.action }}</ion-label>
+                    </ion-button>
+                  </form>
+                } @else if (mode == 'yearly') {
+                  <form #yearlyForm="ngForm"
+                        id="{{ product.prices['yearly'].lookupKey }}_subscribe" (ngSubmit)="onSubmit(yearlyForm)"
+                        method="post">
+                    <input type="hidden" name="lookup_key" [ngModel]="product.prices['yearly'].lookupKey">
+                    <ion-button form="{{ product.prices['yearly'].lookupKey }}_subscribe" type="submit">
+                      <ion-label>{{ product.action }}</ion-label>
+                    </ion-button>
+                  </form>
+                }
               </ion-row>
               <ion-row>
                 <ion-list [class.notRecommended]="!product.isRecommended">

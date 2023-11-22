@@ -24,7 +24,7 @@ import {
   IonTitle,
   IonToolbar
 } from "@ionic/angular/standalone";
-import {AsyncPipe, NgForOf, NgIf} from "@angular/common";
+import {AsyncPipe, NgForOf} from "@angular/common";
 import {SegmentCustomEvent} from "@ionic/angular";
 import {Product} from "./model/product";
 import {addIcons} from "ionicons";
@@ -44,7 +44,7 @@ import {PricingState} from "./store/pricing.reducer";
   imports: [
     IonContent, IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, AsyncPipe, IonGrid, IonRow, IonCol,
     IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCardSubtitle, IonSegment, IonSegmentButton, IonLabel,
-    IonButton, NgIf, NgForOf, IonList, IonListHeader, IonItem, IonIcon, FormsModule, IonFooter,
+    IonButton, NgForOf, IonList, IonListHeader, IonItem, IonIcon, FormsModule, IonFooter,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
