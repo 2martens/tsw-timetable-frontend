@@ -1,10 +1,10 @@
 import {createAction, props} from "@ngrx/store";
 
 export enum ActionTypes {
-  Subscribed = '[Pricing] Subscribed',
+  Subscribe = '[Pricing] Subscribe',
 }
 
-export const subscribedAction = createAction(
-  ActionTypes.Subscribed,
+export const subscribeAction = createAction(
+  ActionTypes.Subscribe,
   props<{ lookupKey: string }>()
 );

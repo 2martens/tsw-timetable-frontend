@@ -1,15 +1,22 @@
 import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {inject} from "@angular/core";
-import {subscribedAction} from "./pricing.actions";
-import {map, tap} from "rxjs";
+import {subscribeAction} from "./pricing.actions";
+import {map, switchMap, withLatestFrom} from "rxjs";
+import {PricingService} from "../service/pricing.service";
+import {AuthService} from "../../auth/service/auth.service";
+import {redirectAction} from "../../redirect/store/redirect.actions";
 
-export const subscribe = createEffect(
-  (actions$ = inject(Actions)
+export const subscribe = createEffect((
+    actions$: Actions = inject(Actions),
+    pricingService: PricingService = inject(PricingService),
+    authService: AuthService = inject(AuthService),
   ) => {
     return actions$.pipe(
-      ofType(subscribedAction),
+      ofType(subscribeAction),
       map((action) => action.lookupKey),
-      tap((lookupKey) => console.debug("Subscribed price with lookup key: " + lookupKey))
+      withLatestFrom(authService.getUser$()),
+      switchMap(([lookupKey, user]) => pricingService.subscribe$(user, lookupKey)),
+      map(redirectURL => redirectAction({redirectURL}))
     )
   },
-  {functional: true, dispatch: false});
+  {functional: true});

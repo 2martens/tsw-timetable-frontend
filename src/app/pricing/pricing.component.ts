@@ -9,6 +9,7 @@ import {
   IonCardTitle,
   IonCol,
   IonContent,
+  IonFooter,
   IonGrid,
   IonHeader,
   IonIcon,
@@ -31,7 +32,7 @@ import {checkmarkCircleOutline, checkmarkCircleSharp} from "ionicons/icons";
 import {FormsModule, NgForm} from "@angular/forms";
 import {getProducts} from "./store";
 import {Store} from "@ngrx/store";
-import {subscribedAction} from "./store/pricing.actions";
+import {subscribeAction} from "./store/pricing.actions";
 import {Observable} from "rxjs";
 import {PricingState} from "./store/pricing.reducer";
 
@@ -43,7 +44,7 @@ import {PricingState} from "./store/pricing.reducer";
   imports: [
     IonContent, IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, AsyncPipe, IonGrid, IonRow, IonCol,
     IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCardSubtitle, IonSegment, IonSegmentButton, IonLabel,
-    IonButton, NgIf, NgForOf, IonList, IonListHeader, IonItem, IonIcon, FormsModule,
+    IonButton, NgIf, NgForOf, IonList, IonListHeader, IonItem, IonIcon, FormsModule, IonFooter,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
@@ -64,6 +65,6 @@ export class PricingComponent {
   }
 
   onSubmit(form: NgForm) {
-    this.store.dispatch(subscribedAction({lookupKey: form.value['lookup_key']}));
+    this.store.dispatch(subscribeAction({lookupKey: form.value['lookup_key']}));
   }
 }

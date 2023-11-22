@@ -14,11 +14,11 @@ export const initialState: PricingState = {
       prices: {
         monthly: {
           value: '0€',
-          lookupKey: 'free_monthly'
+          lookupKey: 'free_oneoff'
         },
         yearly: {
           value: '0€',
-          lookupKey: 'free_yearly'
+          lookupKey: 'free_oneoff'
         }
       },
       features: [
