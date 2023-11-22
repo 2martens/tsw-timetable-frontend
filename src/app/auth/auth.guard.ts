@@ -3,6 +3,9 @@ import {ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree} from '@ang
 import {KeycloakAuthGuard, KeycloakService} from 'keycloak-angular';
 import {Injectable} from '@angular/core';
 import {Location} from "@angular/common";
+import {AuthService} from "./service/auth.service";
+import {Store} from "@ngrx/store";
+import {loggedInAction, logInAction} from "./store/auth.actions";
 
 @Injectable({
   providedIn: 'root',
@@ -11,17 +14,23 @@ export class AppAuthGuard extends KeycloakAuthGuard {
 
   constructor(protected override readonly router: Router,
               protected readonly keycloak: KeycloakService,
-              private readonly location: Location) {
+              private readonly location: Location,
+              private readonly store: Store<AuthService>) {
     super(router, keycloak);
   }
 
   async isAccessAllowed(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean | UrlTree> {
     // Force the user to log in if currently unauthenticated.
     if (!this.authenticated || this.keycloak.isTokenExpired()) {
-      await this.keycloak.login({
-        redirectUri: `${window.location.origin}${this.location.prepareExternalUrl(state.url)}`,
-      });
+      const redirectUri = `${window.location.origin}${this.location.prepareExternalUrl(state.url)}`;
+      this.store.dispatch(logInAction({redirectUrl: redirectUri}));
+      // await this.keycloak.login({
+      //   redirectUri: redirectUri,
+      // });
+      return false;
     }
+
+    this.store.dispatch(loggedInAction());
 
     // Get the roles required from the route.
     const requiredRoles = route.data['roles'];

@@ -1,7 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {IonButtons, IonContent, IonHeader, IonMenuButton, IonTitle, IonToolbar} from "@ionic/angular/standalone";
-import {KeycloakService} from "keycloak-angular";
 import {Location} from "@angular/common";
+import {AuthService} from "../service/auth.service";
+import {Store} from "@ngrx/store";
+import {logInAction} from "../store/auth.actions";
 
 @Component({
   selector: 'app-login',
@@ -18,14 +20,14 @@ import {Location} from "@angular/common";
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private readonly keycloakService: KeycloakService,
+  constructor(private readonly store: Store<AuthService>,
               private readonly location: Location) {
   }
 
-  async ngOnInit() {
-    await this.keycloakService.login({
-      redirectUri: `${window.location.origin}${this.location.prepareExternalUrl('')}`
-    });
+  ngOnInit() {
+    this.store.dispatch(logInAction({
+      redirectUrl: `${window.location.origin}${this.location.prepareExternalUrl('')}`
+    }));
   }
 
 }

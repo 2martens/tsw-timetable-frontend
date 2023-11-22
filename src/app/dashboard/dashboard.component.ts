@@ -24,8 +24,7 @@ import {
   IonToolbar
 } from "@ionic/angular/standalone";
 import {AsyncPipe, NgForOf, NgIf} from "@angular/common";
-import {KeycloakService} from "keycloak-angular";
-import {from, Observable} from "rxjs";
+import {Observable} from "rxjs";
 import {addIcons} from "ionicons";
 import {
   addOutline,
@@ -50,6 +49,7 @@ import {Store} from "@ngrx/store";
 import {CreateFormationComponent} from "../formations/create-formation/create-formation.component";
 import {UpdateFormationComponent} from "../formations/update-formation/update-formation.component";
 import {FormationsState} from "../formations/store/formations.reducer";
+import {AuthService} from "../auth/service/auth.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -105,9 +105,9 @@ export class DashboardComponent {
   private readonly formationsStoreService: FormationsStoreService = inject(FormationsStoreService);
   formations$ = this.formationsStoreService.getFormations$();
 
-  constructor(private readonly keycloakService: KeycloakService,
+  constructor(private readonly authService: AuthService,
               private readonly formationsStore: Store<FormationsState>) {
-    this.loggedIn$ = from(this.keycloakService.isLoggedIn());
+    this.loggedIn$ = this.authService.isLoggedIn$();
 
     addIcons({
       addOutline,

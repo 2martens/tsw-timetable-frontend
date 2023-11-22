@@ -44,8 +44,8 @@ import {
   trainOutline,
   trainSharp
 } from 'ionicons/icons';
-import {KeycloakService} from "keycloak-angular";
-import {from, Observable, of, switchMap} from "rxjs";
+import {map, Observable} from "rxjs";
+import {AuthService} from "./auth/service/auth.service";
 
 @Component({
   selector: 'app-root',
@@ -80,18 +80,12 @@ export class AppComponent {
   public username$: Observable<string>;
 
   constructor(
-    private keycloakService: KeycloakService
+    private readonly authService: AuthService
   ) {
-    this.isLoggedIn$ = from(this.keycloakService.isLoggedIn());
-    this.username$ = this.isLoggedIn$.pipe(
-      switchMap(loggedIn => {
-        if (loggedIn) {
-          return of(this.keycloakService.getUsername());
-        } else {
-          return of('');
-        }
-      })
-    )
+    this.isLoggedIn$ = this.authService.isLoggedIn$();
+    this.username$ = this.authService.getUser$().pipe(
+      map(user => user.username)
+    );
     addIcons({
       homeOutline,
       homeSharp,
