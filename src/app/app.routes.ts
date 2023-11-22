@@ -5,7 +5,7 @@ import {featureStateName as formationsFeature, formationsEffects} from "./format
 import {provideEffects} from "@ngrx/effects";
 import {formationsReducer} from "./formations/store/formations.reducer";
 import {pricingReducer} from "./pricing/store/pricing.reducer";
-import {featureStateName as pricingFeature, pricingEffects} from "./pricing/store";
+import {pricingEffects, pricingFeature} from "./pricing/store";
 
 export const ROOT_ROUTES: Routes = [
   {
@@ -31,17 +31,17 @@ export const ROOT_ROUTES: Routes = [
   },
   {
     path: 'login',
-    loadComponent: () => import("./auth/login/login.component").then(mod => mod.LoginComponent)
+    loadComponent: () => import("./auth/login/login.component").then(mod => mod.LoginComponent),
   },
   {
     path: 'logout',
     loadComponent: () => import("./auth/logout/logout.component").then(mod => mod.LogoutComponent),
-    canActivate: [AppAuthGuard]
+    canActivate: [AppAuthGuard],
   },
   {
     path: 'account',
     loadComponent: () => import("./auth/account/account.component").then(mod => mod.AccountComponent),
-    canActivate: [AppAuthGuard]
+    canActivate: [AppAuthGuard],
   },
   {
     path: 'routes',

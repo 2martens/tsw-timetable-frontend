@@ -3,7 +3,7 @@ import {subscribe} from "./pricing.effects";
 import {createFeatureSelector, createSelector} from "@ngrx/store";
 import {PricingState} from "./pricing.reducer";
 
-export const featureStateName = 'pricing';
+export const pricingFeature = 'pricing';
 
 
 export const pricingEffects: Record<string, FunctionalEffect> = {
@@ -11,7 +11,7 @@ export const pricingEffects: Record<string, FunctionalEffect> = {
 }
 
 export const getPricingFeatureState = createFeatureSelector<PricingState>(
-  featureStateName
+  pricingFeature
 );
 
 export const getProducts = () => createSelector(
