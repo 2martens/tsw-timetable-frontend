@@ -4,9 +4,8 @@
       <ion-content>
         <ion-list id="menu-list">
           <ion-list-header i18n>Timetable</ion-list-header>
-          <ion-note *ngIf="isLoggedIn$ | async">{{ username$ | async }}</ion-note>
-
-          <ng-container *ngIf="isLoggedIn$ | async; else loggedOut">
+          @if (isLoggedIn$ | async) {
+            <ion-note>{{ username$ | async }}</ion-note>
             <ion-item *ngFor="let p of accountPages; let i = index"
                       [routerDirection]="'root'" [routerLink]="[p.url]" [routerLinkActiveOptions]="{exact: true}"
                       lines="none" [detail]="false"
@@ -15,34 +14,32 @@
                         [md]="p.icon + '-sharp'"></ion-icon>
               <ion-label>{{ p.title }}</ion-label>
             </ion-item>
-
-            <ion-item-divider>
-              <ion-label i18n>App pages</ion-label>
-            </ion-item-divider>
-            <ion-item *ngFor="let p of loggedInPages; let i = index"
-                      routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false"
-                      routerLinkActive="selected" [routerLinkActiveOptions]="{exact: true}" [button]="true">
-              <ion-icon aria-hidden="true" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
-              <ion-label>{{ p.title }}</ion-label>
-            </ion-item>
-          </ng-container>
-          <ng-template #loggedOut>
+          } @else {
             <ion-item routerDirection="root" [routerLink]="'/login'" lines="none" detail="false"
                       routerLinkActive="selected" [routerLinkActiveOptions]="{exact: true}" [button]="true">
               <ion-icon aria-hidden="true" slot="start" [ios]="'log-in-outline'" [md]="'log-in-sharp'"></ion-icon>
               <ion-label i18n>Sign Up/In</ion-label>
             </ion-item>
+          }
 
-            <ion-item-divider>
-              <ion-label i18n>App pages</ion-label>
-            </ion-item-divider>
-            <ion-item *ngFor="let p of loggedOutPages; let i = index"
+          <ion-item-divider>
+            <ion-label i18n>App pages</ion-label>
+          </ion-item-divider>
+          @if (hasActivePlan$ | async) {
+            <ion-item *ngFor="let p of activePlanPages; let i = index"
                       routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false"
                       routerLinkActive="selected" [routerLinkActiveOptions]="{exact: true}" [button]="true">
               <ion-icon aria-hidden="true" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
               <ion-label>{{ p.title }}</ion-label>
             </ion-item>
-          </ng-template>
+          } @else {
+            <ion-item *ngFor="let p of noActivePlanPages; let i = index"
+                      routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false"
+                      routerLinkActive="selected" [routerLinkActiveOptions]="{exact: true}" [button]="true">
+              <ion-icon aria-hidden="true" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+              <ion-label>{{ p.title }}</ion-label>
+            </ion-item>
+          }
         </ion-list>
       </ion-content>
     </ion-menu>

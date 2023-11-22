@@ -23,7 +23,7 @@ import {
   IonTitle,
   IonToolbar
 } from "@ionic/angular/standalone";
-import {AsyncPipe, NgForOf, NgIf} from "@angular/common";
+import {AsyncPipe, NgForOf} from "@angular/common";
 import {Observable} from "rxjs";
 import {addIcons} from "ionicons";
 import {
@@ -49,7 +49,7 @@ import {Store} from "@ngrx/store";
 import {CreateFormationComponent} from "../formations/create-formation/create-formation.component";
 import {UpdateFormationComponent} from "../formations/update-formation/update-formation.component";
 import {FormationsState} from "../formations/store/formations.reducer";
-import {AuthService} from "../auth/service/auth.service";
+import {SubscriptionService} from "../subscription/service/subscription.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -64,7 +64,6 @@ import {AuthService} from "../auth/service/auth.service";
     IonToolbar,
     IonContent,
     IonMenuToggle,
-    NgIf,
     AsyncPipe,
     IonButton,
     IonIcon,
@@ -87,7 +86,7 @@ import {AuthService} from "../auth/service/auth.service";
   ]
 })
 export class DashboardComponent {
-  loggedIn$: Observable<boolean>;
+  hasActivePlan$: Observable<boolean>;
   routes: Route[] = [
     {
       name: 'Köln-Aachen',
@@ -105,9 +104,9 @@ export class DashboardComponent {
   private readonly formationsStoreService: FormationsStoreService = inject(FormationsStoreService);
   formations$ = this.formationsStoreService.getFormations$();
 
-  constructor(private readonly authService: AuthService,
+  constructor(private readonly subscriptionService: SubscriptionService,
               private readonly formationsStore: Store<FormationsState>) {
-    this.loggedIn$ = this.authService.isLoggedIn$();
+    this.hasActivePlan$ = this.subscriptionService.hasActivePlan$();
 
     addIcons({
       addOutline,

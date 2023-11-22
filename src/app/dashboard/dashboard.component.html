@@ -1,4 +1,4 @@
-<ng-container *ngIf="loggedIn$ | async; else loggedOut">
+@if (hasActivePlan$ | async) {
   <ion-header [translucent]="true">
     <ion-toolbar>
       <ion-buttons slot="start">
@@ -111,9 +111,7 @@
                           (dismissed)="isUpdateFormationModalOpen = false"></app-update-formation>
   </ion-content>
   <ion-footer id="footer"></ion-footer>
-</ng-container>
-{{ '' // logged out below }}
-<ng-template #loggedOut>
+} @else {
   <ion-header [translucent]="true">
     <ion-toolbar>
       <ion-buttons slot="start">
@@ -127,5 +125,5 @@
       TODO
     </p>
   </ion-content>
-</ng-template>
+}
 
