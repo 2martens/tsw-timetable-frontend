@@ -22,11 +22,6 @@
   },
   "private": true,
   "overrides": {
-    "keycloak-angular": {
-      "@angular/common": "^17.0.2",
-      "@angular/core": "^17.0.2",
-      "@angular/router": "^17.0.2"
-    },
     "@ngrx/effects": {
       "@angular/core": "^17.0.2"
     },
@@ -54,7 +49,7 @@
     "@ngrx/store": "^16.3.0",
     "@ngrx/store-devtools": "^16.3.0",
     "ionicons": "^7.2.1",
-    "keycloak-angular": "^14.0.0",
+    "keycloak-angular": "^15.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.2"
