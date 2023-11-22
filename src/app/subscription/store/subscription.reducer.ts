@@ -1,11 +1,11 @@
 import {createReducer} from "@ngrx/store";
 import {Product} from "../model/product";
 
-export interface PricingState {
+export interface SubscriptionState {
   products: Product[]
 }
 
-export const initialState: PricingState = {
+export const initialState: SubscriptionState = {
   products: [
     {
       action: $localize`Get Started`,
@@ -57,6 +57,6 @@ export const initialState: PricingState = {
   ]
 };
 
-export const pricingReducer = createReducer(
+export const subscriptionReducer = createReducer(
   initialState,
 );

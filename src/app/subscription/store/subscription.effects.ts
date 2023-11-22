@@ -1,10 +1,10 @@
 import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {inject} from "@angular/core";
-import {subscribeAction} from "./pricing.actions";
+import {subscribeAction} from "./subscription.actions";
 import {map, switchMap, withLatestFrom} from "rxjs";
-import {PricingService} from "../service/pricing.service";
-import {AuthService} from "../../../auth/service/auth.service";
-import {redirectAction} from "../../../redirect/store/redirect.actions";
+import {PricingService} from "../pricing/service/pricing.service";
+import {AuthService} from "../../auth/service/auth.service";
+import {redirectAction} from "../../redirect/store/redirect.actions";
 
 export const subscribe = createEffect((
     actions$: Actions = inject(Actions),

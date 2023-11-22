@@ -1,7 +1,7 @@
 import {createAction, props} from "@ngrx/store";
 
 export enum ActionTypes {
-  Subscribe = '[Pricing] Subscribe',
+  Subscribe = '[Subscription] Subscribe',
 }
 
 export const subscribeAction = createAction(
