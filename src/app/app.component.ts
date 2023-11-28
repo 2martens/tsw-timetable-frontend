@@ -58,6 +58,10 @@ import {SubscriptionService} from "./subscription/service/subscription.service";
     IonItemDivider, IonHeader, IonToolbar, IonTitle],
 })
 export class AppComponent {
+  public accountPages = [
+    {title: $localize`Account Settings`, url: '/account', icon: 'person'},
+    {title: $localize`Logout`, url: '/logout', icon: 'log-out'},
+  ];
   public activePlanPages = [
     {title: $localize`Dashboard`, url: '', icon: 'home'},
     {title: $localize`Pricing`, url: '/pricing', icon: 'cash'},
@@ -66,10 +70,6 @@ export class AppComponent {
     {title: $localize`Formations`, url: '/formations', icon: 'train'},
     {title: $localize`Privacy Policy`, url: '/privacy-policy', icon: 'shield'},
     {title: $localize`Legal Notice`, url: '/legal-notice', icon: 'reader'},
-  ];
-  public accountPages = [
-    {title: $localize`Account Settings`, url: '/account', icon: 'person'},
-    {title: $localize`Logout`, url: '/logout', icon: 'log-out'},
   ];
   public noActivePlanPages = [
     {title: $localize`Overview`, url: '', icon: 'home'},
