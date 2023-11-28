@@ -31,7 +31,8 @@ export const initialState: SubscriptionState = {
         $localize`View platform allocations`,
         $localize`View depot usage`,
         $localize`View timetable rotations`,
-      ]
+      ],
+      role: 'FREE_PLAN',
     },
     {
       action: $localize`Subscribe`,
@@ -52,7 +53,8 @@ export const initialState: SubscriptionState = {
         $localize`Create unlimited number of routes`,
         $localize`Create unlimited number of timetables`,
         $localize`Add additional services to timetable`
-      ]
+      ],
+      role: 'PERSONAL_PLAN',
     }
   ]
 };

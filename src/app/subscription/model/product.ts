@@ -9,4 +9,5 @@ export interface Product {
     }
   };
   features: string[];
+  role: string;
 }

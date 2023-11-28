@@ -33,7 +33,7 @@ import {FormsModule, NgForm} from "@angular/forms";
 import {getProducts} from "../store";
 import {Store} from "@ngrx/store";
 import {subscribeAction} from "../store/subscription.actions";
-import {Observable} from "rxjs";
+import {map, Observable} from "rxjs";
 import {SubscriptionState} from "../store/subscription.reducer";
 import {AuthService} from "../../auth/service/auth.service";
 
@@ -55,6 +55,10 @@ export class PricingComponent {
 
   readonly products$: Observable<Product[]> = this.store.select(getProducts());
   readonly isLoggedIn$: Observable<boolean> = this.authService.isLoggedIn$();
+  readonly roles$: Observable<string[]> = this.authService.getUser$().pipe(
+    map(user => user.roles)
+  );
+
   mode: string | number = 'monthly';
 
   constructor() {

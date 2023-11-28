@@ -53,20 +53,32 @@
                         id="{{ product.prices['monthly'].lookupKey }}_subscribe" (ngSubmit)="onSubmit(monthlyForm)"
                         method="post">
                     <input type="hidden" name="lookup_key" [ngModel]="product.prices['monthly'].lookupKey">
-                    <ion-button form="{{ product.prices['monthly'].lookupKey }}_subscribe" type="submit"
-                                [disabled]="!(isLoggedIn$ | async)">
-                      <ion-label>{{ product.action }}</ion-label>
-                    </ion-button>
+                    @if ((roles$ | async)?.includes(product.role)) {
+                      <ion-button [disabled]="true">
+                        <ion-label i18n>Current plan</ion-label>
+                      </ion-button>
+                    } @else {
+                      <ion-button form="{{ product.prices['monthly'].lookupKey }}_subscribe" type="submit"
+                                  [disabled]="!(isLoggedIn$ | async)">
+                        <ion-label>{{ product.action }}</ion-label>
+                      </ion-button>
+                    }
                   </form>
                 } @else if (mode == 'yearly') {
                   <form #yearlyForm="ngForm"
                         id="{{ product.prices['yearly'].lookupKey }}_subscribe" (ngSubmit)="onSubmit(yearlyForm)"
                         method="post">
                     <input type="hidden" name="lookup_key" [ngModel]="product.prices['yearly'].lookupKey">
-                    <ion-button form="{{ product.prices['yearly'].lookupKey }}_subscribe" type="submit"
-                                [disabled]="!(isLoggedIn$ | async)">
-                      <ion-label>{{ product.action }}</ion-label>
-                    </ion-button>
+                    @if ((roles$ | async)?.includes(product.role)) {
+                      <ion-button [disabled]="true">
+                        <ion-label i18n>Current plan</ion-label>
+                      </ion-button>
+                    } @else {
+                      <ion-button form="{{ product.prices['yearly'].lookupKey }}_subscribe" type="submit"
+                                  [disabled]="!(isLoggedIn$ | async)">
+                        <ion-label>{{ product.action }}</ion-label>
+                      </ion-button>
+                    }
                   </form>
                 }
                 @if (!(isLoggedIn$ | async)) {

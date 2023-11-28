@@ -16,6 +16,9 @@ import {
 import {addIcons} from "ionicons";
 import {openOutline, openSharp, trashOutline, trashSharp} from "ionicons/icons";
 import {environment} from "../../../environments/environment";
+import {Observable} from "rxjs";
+import {SubscriptionService} from "../../subscription/service/subscription.service";
+import {AsyncPipe} from "@angular/common";
 
 @Component({
   selector: 'app-account',
@@ -33,15 +36,20 @@ import {environment} from "../../../environments/environment";
     IonCardContent,
     IonButton,
     IonCardTitle,
-    IonIcon
+    IonIcon,
+    AsyncPipe
   ],
   standalone: true
 })
 export class AccountComponent {
   keycloakURL: string = environment.keycloakURL
   realm: string = environment.realm
+  hasActiveSubscription$: Observable<boolean>;
 
-  constructor() {
+  constructor(
+    private readonly subscriptionService: SubscriptionService,
+  ) {
+    this.hasActiveSubscription$ = this.subscriptionService.hasActiveSubscription$();
     addIcons({
       openOutline,
       openSharp,

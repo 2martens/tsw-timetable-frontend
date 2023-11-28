@@ -60,6 +60,7 @@ import {SubscriptionService} from "./subscription/service/subscription.service";
 export class AppComponent {
   public activePlanPages = [
     {title: $localize`Dashboard`, url: '', icon: 'home'},
+    {title: $localize`Pricing`, url: '/pricing', icon: 'cash'},
     {title: $localize`Routes`, url: '/routes', icon: 'map'},
     {title: $localize`Timetables`, url: '/timetables', icon: 'time'},
     {title: $localize`Formations`, url: '/formations', icon: 'train'},
