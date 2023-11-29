@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/2martens/tsw-timetable-frontend/compare/v0.1.1...v0.2.0) (2023-11-29)
+
+
+### Features
+
+* Full subscription journey added ([#9](https://github.com/2martens/tsw-timetable-frontend/issues/9)) ([ac5d489](https://github.com/2martens/tsw-timetable-frontend/commit/ac5d4893e1f6d3a634dbdfa52b77bd6deec49905))
+
 ## [0.1.1](https://github.com/2martens/tsw-timetable-frontend/compare/v0.1.0...v0.1.1) (2023-11-19)
 
 
