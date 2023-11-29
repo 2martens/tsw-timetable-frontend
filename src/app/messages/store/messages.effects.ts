@@ -14,7 +14,7 @@ export const showMessage = createEffect((
         return from(toastController.create({
           color: action.message.color,
           message: action.message.text,
-          duration: 1500,
+          duration: action.message.duration || 1500,
           position: 'bottom',
           positionAnchor: 'footer'
         }));
