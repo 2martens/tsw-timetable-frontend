@@ -8,7 +8,8 @@ export interface SubscriptionState {
 export const initialState: SubscriptionState = {
   products: [
     {
-      action: $localize`Get Started`,
+      action: $localize`Already unlocked`,
+      selectable: false,
       title: $localize`Timetable Free`,
       isRecommended: false,
       prices: {
@@ -36,6 +37,7 @@ export const initialState: SubscriptionState = {
     },
     {
       action: $localize`Subscribe`,
+      selectable: true,
       title: $localize`Timetable Personal`,
       isRecommended: true,
       prices: {

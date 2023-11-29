@@ -1,5 +1,6 @@
 export interface Product {
   action: string;
+  selectable: boolean;
   title: string;
   isRecommended: boolean;
   prices: {

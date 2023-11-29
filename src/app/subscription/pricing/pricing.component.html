@@ -53,9 +53,13 @@
                         id="{{ product.prices['monthly'].lookupKey }}_subscribe" (ngSubmit)="onSubmit(monthlyForm)"
                         method="post">
                     <input type="hidden" name="lookup_key" [ngModel]="product.prices['monthly'].lookupKey">
-                    @if ((roles$ | async)?.includes(product.role)) {
-                      <ion-button [disabled]="true">
-                        <ion-label i18n>Current plan</ion-label>
+                    @if (!product.selectable || (roles$ | async)?.includes(product.role)) {
+                      <ion-button [disabled]="true" [color]="!product.selectable ? 'success' : 'primary'">
+                        @if (product.selectable) {
+                          <ion-label i18n>Current plan</ion-label>
+                        } @else {
+                          <ion-label>{{ product.action }}</ion-label>
+                        }
                       </ion-button>
                     } @else {
                       <ion-button form="{{ product.prices['monthly'].lookupKey }}_subscribe" type="submit"
@@ -69,9 +73,13 @@
                         id="{{ product.prices['yearly'].lookupKey }}_subscribe" (ngSubmit)="onSubmit(yearlyForm)"
                         method="post">
                     <input type="hidden" name="lookup_key" [ngModel]="product.prices['yearly'].lookupKey">
-                    @if ((roles$ | async)?.includes(product.role)) {
-                      <ion-button [disabled]="true">
-                        <ion-label i18n>Current plan</ion-label>
+                    @if (!product.selectable || (roles$ | async)?.includes(product.role)) {
+                      <ion-button [disabled]="true" [color]="!product.selectable ? 'success' : 'primary'">
+                        @if (product.selectable) {
+                          <ion-label i18n>Current plan</ion-label>
+                        } @else {
+                          <ion-label>{{ product.action }}</ion-label>
+                        }
                       </ion-button>
                     } @else {
                       <ion-button form="{{ product.prices['yearly'].lookupKey }}_subscribe" type="submit"
