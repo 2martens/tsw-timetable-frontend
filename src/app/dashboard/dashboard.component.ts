@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnDestroy} from '@angular/core';
 import {
   IonButton,
   IonButtons,
@@ -24,7 +24,7 @@ import {
   IonToolbar
 } from "@ionic/angular/standalone";
 import {AsyncPipe, NgForOf} from "@angular/common";
-import {Observable} from "rxjs";
+import {filter, map, Observable, Subscription, withLatestFrom} from "rxjs";
 import {addIcons} from "ionicons";
 import {
   addOutline,
@@ -50,6 +50,10 @@ import {CreateFormationComponent} from "../formations/create-formation/create-fo
 import {UpdateFormationComponent} from "../formations/update-formation/update-formation.component";
 import {FormationsState} from "../formations/store/formations.reducer";
 import {SubscriptionService} from "../subscription/service/subscription.service";
+import {ActivatedRoute, EventType, NavigationEnd, Router} from "@angular/router";
+import {addMessageAction} from "../messages/store/messages.actions";
+import {Message} from "../messages/model/message";
+import {MessagesState} from "../messages/store/messages.reducer";
 
 @Component({
   selector: 'app-dashboard',
@@ -85,7 +89,7 @@ import {SubscriptionService} from "../subscription/service/subscription.service"
     UpdateFormationComponent
   ]
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnDestroy {
   hasActivePlan$: Observable<boolean>;
   routes: Route[] = [
     {
@@ -104,8 +108,21 @@ export class DashboardComponent {
   private readonly formationsStoreService: FormationsStoreService = inject(FormationsStoreService);
   formations$ = this.formationsStoreService.getFormations$();
 
+  private messages: Record<string, Message> = {
+    success: {
+      text: $localize`You have successfully subscribed. The subscription can be managed from the account settings.`,
+      color: 'success',
+      durationInMs: 5000,
+    }
+  }
+
+  private subscription: Subscription;
+
   constructor(private readonly subscriptionService: SubscriptionService,
-              private readonly formationsStore: Store<FormationsState>) {
+              private readonly formationsStore: Store<FormationsState>,
+              private readonly messagesStore: Store<MessagesState>,
+              private readonly activatedRoute: ActivatedRoute,
+              private readonly router: Router) {
     this.hasActivePlan$ = this.subscriptionService.hasActivePlan$();
 
     addIcons({
@@ -122,6 +139,18 @@ export class DashboardComponent {
       pencilOutline,
       pencilSharp,
     });
+
+    this.subscription = this.router.events.pipe(
+      filter(event => event.type == EventType.NavigationEnd),
+      map(event => event as NavigationEnd),
+      withLatestFrom(this.hasActivePlan$),
+      filter(([_, hasActivePlan]) => hasActivePlan),
+      filter(([event, _]) => event.url.startsWith('/?state='))
+    ).subscribe(() => this.triggerFeedbackMessage());
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   addFormation() {
@@ -135,5 +164,12 @@ export class DashboardComponent {
 
   deleteFormation(formation: Formation) {
     this.formationsStore.dispatch(deleteFormationAction({payload: formation}));
+  }
+
+  private triggerFeedbackMessage() {
+    const state = this.activatedRoute.snapshot.queryParamMap.get('state') || '';
+    if (state in this.messages) {
+      this.messagesStore.dispatch(addMessageAction({message: this.messages[state]}));
+    }
   }
 }
