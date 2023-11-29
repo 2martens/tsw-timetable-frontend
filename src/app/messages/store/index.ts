@@ -1,16 +1,14 @@
-import {messagesReducer, ReducerMessagesState} from "./messages.reducer";
-import {ActionReducerMap, createFeatureSelector} from "@ngrx/store";
+import {MessagesState} from "./messages.reducer";
+import {createFeatureSelector} from "@ngrx/store";
+import {showMessage} from "./messages.effects";
+import {FunctionalEffect} from "@ngrx/effects";
 
-export const featureStateName = 'messagesFeature';
+export const messagesFeature = 'messages';
 
-export interface MessagesState {
-  messages: ReducerMessagesState;
+export const messagesEffects: Record<string, FunctionalEffect> = {
+  showMessage
 }
 
-export const messagesReducers: ActionReducerMap<MessagesState> = {
-  messages: messagesReducer,
-};
-
 export const getMessagesFeatureState = createFeatureSelector<MessagesState>(
-  featureStateName
+  messagesFeature
 );

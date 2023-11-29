@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnDestroy} from '@angular/core';
 import {
   IonButton,
   IonButtons,
@@ -23,9 +23,8 @@ import {
   IonTitle,
   IonToolbar
 } from "@ionic/angular/standalone";
-import {AsyncPipe, NgForOf, NgIf} from "@angular/common";
-import {KeycloakService} from "keycloak-angular";
-import {from, Observable} from "rxjs";
+import {AsyncPipe, NgForOf} from "@angular/common";
+import {filter, map, Subscription} from "rxjs";
 import {addIcons} from "ionicons";
 import {
   addOutline,
@@ -50,6 +49,10 @@ import {Store} from "@ngrx/store";
 import {CreateFormationComponent} from "../formations/create-formation/create-formation.component";
 import {UpdateFormationComponent} from "../formations/update-formation/update-formation.component";
 import {FormationsState} from "../formations/store/formations.reducer";
+import {ActivatedRoute, EventType, NavigationEnd, Router} from "@angular/router";
+import {addMessageAction} from "../messages/store/messages.actions";
+import {Message} from "../messages/model/message";
+import {MessagesState} from "../messages/store/messages.reducer";
 
 @Component({
   selector: 'app-dashboard',
@@ -64,7 +67,6 @@ import {FormationsState} from "../formations/store/formations.reducer";
     IonToolbar,
     IonContent,
     IonMenuToggle,
-    NgIf,
     AsyncPipe,
     IonButton,
     IonIcon,
@@ -86,8 +88,7 @@ import {FormationsState} from "../formations/store/formations.reducer";
     UpdateFormationComponent
   ]
 })
-export class DashboardComponent {
-  loggedIn$: Observable<boolean>;
+export class DashboardComponent implements OnDestroy {
   routes: Route[] = [
     {
       name: 'Köln-Aachen',
@@ -105,9 +106,20 @@ export class DashboardComponent {
   private readonly formationsStoreService: FormationsStoreService = inject(FormationsStoreService);
   formations$ = this.formationsStoreService.getFormations$();
 
-  constructor(private readonly keycloakService: KeycloakService,
-              private readonly formationsStore: Store<FormationsState>) {
-    this.loggedIn$ = from(this.keycloakService.isLoggedIn());
+  private messages: Record<string, Message> = {
+    success: {
+      text: $localize`You have successfully subscribed. The subscription can be managed from the account settings.`,
+      color: 'success',
+      durationInMs: 5000,
+    }
+  }
+
+  private subscription: Subscription;
+
+  constructor(private readonly formationsStore: Store<FormationsState>,
+              private readonly messagesStore: Store<MessagesState>,
+              private readonly activatedRoute: ActivatedRoute,
+              private readonly router: Router) {
 
     addIcons({
       addOutline,
@@ -123,6 +135,16 @@ export class DashboardComponent {
       pencilOutline,
       pencilSharp,
     });
+
+    this.subscription = this.router.events.pipe(
+      filter(event => event.type == EventType.NavigationEnd),
+      map(event => event as NavigationEnd),
+      filter(event => event.url.startsWith('/dashboard?state='))
+    ).subscribe(() => this.triggerFeedbackMessage());
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   addFormation() {
@@ -136,5 +158,12 @@ export class DashboardComponent {
 
   deleteFormation(formation: Formation) {
     this.formationsStore.dispatch(deleteFormationAction({payload: formation}));
+  }
+
+  private triggerFeedbackMessage() {
+    const state = this.activatedRoute.snapshot.queryParamMap.get('state') || '';
+    if (state in this.messages) {
+      this.messagesStore.dispatch(addMessageAction({message: this.messages[state]}));
+    }
   }
 }

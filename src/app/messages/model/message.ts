@@ -1,6 +1,5 @@
-import {MessageType} from "./message-type";
-
 export interface Message {
   text: string;
-  type: MessageType;
+  color?: string;
+  durationInMs?: number;
 }

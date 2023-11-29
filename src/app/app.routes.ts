@@ -4,6 +4,8 @@ import {provideState} from "@ngrx/store";
 import {featureStateName as formationsFeature, formationsEffects} from "./formations/store";
 import {provideEffects} from "@ngrx/effects";
 import {formationsReducer} from "./formations/store/formations.reducer";
+import {subscriptionReducer} from "./subscription/store/subscription.reducer";
+import {subscriptionEffects, subscriptionFeature} from "./subscription/store";
 
 export const ROOT_ROUTES: Routes = [
   {
@@ -21,21 +23,25 @@ export const ROOT_ROUTES: Routes = [
   },
   {
     path: 'pricing',
-    loadComponent: () => import("./pricing/pricing.component").then(mod => mod.PricingComponent)
+    loadComponent: () => import("./subscription/pricing/pricing.component").then(mod => mod.PricingComponent),
+    providers: [
+      provideState(subscriptionFeature, subscriptionReducer),
+      provideEffects(subscriptionEffects)
+    ],
   },
   {
     path: 'login',
-    loadComponent: () => import("./auth/login/login.component").then(mod => mod.LoginComponent)
+    loadComponent: () => import("./auth/login/login.component").then(mod => mod.LoginComponent),
   },
   {
     path: 'logout',
     loadComponent: () => import("./auth/logout/logout.component").then(mod => mod.LogoutComponent),
-    canActivate: [AppAuthGuard]
+    canActivate: [AppAuthGuard],
   },
   {
     path: 'account',
     loadComponent: () => import("./auth/account/account.component").then(mod => mod.AccountComponent),
-    canActivate: [AppAuthGuard]
+    canActivate: [AppAuthGuard],
   },
   {
     path: 'routes',
@@ -57,12 +63,21 @@ export const ROOT_ROUTES: Routes = [
     ],
   },
   {
-    path: '',
+    path: 'dashboard',
     loadComponent: () => import("./dashboard/dashboard.component").then(mod => mod.DashboardComponent),
-    pathMatch: 'full',
+    canActivate: [AppAuthGuard],
     providers: [
       provideState(formationsFeature, formationsReducer),
       provideEffects(formationsEffects)
     ],
   },
+  {
+    path: 'overview',
+    loadComponent: () => import("./overview/overview.component").then(mod => mod.OverviewComponent),
+  },
+  {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'overview'
+  }
 ];

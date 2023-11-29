@@ -1,4 +1,4 @@
-import {AsyncPipe, NgFor, NgIf} from '@angular/common';
+import {AsyncPipe, NgFor} from '@angular/common';
 import {Component} from '@angular/core';
 import {RouterLink, RouterLinkActive} from '@angular/router';
 import {
@@ -44,8 +44,9 @@ import {
   trainOutline,
   trainSharp
 } from 'ionicons/icons';
-import {KeycloakService} from "keycloak-angular";
-import {from, Observable, of, switchMap} from "rxjs";
+import {map, Observable} from "rxjs";
+import {AuthService} from "./auth/service/auth.service";
+import {SubscriptionService} from "./subscription/service/subscription.service";
 
 @Component({
   selector: 'app-root',
@@ -53,45 +54,43 @@ import {from, Observable, of, switchMap} from "rxjs";
   styleUrls: ['app.component.scss'],
   standalone: true,
   imports: [RouterLink, RouterLinkActive, IonApp, IonSplitPane, IonMenu, IonContent, IonList,
-    IonListHeader, IonNote, IonMenuToggle, IonItem, IonIcon, IonLabel, IonRouterOutlet, NgIf, NgFor, AsyncPipe,
+    IonListHeader, IonNote, IonMenuToggle, IonItem, IonIcon, IonLabel, IonRouterOutlet, NgFor, AsyncPipe,
     IonItemDivider, IonHeader, IonToolbar, IonTitle],
 })
 export class AppComponent {
-  public loggedInPages = [
-    {title: $localize`Dashboard`, url: '', icon: 'home'},
+  public accountPages = [
+    {title: $localize`Account Settings`, url: '/account', icon: 'person'},
+    {title: $localize`Logout`, url: '/logout', icon: 'log-out'},
+  ];
+  public activePlanPages = [
+    {title: $localize`Dashboard`, url: '/dashboard', icon: 'home'},
+    {title: $localize`Pricing`, url: '/pricing', icon: 'cash'},
     {title: $localize`Routes`, url: '/routes', icon: 'map'},
     {title: $localize`Timetables`, url: '/timetables', icon: 'time'},
     {title: $localize`Formations`, url: '/formations', icon: 'train'},
     {title: $localize`Privacy Policy`, url: '/privacy-policy', icon: 'shield'},
     {title: $localize`Legal Notice`, url: '/legal-notice', icon: 'reader'},
   ];
-  public accountPages = [
-    {title: $localize`Account Settings`, url: '/account', icon: 'person'},
-    {title: $localize`Logout`, url: '/logout', icon: 'log-out'},
-  ];
-  public loggedOutPages = [
-    {title: $localize`Overview`, url: '', icon: 'home'},
+  public noActivePlanPages = [
+    {title: $localize`Overview`, url: '/overview', icon: 'home'},
     {title: $localize`Features`, url: '/features', icon: 'cube'},
     {title: $localize`Pricing`, url: '/pricing', icon: 'cash'},
     {title: $localize`Privacy Policy`, url: '/privacy-policy', icon: 'shield'},
     {title: $localize`Legal Notice`, url: '/legal-notice', icon: 'reader'},
   ]
-  public isLoggedIn$: Observable<boolean>;
-  public username$: Observable<string>;
+  isLoggedIn$: Observable<boolean>;
+  username$: Observable<string>;
+  hasActivePlan$: Observable<boolean>;
 
   constructor(
-    private keycloakService: KeycloakService
+    private readonly authService: AuthService,
+    private readonly subscriptionService: SubscriptionService,
   ) {
-    this.isLoggedIn$ = from(this.keycloakService.isLoggedIn());
-    this.username$ = this.isLoggedIn$.pipe(
-      switchMap(loggedIn => {
-        if (loggedIn) {
-          return of(this.keycloakService.getUsername());
-        } else {
-          return of('');
-        }
-      })
-    )
+    this.isLoggedIn$ = this.authService.isLoggedIn$();
+    this.username$ = this.authService.getUser$().pipe(
+      map(user => user.username)
+    );
+    this.hasActivePlan$ = this.subscriptionService.hasActivePlan$();
     addIcons({
       homeOutline,
       homeSharp,

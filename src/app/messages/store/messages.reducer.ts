@@ -2,11 +2,11 @@ import {Message} from "../model/message";
 import {createReducer, on} from "@ngrx/store";
 import {addMessageAction, addMessageFinishedAction} from "./messages.actions";
 
-export interface ReducerMessagesState {
+export interface MessagesState {
   displayedMessage: Message | undefined;
 }
 
-const initialState: ReducerMessagesState = {
+const initialState: MessagesState = {
   displayedMessage: undefined
 }
 

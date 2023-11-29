@@ -1,0 +1,116 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title i18n="page title">Pricing</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <ion-grid>
+    <ion-row class="ion-justify-content-center">
+      <ion-segment value="monthly" (ionChange)="onSegmentChange($event)">
+        <ion-segment-button value="monthly">
+          <ion-label i18n>Monthly</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="yearly">
+          <ion-label i18n>Yearly</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-row>
+    <ion-row class="ion-justify-content-center">
+      <ion-col *ngFor="let product of products$ | async" size="auto">
+        <ion-card [class.notRecommended]="!product.isRecommended">
+          <ion-card-header>
+            @if (product.isRecommended) {
+              <ion-card-subtitle i18n>Recommended</ion-card-subtitle>
+            } @else {
+              <ion-card-subtitle>&nbsp;</ion-card-subtitle>
+            }
+            <ion-card-title>{{ product.title }}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-grid>
+              <ion-row class="ion-align-items-center ion-justify-content-start">
+                <ion-col size="auto">
+                  @if (mode == 'monthly') {
+                    <span class="price">{{ product.prices['monthly'].value }}</span>
+                  } @else if (mode == 'yearly') {
+                    <span class="price">{{ product.prices['yearly'].value }}</span>
+                  }
+                </ion-col>
+                <ion-col size="2" class="ion-justify-content-center">
+                  @if (mode == 'monthly') {
+                    <span i18n>per month</span>
+                  } @else if (mode == 'yearly') {
+                    <span i18n>per year</span>
+                  }
+                </ion-col>
+              </ion-row>
+              <ion-row class="ion-align-items-center">
+                @if (mode == 'monthly') {
+                  <form #monthlyForm="ngForm"
+                        id="{{ product.prices['monthly'].lookupKey }}_subscribe" (ngSubmit)="onSubmit(monthlyForm)"
+                        method="post">
+                    <input type="hidden" name="lookup_key" [ngModel]="product.prices['monthly'].lookupKey">
+                    @if (!product.selectable || (roles$ | async)?.includes(product.role)) {
+                      <ion-button [disabled]="true" [color]="!product.selectable ? 'success' : 'primary'">
+                        @if (product.selectable) {
+                          <ion-label i18n>Current plan</ion-label>
+                        } @else {
+                          <ion-label>{{ product.action }}</ion-label>
+                        }
+                      </ion-button>
+                    } @else {
+                      <ion-button form="{{ product.prices['monthly'].lookupKey }}_subscribe" type="submit"
+                                  [disabled]="!(isLoggedIn$ | async)">
+                        <ion-label>{{ product.action }}</ion-label>
+                      </ion-button>
+                    }
+                  </form>
+                } @else if (mode == 'yearly') {
+                  <form #yearlyForm="ngForm"
+                        id="{{ product.prices['yearly'].lookupKey }}_subscribe" (ngSubmit)="onSubmit(yearlyForm)"
+                        method="post">
+                    <input type="hidden" name="lookup_key" [ngModel]="product.prices['yearly'].lookupKey">
+                    @if (!product.selectable || (roles$ | async)?.includes(product.role)) {
+                      <ion-button [disabled]="true" [color]="!product.selectable ? 'success' : 'primary'">
+                        @if (product.selectable) {
+                          <ion-label i18n>Current plan</ion-label>
+                        } @else {
+                          <ion-label>{{ product.action }}</ion-label>
+                        }
+                      </ion-button>
+                    } @else {
+                      <ion-button form="{{ product.prices['yearly'].lookupKey }}_subscribe" type="submit"
+                                  [disabled]="!(isLoggedIn$ | async)">
+                        <ion-label>{{ product.action }}</ion-label>
+                      </ion-button>
+                    }
+                  </form>
+                }
+                @if (!(isLoggedIn$ | async)) {
+                  <p i18n>You are not logged in.</p>
+                }
+              </ion-row>
+              <ion-row>
+                <ion-list [class.notRecommended]="!product.isRecommended">
+                  <ion-list-header [class.notRecommended]="!product.isRecommended">
+                    <ion-label i18n>This includes:</ion-label>
+                  </ion-list-header>
+                  <ion-item *ngFor="let feature of product.features" lines="none"
+                            [class.notRecommended]="!product.isRecommended">
+                    <ion-icon aria-hidden="true" [ios]="'checkmark-circle-outline'" [md]="'checkmark-circle-sharp'"
+                              slot="start"></ion-icon>
+                    <ion-label>{{ feature }}</ion-label>
+                  </ion-item>
+                </ion-list>
+              </ion-row>
+            </ion-grid>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+<ion-footer id="footer"></ion-footer>
