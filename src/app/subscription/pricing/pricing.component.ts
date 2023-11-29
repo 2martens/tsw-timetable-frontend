@@ -70,6 +70,11 @@ export class PricingComponent implements OnDestroy {
       text: $localize`You have cancelled the subscription process. No payments will be deducted.`,
       color: 'primary',
       durationInMs: 5000,
+    },
+    failure: {
+      text: $localize`There was a problem creating the subscription.`,
+      color: 'danger',
+      durationInMs: 5000,
     }
   }
   private subscription: Subscription;
@@ -103,8 +108,13 @@ export class PricingComponent implements OnDestroy {
 
   private triggerFeedbackMessage() {
     const state = this.activatedRoute.snapshot.queryParamMap.get('state') || '';
+    const details = this.activatedRoute.snapshot.queryParamMap.get('details') || '';
     if (state in this.messages) {
-      this.messagesStore.dispatch(addMessageAction({message: this.messages[state]}));
+      const message: Message = {
+        ...this.messages[state],
+        text: this.messages[state].text + (details != '' ? ' Details: ' + details : '')
+      };
+      this.messagesStore.dispatch(addMessageAction({message}));
     }
   }
 }
