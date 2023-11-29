@@ -6,9 +6,6 @@ import {User} from "../../../auth/model/user";
 import {PaymentLocation} from "../model/payment-location";
 import {ErrorService} from "../../../errors/error.service";
 import {SubscriptionIntent} from "../../model/subscription-intent";
-import {Store} from "@ngrx/store";
-import {addMessageAction} from "../../../messages/store/messages.actions";
-import {Message} from "../../../messages/model/message";
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +18,7 @@ export class PricingService {
   private subscriptionURL = environment.backendURL + '/subscription';
 
   constructor(private readonly http: HttpClient,
-              private readonly errorService: ErrorService,
-              private readonly store: Store<unknown>) {
+              private readonly errorService: ErrorService) {
   }
 
   subscribe$(user: User, lookupKey: string): Observable<string> {
@@ -31,13 +27,8 @@ export class PricingService {
     };
 
     if (environment.mockNetwork) {
-      const message: Message = {
-        text: $localize`The subscription was not successfully created.`,
-        color: 'warning'
-      }
-      this.store.dispatch(addMessageAction({message}))
       // do sth
-      return of(paymentLocation.stripeURL);
+      return of('/');
     }
     const body: SubscriptionIntent = {
       user,
