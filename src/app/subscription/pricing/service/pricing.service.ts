@@ -28,7 +28,7 @@ export class PricingService {
 
     if (environment.mockNetwork) {
       // do sth
-      return of('/?state=success');
+      return of('/dashboard?state=success');
     }
     const body: SubscriptionIntent = {
       user,

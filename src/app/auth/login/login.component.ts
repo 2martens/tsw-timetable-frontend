@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(logInAction({
-      redirectUrl: `${window.location.origin}${this.location.prepareExternalUrl('')}`
+      redirectUrl: `${window.location.origin}${this.location.prepareExternalUrl('/dashboard')}`
     }));
   }
 

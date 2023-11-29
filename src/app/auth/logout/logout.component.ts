@@ -25,7 +25,7 @@ export class LogoutComponent implements OnInit {
   }
 
   ngOnInit() {
-    const redirectUrl = `${window.location.origin}${this.location.prepareExternalUrl('')}`;
+    const redirectUrl = `${window.location.origin}${this.location.prepareExternalUrl('/overview')}`;
     this.store.dispatch(logOutAction({redirectUrl}))
   }
 }

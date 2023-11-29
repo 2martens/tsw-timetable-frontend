@@ -24,7 +24,7 @@ import {
   IonToolbar
 } from "@ionic/angular/standalone";
 import {AsyncPipe, NgForOf} from "@angular/common";
-import {filter, map, Observable, Subscription, withLatestFrom} from "rxjs";
+import {filter, map, Subscription} from "rxjs";
 import {addIcons} from "ionicons";
 import {
   addOutline,
@@ -49,7 +49,6 @@ import {Store} from "@ngrx/store";
 import {CreateFormationComponent} from "../formations/create-formation/create-formation.component";
 import {UpdateFormationComponent} from "../formations/update-formation/update-formation.component";
 import {FormationsState} from "../formations/store/formations.reducer";
-import {SubscriptionService} from "../subscription/service/subscription.service";
 import {ActivatedRoute, EventType, NavigationEnd, Router} from "@angular/router";
 import {addMessageAction} from "../messages/store/messages.actions";
 import {Message} from "../messages/model/message";
@@ -90,7 +89,6 @@ import {MessagesState} from "../messages/store/messages.reducer";
   ]
 })
 export class DashboardComponent implements OnDestroy {
-  hasActivePlan$: Observable<boolean>;
   routes: Route[] = [
     {
       name: 'Köln-Aachen',
@@ -118,12 +116,10 @@ export class DashboardComponent implements OnDestroy {
 
   private subscription: Subscription;
 
-  constructor(private readonly subscriptionService: SubscriptionService,
-              private readonly formationsStore: Store<FormationsState>,
+  constructor(private readonly formationsStore: Store<FormationsState>,
               private readonly messagesStore: Store<MessagesState>,
               private readonly activatedRoute: ActivatedRoute,
               private readonly router: Router) {
-    this.hasActivePlan$ = this.subscriptionService.hasActivePlan$();
 
     addIcons({
       addOutline,
@@ -143,9 +139,7 @@ export class DashboardComponent implements OnDestroy {
     this.subscription = this.router.events.pipe(
       filter(event => event.type == EventType.NavigationEnd),
       map(event => event as NavigationEnd),
-      withLatestFrom(this.hasActivePlan$),
-      filter(([_, hasActivePlan]) => hasActivePlan),
-      filter(([event, _]) => event.url.startsWith('/?state='))
+      filter(event => event.url.startsWith('/dashboard?state='))
     ).subscribe(() => this.triggerFeedbackMessage());
   }
 

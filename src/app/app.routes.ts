@@ -63,12 +63,21 @@ export const ROOT_ROUTES: Routes = [
     ],
   },
   {
-    path: '',
+    path: 'dashboard',
     loadComponent: () => import("./dashboard/dashboard.component").then(mod => mod.DashboardComponent),
-    pathMatch: 'full',
+    canActivate: [AppAuthGuard],
     providers: [
       provideState(formationsFeature, formationsReducer),
       provideEffects(formationsEffects)
     ],
   },
+  {
+    path: 'overview',
+    loadComponent: () => import("./overview/overview.component").then(mod => mod.OverviewComponent),
+  },
+  {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'overview'
+  }
 ];

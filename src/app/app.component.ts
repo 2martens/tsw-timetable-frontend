@@ -63,7 +63,7 @@ export class AppComponent {
     {title: $localize`Logout`, url: '/logout', icon: 'log-out'},
   ];
   public activePlanPages = [
-    {title: $localize`Dashboard`, url: '', icon: 'home'},
+    {title: $localize`Dashboard`, url: '/dashboard', icon: 'home'},
     {title: $localize`Pricing`, url: '/pricing', icon: 'cash'},
     {title: $localize`Routes`, url: '/routes', icon: 'map'},
     {title: $localize`Timetables`, url: '/timetables', icon: 'time'},
@@ -72,7 +72,7 @@ export class AppComponent {
     {title: $localize`Legal Notice`, url: '/legal-notice', icon: 'reader'},
   ];
   public noActivePlanPages = [
-    {title: $localize`Overview`, url: '', icon: 'home'},
+    {title: $localize`Overview`, url: '/overview', icon: 'home'},
     {title: $localize`Features`, url: '/features', icon: 'cube'},
     {title: $localize`Pricing`, url: '/pricing', icon: 'cash'},
     {title: $localize`Privacy Policy`, url: '/privacy-policy', icon: 'shield'},
