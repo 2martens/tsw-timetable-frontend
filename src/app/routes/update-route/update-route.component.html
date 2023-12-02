@@ -1,0 +1,141 @@
+<ion-modal aria-labelledby="update-route-title" [isOpen]="isOpen"
+           (keyup.escape)="cancel()"
+           backdrop-dismiss="false">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title id="update-route-title" i18n>Update Route</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <form id="updateRouteForm" #updateRoute="ngForm" (ngSubmit)="confirm()">
+        <ion-input
+          i18n-label
+          label="ID"
+          labelPlacement="stacked"
+          type="text"
+          [required]="true"
+          name="id"
+          [readonly]="true"
+          [(ngModel)]="route.id"
+        ></ion-input>
+        <ion-input
+          i18n-label
+          label="Name"
+          labelPlacement="stacked"
+          type="text"
+          name="name"
+          [required]="true"
+          i18n-placeholder
+          placeholder="Name of the route"
+          [(ngModel)]="route.name"
+        ></ion-input>
+        <ion-select
+          i18n-label
+          label="Country"
+          labelPlacement="stacked"
+          i18n-placeholder
+          placeholder="Country of the route"
+          name="country"
+          interface="popover"
+          [compareWith]="compareWithCountry"
+          [(ngModel)]="route.country"
+        >
+          <ion-select-option *ngFor="let country of countries$ | async"
+                             [value]="country">
+            {{ country.name }}
+          </ion-select-option>
+        </ion-select>
+        <h6 i18n>Stations</h6>
+        <ion-list>
+          <ion-reorder-group [disabled]="false" (ionItemReorder)="handleReorderStations($event)">
+            <ion-item-sliding *ngFor="let station of route.stations; index as i; trackBy: trackBy">
+              <ion-item>
+                <ion-reorder slot="start"></ion-reorder>
+                <ion-button fill="clear" (click)="openPopoverStation($event, i)">{{ station.name }}</ion-button>
+              </ion-item>
+              <ion-item-options>
+                <ion-item-option (click)="deleteStation(station)" color="danger" i18n>
+                  <ion-icon slot="start" [ios]="'trash-outline'" [md]="'trash-sharp'"></ion-icon>
+                  Delete
+                </ion-item-option>
+              </ion-item-options>
+            </ion-item-sliding>
+          </ion-reorder-group>
+        </ion-list>
+        <ion-button (click)="openPopoverStation($event)">
+          <ion-label i18n class="no-pointer-events">Add station</ion-label>
+        </ion-button>
+
+        <h6 i18n>Portals</h6>
+        <ion-list>
+          <ion-item-sliding *ngFor="let portal of route.portals; index as i; trackBy: trackBy">
+            <ion-item>
+              <ion-label>{{ portal.name }}</ion-label>
+            </ion-item>
+            <ion-item-options>
+              <ion-item-option (click)="updatePortal(portal, i)" color="secondary" i18n>
+                <ion-icon slot="start" [ios]="'pencil-outline'" [md]="'pencil-sharp'"></ion-icon>
+                Update
+              </ion-item-option>
+              <ion-item-option (click)="deletePortal(portal)" color="danger" i18n>
+                <ion-icon slot="start" [ios]="'trash-outline'" [md]="'trash-sharp'"></ion-icon>
+                Delete
+              </ion-item-option>
+            </ion-item-options>
+          </ion-item-sliding>
+        </ion-list>
+        <ion-button (click)="addPortal()">
+          <ion-label i18n>Add portal</ion-label>
+        </ion-button>
+
+        <h6 i18n>Depots</h6>
+        <ion-list>
+          <ion-item-sliding *ngFor="let depot of route.depots; index as i; trackBy: trackBy">
+            <ion-item>
+              <ion-label>{{ depot.name }}</ion-label>
+            </ion-item>
+            <ion-item-options>
+              <ion-item-option (click)="updateDepot(depot)" color="secondary" i18n>
+                <ion-icon slot="start" [ios]="'pencil-outline'" [md]="'pencil-sharp'"></ion-icon>
+                Update
+              </ion-item-option>
+              <ion-item-option (click)="deleteDepot(depot)" color="danger" i18n>
+                <ion-icon slot="start" [ios]="'trash-outline'" [md]="'trash-sharp'"></ion-icon>
+                Delete
+              </ion-item-option>
+            </ion-item-options>
+          </ion-item-sliding>
+        </ion-list>
+        <ion-button (click)="addDepot()">
+          <ion-label i18n>Add depot</ion-label>
+        </ion-button>
+      </form>
+    </ion-content>
+    <ion-footer>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button (click)="cancel()" i18n>Cancel</ion-button>
+        </ion-buttons>
+        <ion-buttons slot="end">
+          <ion-button form="updateRouteForm" type="submit" button-type="submit" [strong]="true" i18n
+                      [disabled]="!updateRoute.form.valid || route.stations.length == 0">Confirm
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-footer>
+  </ng-template>
+</ion-modal>
+
+<app-create-portal [isOpen]="isCreatePortalModalOpen" (dismissed)="isCreatePortalModalOpen = false"
+                   [stations]="route.stations" (createdPortal)="insertPortal($event)"></app-create-portal>
+<app-update-portal [isOpen]="isUpdatePortalModalOpen" (dismissed)="isUpdatePortalModalOpen = false"
+                   [stations]="route.stations" [(updatedPortal)]="updatedPortal"></app-update-portal>
+
+<app-create-depot [isOpen]="isCreateDepotModalOpen" (dismissed)="isCreateDepotModalOpen = false"
+                  [stations]="route.stations" (createdDepot)="insertDepot($event)"></app-create-depot>
+<app-update-depot [isOpen]="isUpdateDepotModalOpen" (dismissed)="isUpdateDepotModalOpen = false"
+                  [stations]="route.stations" [(updatedDepot)]="updatedDepot"></app-update-depot>
+
+<app-typeahead [isOpen]="isStationPopoverOpen" (dismissed)="isStationPopoverOpen = false"
+               (itemSelected)="selectStation($event)" [items$]="unusedStations$" [event]="clickEvent"></app-typeahead>

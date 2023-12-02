@@ -1,0 +1,91 @@
+<ion-modal aria-labelledby="update-depot-title" [isOpen]="isOpen"
+           (keyup.escape)="cancel()"
+           backdrop-dismiss="false">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title id="update-depot-title" i18n>Update Depot</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <form id="updateDepotForm" #updateDepot="ngForm" (ngSubmit)="confirm()">
+        <ion-input
+          i18n-label
+          label="ID"
+          labelPlacement="stacked"
+          type="text"
+          [required]="true"
+          name="id"
+          [readonly]="true"
+          [(ngModel)]="depot.id"
+        ></ion-input>
+        <ion-input
+          i18n-label
+          label="Name"
+          labelPlacement="stacked"
+          type="text"
+          name="name"
+          [required]="true"
+          i18n-placeholder
+          placeholder="Name of the depot"
+          [(ngModel)]="depot.name"
+        ></ion-input>
+        <ion-select
+          i18n-label
+          label="Nearest Station"
+          labelPlacement="stacked"
+          i18n-placeholder
+          placeholder="Closest station of the route"
+          name="nearestStation"
+          interface="popover"
+          [required]="true"
+          [compareWith]="compareWithStation"
+          [(ngModel)]="depot.nearestStation"
+        >
+          <ion-select-option *ngFor="let station of stations"
+                             [value]="station">
+            {{ station.name }}
+          </ion-select-option>
+        </ion-select>
+
+        <h6 i18n>Travel Durations</h6>
+        <ion-list>
+          <ion-item-sliding *ngFor="let travelDuration of depot.travelDurations; index as i; trackBy: trackBy">
+            <ion-item>
+              <ion-button fill="clear" (click)="openPopoverFormation($event, i)" slot="start">
+                {{ travelDuration.formation.name }}
+              </ion-button>
+              <ion-input i18n-label label="Time in seconds" type="number" [value]="travelDuration.time"
+                         (ionChange)="changeTime(i, $event)"></ion-input>
+            </ion-item>
+            <ion-item-options>
+              <ion-item-option (click)="deleteTravelDuration(travelDuration)" color="danger" i18n>
+                <ion-icon slot="start" [ios]="'trash-outline'" [md]="'trash-sharp'"></ion-icon>
+                Delete
+              </ion-item-option>
+            </ion-item-options>
+          </ion-item-sliding>
+        </ion-list>
+        <ion-button (click)="addTravelDuration()">
+          <ion-label i18n>Add travel duration</ion-label>
+        </ion-button>
+      </form>
+    </ion-content>
+    <ion-footer>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button (click)="cancel()" i18n>Cancel</ion-button>
+        </ion-buttons>
+        <ion-buttons slot="end">
+          <ion-button form="updateDepotForm" type="submit" button-type="submit" [strong]="true" i18n
+                      [disabled]="!updateDepot.form.valid">Confirm
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-footer>
+  </ng-template>
+</ion-modal>
+
+<app-typeahead [isOpen]="isFormationPopoverOpen" (dismissed)="isFormationPopoverOpen = false"
+               (itemSelected)="selectFormation($event)" [items$]="unusedFormations$"
+               [event]="clickEvent"></app-typeahead>

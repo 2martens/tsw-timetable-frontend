@@ -1,8 +1,8 @@
-import {Component} from '@angular/core';
-import {Route} from "./model/route";
+import {Component, inject} from '@angular/core';
+import {DEFAULT_ROUTE, Route} from "./model/route";
 import {addIcons} from "ionicons";
-import {addOutline, addSharp, trashOutline, trashSharp} from "ionicons/icons";
-import {NgForOf} from "@angular/common";
+import {addOutline, addSharp, pencilOutline, pencilSharp, trashOutline, trashSharp} from "ionicons/icons";
+import {AsyncPipe, NgForOf} from "@angular/common";
 import {
   IonButtons,
   IonContent,
@@ -22,6 +22,14 @@ import {
   IonTitle,
   IonToolbar
 } from "@ionic/angular/standalone";
+import {RoutesStoreService} from "./service/routes-store.service";
+import {deleteRouteAction} from "./store/routes.actions";
+import {Store} from "@ngrx/store";
+import {RoutesState} from "./store/routes.reducer";
+import {CreateFormationComponent} from "../formations/create-formation/create-formation.component";
+import {UpdateFormationComponent} from "../formations/update-formation/update-formation.component";
+import {CreateRouteComponent} from "./create-route/create-route.component";
+import {UpdateRouteComponent} from "./update-route/update-route.component";
 
 @Component({
   selector: 'app-routes',
@@ -46,27 +54,43 @@ import {
     IonIcon,
     IonFab,
     IonFabButton,
-    IonFooter
+    IonFooter,
+    AsyncPipe,
+    CreateFormationComponent,
+    UpdateFormationComponent,
+    CreateRouteComponent,
+    UpdateRouteComponent
   ]
 })
 export class RoutesComponent {
+  isCreateModalOpen = false;
+  isUpdateModalOpen = false;
+  updatedRoute: Route = {...DEFAULT_ROUTE};
 
-  routes: Route[] = [
-    {
-      name: 'Köln-Aachen',
-      country: {name: $localize`Germany`, code: 'de'},
-      firstStation: {name: 'Köln Hbf'},
-      lastStation: {name: 'Aachen Hbf'},
-      numberOfStations: 30
-    }
-  ];
+  private readonly storeService: RoutesStoreService = inject(RoutesStoreService);
+  routes$ = this.storeService.getRoutes$();
 
-  constructor() {
+  constructor(private readonly store: Store<RoutesState>) {
     addIcons({
       addOutline,
       addSharp,
       trashOutline,
       trashSharp,
+      pencilOutline,
+      pencilSharp,
     });
+  }
+
+  addRoute() {
+    this.isCreateModalOpen = true;
+  }
+
+  updateRoute(route: Route) {
+    this.updatedRoute = route;
+    this.isUpdateModalOpen = true;
+  }
+
+  deleteRoute(route: Route) {
+    this.store.dispatch(deleteRouteAction({payload: route}));
   }
 }
