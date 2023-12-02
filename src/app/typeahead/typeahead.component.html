@@ -1,0 +1,13 @@
+<ion-popover [isOpen]="isOpen" (ionPopoverDidDismiss)="dismissed.emit(true)" [event]="event" [side]="side"
+             [alignment]="alignment">
+  <ng-template>
+    <ion-content class="ion-padding">
+      <ion-searchbar [debounce]="debounce" (ionInput)="filterItems($event)"></ion-searchbar>
+      <ion-list [inset]="true">
+        <ion-item [button]="true" *ngFor="let item of filteredItems$ | async" (click)="selectItem(item)">
+          <ion-label>{{ item.name }}</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ng-template>
+</ion-popover>
