@@ -61,7 +61,7 @@ import {FormationsState} from "./store/formations.reducer";
 export class FormationsComponent {
   isCreateModalOpen = false;
   isUpdateModalOpen = false;
-  updatedFormation: Formation = DEFAULT_FORMATION;
+  updatedFormation: Formation = {...DEFAULT_FORMATION};
 
   private readonly storeService: FormationsStoreService = inject(FormationsStoreService);
   formations$ = this.storeService.getFormations$();
@@ -82,8 +82,8 @@ export class FormationsComponent {
   }
 
   updateFormation(formation: Formation) {
-    this.isUpdateModalOpen = true;
     this.updatedFormation = formation;
+    this.isUpdateModalOpen = true;
   }
 
   deleteFormation(formation: Formation) {
