@@ -1,4 +1,6 @@
-export interface Formation {
+import {Item} from "../../typeahead/item";
+
+export interface Formation extends Item {
   id: string;
   name: string;
   trainSimWorldFormation?: Formation;
