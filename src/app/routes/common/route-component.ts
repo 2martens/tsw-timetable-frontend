@@ -52,12 +52,12 @@ export class RouteComponent {
     this.route.stations = this.route.stations.filter(station => station.id !== deletedStation.id);
   }
 
-  selectStation(station: Station) {
+  selectStation(newStation: Station) {
     const newStations = [...this.route.stations];
     if (this.stationIndex !== undefined) {
-      newStations[this.stationIndex] = station;
-    } else {
-      newStations.push(station);
+      newStations[this.stationIndex] = newStation;
+    } else if (!newStations.some(station => station.id == newStation.id)) {
+      newStations.push(newStation);
     }
     this.route.stations = newStations;
     this.stationIndex = undefined;
