@@ -1,4 +1,4 @@
-import {Component, EventEmitter, inject, Input, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {DepotComponent} from "../common/depot-component";
 import {FormsModule} from "@angular/forms";
@@ -23,9 +23,6 @@ import {
   IonToolbar
 } from "@ionic/angular/standalone";
 import {TypeaheadComponent} from "../../typeahead/typeahead.component";
-import {FormationsStoreService} from "../../formations/service/formations-store.service";
-import {map, Observable} from "rxjs";
-import {Formation} from "../../formations/model/formation";
 import {addIcons} from "ionicons";
 import {trashOutline, trashSharp} from "ionicons/icons";
 import {Station} from "../model/station";
@@ -45,16 +42,6 @@ export class UpdateDepotComponent extends DepotComponent {
 
   @ViewChild(IonModal) modal: IonModal | undefined;
 
-  private readonly storeService: FormationsStoreService = inject(FormationsStoreService);
-  readonly formations$ = this.storeService.getFormations$();
-  readonly unusedFormations$: Observable<Formation[]> = this.formations$.pipe(
-    map(formations => formations.filter(
-      formation => !this.depot.travelDurations
-        .map(duration => duration.formation)
-        .includes(formation)
-    )),
-  );
-
   depotOnOpen: Depot = {...this.depot};
 
   constructor() {
@@ -68,6 +55,8 @@ export class UpdateDepotComponent extends DepotComponent {
   @Input({required: true}) set updatedDepot(newValue: Depot) {
     this.depot = {...newValue};
     this.depotOnOpen = {...newValue};
+    this.usedFormations = this.depot.travelDurations.map(duration => duration.formation);
+    this.updateUnusedFormations();
   }
 
   _stations?: Station[];
@@ -84,6 +73,8 @@ export class UpdateDepotComponent extends DepotComponent {
   cancel() {
     this.dismissed.emit(true);
     this.depot = this.depotOnOpen;
+    this.usedFormations = this.depot.travelDurations.map(duration => duration.formation);
+    this.updateUnusedFormations();
   }
 
   confirm() {

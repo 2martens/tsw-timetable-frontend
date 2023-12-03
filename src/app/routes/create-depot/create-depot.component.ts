@@ -1,5 +1,5 @@
-import {Component, EventEmitter, inject, Input, Output, ViewChild} from '@angular/core';
-import {NgForOf} from '@angular/common';
+import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
+import {AsyncPipe, NgForOf} from '@angular/common';
 import {DepotComponent} from "../common/depot-component";
 import {addIcons} from "ionicons";
 import {trashOutline, trashSharp} from "ionicons/icons";
@@ -25,9 +25,6 @@ import {
   IonToolbar
 } from "@ionic/angular/standalone";
 import {TypeaheadComponent} from "../../typeahead/typeahead.component";
-import {FormationsStoreService} from "../../formations/service/formations-store.service";
-import {map, Observable} from "rxjs";
-import {Formation} from "../../formations/model/formation";
 import {Station} from "../model/station";
 import {DEFAULT_DEPOT, Depot} from "../model/depot";
 
@@ -56,6 +53,7 @@ import {DEFAULT_DEPOT, Depot} from "../model/depot";
     IonTitle,
     IonToolbar,
     TypeaheadComponent,
+    AsyncPipe,
   ],
   templateUrl: './create-depot.component.html',
   styleUrl: './create-depot.component.scss'
@@ -65,16 +63,6 @@ export class CreateDepotComponent extends DepotComponent {
   @Output() dismissed: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() createdDepot: EventEmitter<Depot> = new EventEmitter<Depot>();
   @ViewChild(IonModal) modal: IonModal | undefined;
-
-  private readonly storeService: FormationsStoreService = inject(FormationsStoreService);
-  readonly formations$ = this.storeService.getFormations$();
-  readonly unusedFormations$: Observable<Formation[]> = this.formations$.pipe(
-    map(formations => formations.filter(
-      formation => !this.depot.travelDurations
-        .map(duration => duration.formation)
-        .includes(formation)
-    )),
-  );
 
   constructor() {
     super();
@@ -98,11 +86,15 @@ export class CreateDepotComponent extends DepotComponent {
   cancel() {
     this.dismissed.emit(true);
     this.depot = {...DEFAULT_DEPOT};
+    this.usedFormations = [];
+    this.updateUnusedFormations();
   }
 
   confirm() {
     this.createdDepot.emit({...this.depot});
     this.dismissed.emit(true);
     this.depot = {...DEFAULT_DEPOT};
+    this.usedFormations = [];
+    this.updateUnusedFormations();
   }
 }
