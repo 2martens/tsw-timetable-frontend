@@ -30,9 +30,10 @@ export class TypeaheadComponent<T extends Item> implements OnChanges {
   _filteredItems!: Observable<T[]>;
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['usedItems']?.currentValue != null
-      && changes['items$']?.currentValue != null
-      && changes['isOpen']?.currentValue != null) {
+    const readyForUpdate = this.items$ != null && this.usedItems != null && this.isOpen != null;
+    if (readyForUpdate
+      && changes['isOpen']?.currentValue
+      && !changes['isOpen']?.previousValue) {
       this.updateFilteredItems();
     }
   }
