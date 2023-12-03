@@ -86,7 +86,7 @@
             </ion-item-options>
           </ion-item-sliding>
         </ion-list>
-        <ion-button (click)="addTravelDuration($event)">
+        <ion-button (click)="addTravelDuration($event)" [disabled]="(unusedFormations$ | async)?.length == 0">
           <ion-label i18n>Add travel duration</ion-label>
         </ion-button>
       </form>
