@@ -32,8 +32,6 @@ import {allCountries} from "../store";
 import {addRouteAction} from "../store/routes.actions";
 import {AsyncPipe, NgForOf} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {Station} from "../model/station";
-import {map, Observable} from "rxjs";
 import {TypeaheadComponent} from "../../typeahead/typeahead.component";
 import {addIcons} from "ionicons";
 import {pencilOutline, pencilSharp, trashOutline, trashSharp} from "ionicons/icons";
@@ -93,9 +91,6 @@ export class CreateRouteComponent extends RouteComponent {
   private readonly storeService: RoutesStoreService = inject(RoutesStoreService);
   readonly countries$ = this.store.select(allCountries());
   readonly stations$ = this.storeService.getStations$();
-  readonly unusedStations$: Observable<Station[]> = this.stations$.pipe(
-    map(stations => stations.filter(station => !this.route.stations.includes(station))),
-  );
 
   constructor() {
     super();

@@ -144,4 +144,5 @@
                   [stations]="route.stations" [(updatedDepot)]="updatedDepot"></app-update-depot>
 
 <app-typeahead [isOpen]="isStationPopoverOpen" (dismissed)="isStationPopoverOpen = false"
-               (itemSelected)="selectStation($event)" [items$]="unusedStations$" [event]="clickEvent"></app-typeahead>
+               (itemSelected)="selectStation($event)" [items$]="stations$" [usedItems]="route.stations"
+               [event]="clickEvent"></app-typeahead>

@@ -31,8 +31,6 @@ import {AsyncPipe, NgForOf} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {CreatePortalComponent} from "../create-portal/create-portal.component";
 import {TypeaheadComponent} from "../../typeahead/typeahead.component";
-import {map, Observable} from "rxjs";
-import {Station} from "../model/station";
 import {addIcons} from "ionicons";
 import {pencilOutline, pencilSharp, trashOutline, trashSharp} from "ionicons/icons";
 import {RouteComponent} from "../common/route-component";
@@ -87,9 +85,6 @@ export class UpdateRouteComponent extends RouteComponent {
   private readonly storeService: RoutesStoreService = inject(RoutesStoreService);
   readonly countries$ = this.store.select(allCountries());
   readonly stations$ = this.storeService.getStations$();
-  readonly unusedStations$: Observable<Station[]> = this.stations$.pipe(
-    map(stations => stations.filter(station => !this.route.stations.includes(station))),
-  );
 
   constructor() {
     super();
