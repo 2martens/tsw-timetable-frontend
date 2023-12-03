@@ -1,8 +1,8 @@
-import {Component, EventEmitter, inject, Input, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {PortalComponent} from "../common/portal-component";
 import {addIcons} from "ionicons";
 import {trashOutline, trashSharp} from "ionicons/icons";
-import {NgForOf} from "@angular/common";
+import {AsyncPipe, NgForOf} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {
   IonButton,
@@ -26,9 +26,6 @@ import {
 } from "@ionic/angular/standalone";
 import {TypeaheadComponent} from "../../typeahead/typeahead.component";
 import {Portal} from "../model/portal";
-import {FormationsStoreService} from "../../formations/service/formations-store.service";
-import {map, Observable} from "rxjs";
-import {Formation} from "../../formations/model/formation";
 import {Station} from "../model/station";
 
 @Component({
@@ -57,6 +54,7 @@ import {Station} from "../model/station";
     IonToolbar,
     ReactiveFormsModule,
     TypeaheadComponent,
+    AsyncPipe,
   ],
   templateUrl: './update-portal.component.html',
   styleUrl: './update-portal.component.scss'
@@ -67,16 +65,6 @@ export class UpdatePortalComponent extends PortalComponent {
   @Output() updatedPortalChange: EventEmitter<Portal> = new EventEmitter();
 
   @ViewChild(IonModal) modal: IonModal | undefined;
-
-  private readonly storeService: FormationsStoreService = inject(FormationsStoreService);
-  readonly formations$ = this.storeService.getFormations$();
-  readonly unusedFormations$: Observable<Formation[]> = this.formations$.pipe(
-    map(formations => formations.filter(
-      formation => !this.portal.travelDurations
-        .map(duration => duration.formation)
-        .includes(formation)
-    )),
-  );
 
   portalOnOpen: Portal = {...this.portal};
 
@@ -91,6 +79,8 @@ export class UpdatePortalComponent extends PortalComponent {
   @Input({required: true}) set updatedPortal(newValue: Portal) {
     this.portal = {...newValue};
     this.portalOnOpen = {...newValue};
+    this.usedFormations = this.portal.travelDurations.map(duration => duration.formation);
+    this.updateUnusedFormations();
   }
 
   _stations?: Station[];
@@ -107,6 +97,8 @@ export class UpdatePortalComponent extends PortalComponent {
   cancel() {
     this.dismissed.emit(true);
     this.portal = this.portalOnOpen;
+    this.usedFormations = this.portal.travelDurations.map(duration => duration.formation);
+    this.updateUnusedFormations();
   }
 
   confirm() {
