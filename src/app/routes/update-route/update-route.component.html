@@ -63,7 +63,7 @@
             </ion-item-sliding>
           </ion-reorder-group>
         </ion-list>
-        <ion-button (click)="openPopoverStation($event)">
+        <ion-button (click)="openPopoverStation($event)" [disabled]="(unusedStations$ | async)?.length == 0">
           <ion-label i18n class="no-pointer-events">Add station</ion-label>
         </ion-button>
 

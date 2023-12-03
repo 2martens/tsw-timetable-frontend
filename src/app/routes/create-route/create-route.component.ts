@@ -1,4 +1,4 @@
-import {Component, EventEmitter, inject, Input, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {
   IonButton,
   IonButtons,
@@ -24,11 +24,7 @@ import {
   IonTitle,
   IonToolbar
 } from "@ionic/angular/standalone";
-import {Store} from "@ngrx/store";
 import {DEFAULT_ROUTE} from "../model/route";
-import {RoutesState} from "../store/routes.reducer";
-import {RoutesStoreService} from "../service/routes-store.service";
-import {allCountries} from "../store";
 import {addRouteAction} from "../store/routes.actions";
 import {AsyncPipe, NgForOf} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -87,11 +83,6 @@ export class CreateRouteComponent extends RouteComponent {
 
   @ViewChild(IonModal) modal: IonModal | undefined;
 
-  private readonly store: Store<RoutesState> = inject(Store<RoutesState>);
-  private readonly storeService: RoutesStoreService = inject(RoutesStoreService);
-  readonly countries$ = this.store.select(allCountries());
-  readonly stations$ = this.storeService.getStations$();
-
   constructor() {
     super();
     addIcons({
@@ -105,6 +96,7 @@ export class CreateRouteComponent extends RouteComponent {
   cancel() {
     this.dismissed.emit(true);
     this.route = {...DEFAULT_ROUTE};
+    this.updateUnusedStations();
   }
 
   confirm() {
@@ -116,5 +108,6 @@ export class CreateRouteComponent extends RouteComponent {
     }))
     this.dismissed.emit(true);
     this.route = {...DEFAULT_ROUTE};
+    this.updateUnusedStations();
   }
 }
