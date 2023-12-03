@@ -7,6 +7,11 @@
         <ion-item [button]="true" *ngFor="let item of filteredItems$ | async" (click)="selectItem(item)">
           <ion-label>{{ item.name }}</ion-label>
         </ion-item>
+        @if ((filteredItems$ | async)?.length == 0) {
+          <ion-item>
+            <ion-label i18n>No items available</ion-label>
+          </ion-item>
+        }
       </ion-list>
     </ion-content>
   </ng-template>
