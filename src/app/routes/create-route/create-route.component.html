@@ -56,9 +56,9 @@
         <ion-list>
           <ion-reorder-group [disabled]="false" (ionItemReorder)="handleReorderStations($event)">
             <ion-item-sliding *ngFor="let station of route.stations; index as i; trackBy: trackBy">
-              <ion-item>
+              <ion-item [button]="true" (click)="openPopoverStation($event, i)">
                 <ion-reorder slot="start"></ion-reorder>
-                <ion-button fill="clear" (click)="openPopoverStation($event, i)">{{ station.name }}</ion-button>
+                <ion-label class="no-pointer-events">{{ station.name }}</ion-label>
               </ion-item>
               <ion-item-options>
                 <ion-item-option (click)="deleteStation(station)" color="danger" i18n>
