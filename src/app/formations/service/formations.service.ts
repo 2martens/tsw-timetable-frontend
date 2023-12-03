@@ -25,6 +25,7 @@ export class FormationsService {
   fetchFormations(): Observable<Formation[]> {
     if (environment.mockNetwork) {
       this.formations = JSON.parse(localStorage.getItem("formations") || '[]');
+      this.formations.forEach(formation => this.knownFormations.set(formation.id, formation));
       return of(this.formations);
     }
 
