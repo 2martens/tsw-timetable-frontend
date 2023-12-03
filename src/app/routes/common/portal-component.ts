@@ -22,7 +22,7 @@ export class PortalComponent {
     return station1 && station2 ? station1.id === station2.id : station1 === station2;
   }
 
-  compareWithTravelFormation(formation1: Formation, formation2: Formation) {
+  compareWithFormation(formation1: Formation, formation2: Formation) {
     return formation1 && formation2 ? formation1.id == formation2.id : formation1 === formation2;
   }
 
