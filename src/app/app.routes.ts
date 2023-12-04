@@ -6,6 +6,8 @@ import {provideEffects} from "@ngrx/effects";
 import {formationsReducer} from "./formations/store/formations.reducer";
 import {subscriptionReducer} from "./subscription/store/subscription.reducer";
 import {subscriptionEffects, subscriptionFeature} from "./subscription/store";
+import {routesReducer} from "./routes/store/routes.reducer";
+import {featureStateName as routesFeature, routesEffects} from "./routes/store";
 
 export const ROOT_ROUTES: Routes = [
   {
@@ -46,7 +48,12 @@ export const ROOT_ROUTES: Routes = [
   {
     path: 'routes',
     loadComponent: () => import("./routes/routes.component").then(mod => mod.RoutesComponent),
-    canActivate: [AppAuthGuard]
+    canActivate: [AppAuthGuard],
+    providers: [
+      provideState(routesFeature, routesReducer),
+      provideState(formationsFeature, formationsReducer),
+      provideEffects(routesEffects, formationsEffects)
+    ]
   },
   {
     path: 'timetables',
@@ -68,7 +75,8 @@ export const ROOT_ROUTES: Routes = [
     canActivate: [AppAuthGuard],
     providers: [
       provideState(formationsFeature, formationsReducer),
-      provideEffects(formationsEffects)
+      provideState(routesFeature, routesReducer),
+      provideEffects(formationsEffects, routesEffects)
     ],
   },
   {

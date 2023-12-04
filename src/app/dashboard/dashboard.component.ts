@@ -40,7 +40,7 @@ import {
   trashOutline,
   trashSharp
 } from "ionicons/icons";
-import {Route} from "../routes/model/route";
+import {DEFAULT_ROUTE, Route} from "../routes/model/route";
 import {Timetable} from "../timetables/model/timetable";
 import {FormationsStoreService} from "../formations/service/formations-store.service";
 import {DEFAULT_FORMATION, Formation} from "../formations/model/formation";
@@ -53,6 +53,12 @@ import {ActivatedRoute, EventType, NavigationEnd, Router} from "@angular/router"
 import {addMessageAction} from "../messages/store/messages.actions";
 import {Message} from "../messages/model/message";
 import {MessagesState} from "../messages/store/messages.reducer";
+import {CreateRouteComponent} from "../routes/create-route/create-route.component";
+import {UpdateRouteComponent} from "../routes/update-route/update-route.component";
+import {RoutesStoreService} from "../routes/service/routes-store.service";
+import {RoutesState} from "../routes/store/routes.reducer";
+import {deleteRouteAction} from "../routes/store/routes.actions";
+import {AuthService} from "../auth/service/auth.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -85,19 +91,12 @@ import {MessagesState} from "../messages/store/messages.reducer";
     IonFabList,
     IonFooter,
     CreateFormationComponent,
-    UpdateFormationComponent
+    UpdateFormationComponent,
+    CreateRouteComponent,
+    UpdateRouteComponent
   ]
 })
 export class DashboardComponent implements OnDestroy {
-  routes: Route[] = [
-    {
-      name: 'Köln-Aachen',
-      country: {name: $localize`Germany`, code: 'de'},
-      firstStation: {name: 'Köln Hbf'},
-      lastStation: {name: 'Aachen Hbf'},
-      numberOfStations: 30
-    }
-  ];
   timetables: Timetable[] = [];
 
   isCreateFormationModalOpen = false;
@@ -105,6 +104,19 @@ export class DashboardComponent implements OnDestroy {
   updatedFormation: Formation = DEFAULT_FORMATION;
   private readonly formationsStoreService: FormationsStoreService = inject(FormationsStoreService);
   formations$ = this.formationsStoreService.getFormations$();
+
+  isCreateRouteModalOpen = false;
+  isUpdateRouteModalOpen = false;
+  updatedRoute: Route = DEFAULT_ROUTE;
+  private readonly routesStoreService: RoutesStoreService = inject(RoutesStoreService);
+  routes$ = this.routesStoreService.getRoutes$();
+
+  private readonly authService: AuthService = inject(AuthService);
+  readonly user$ = this.authService.getUser$();
+  readonly hasPersonalPlan$ = this.user$.pipe(
+    map(user => user.roles),
+    filter(roles => roles.includes('PERSONAL_PLAN'))
+  );
 
   private messages: Record<string, Message> = {
     success: {
@@ -117,6 +129,7 @@ export class DashboardComponent implements OnDestroy {
   private subscription: Subscription;
 
   constructor(private readonly formationsStore: Store<FormationsState>,
+              private readonly routesStore: Store<RoutesState>,
               private readonly messagesStore: Store<MessagesState>,
               private readonly activatedRoute: ActivatedRoute,
               private readonly router: Router) {
@@ -158,6 +171,19 @@ export class DashboardComponent implements OnDestroy {
 
   deleteFormation(formation: Formation) {
     this.formationsStore.dispatch(deleteFormationAction({payload: formation}));
+  }
+
+  addRoute() {
+    this.isCreateRouteModalOpen = true;
+  }
+
+  updateRoute(route: Route) {
+    this.isUpdateRouteModalOpen = true;
+    this.updatedRoute = route;
+  }
+
+  deleteRoute(route: Route) {
+    this.routesStore.dispatch(deleteRouteAction({payload: route}));
   }
 
   private triggerFeedbackMessage() {

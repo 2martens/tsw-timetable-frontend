@@ -1,0 +1,139 @@
+<ion-modal aria-labelledby="create-depot-title" [isOpen]="isOpen"
+           (keyup.escape)="cancel()"
+           backdrop-dismiss="false">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title id="create-depot-title" i18n>Create Depot</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <form id="createDepotForm" #createDepot="ngForm" (ngSubmit)="confirm()">
+        <ion-input
+          i18n-label
+          label="ID"
+          labelPlacement="stacked"
+          type="text"
+          [required]="true"
+          name="id"
+          i18n-placeholder
+          placeholder="unique-id"
+          i18n-helper-text
+          helper-text="You cannot change this value later on. Uniquely identifies this depot."
+          pattern="^[\w\-]+$"
+          i18n-title
+          title="Only letters and dashes (-) are allowed."
+          [(ngModel)]="depot.id"
+        ></ion-input>
+        <ion-input
+          i18n-label
+          label="Name"
+          labelPlacement="stacked"
+          type="text"
+          name="name"
+          [required]="true"
+          i18n-placeholder
+          placeholder="Name of the depot"
+          [(ngModel)]="depot.name"
+        ></ion-input>
+        <ion-select
+          i18n-label
+          label="Nearest Station"
+          labelPlacement="stacked"
+          i18n-placeholder
+          placeholder="Closest station of the route"
+          name="nearestStation"
+          interface="popover"
+          [required]="true"
+          [compareWith]="compareWithStation"
+          [(ngModel)]="depot.nearestStation"
+        >
+          <ion-select-option *ngFor="let station of stations"
+                             [value]="station">
+            {{ station.name }}
+          </ion-select-option>
+        </ion-select>
+
+        <h6 i18n>Tracks</h6>
+        <ion-list>
+          <ion-item>
+            <ion-label i18n class="bold">Name</ion-label>
+            <ion-label i18n class="bold">Capacity</ion-label>
+          </ion-item>
+          <ion-item-sliding *ngFor="let track of depot.tracks; index as i; trackBy: trackByTrack">
+            <ion-item>
+              <ion-input i18n-aria-label aria-label="Name" type="text" [value]="track.name"
+                         (ionChange)="changeName(i, $event)"></ion-input>
+              <ion-input i18n-aria-label aria-label="Capacity" type="number" [value]="track.capacity"
+                         min="0"
+                         (ionChange)="changeCapacity(i, $event)"></ion-input>
+            </ion-item>
+            <ion-item-options>
+              <ion-item-option (click)="deleteTrack(track)" color="danger" i18n>
+                <ion-icon slot="start" [ios]="'trash-outline'" [md]="'trash-sharp'"></ion-icon>
+                Delete
+              </ion-item-option>
+            </ion-item-options>
+          </ion-item-sliding>
+        </ion-list>
+        <ion-button (click)="addTrack()">
+          <ion-label i18n>Add track</ion-label>
+        </ion-button>
+
+        <h6 i18n>Travel Durations to nearest station</h6>
+        <ion-list>
+          <ion-item>
+            <ion-label i18n class="bold">Formation</ion-label>
+            <ion-label i18n class="bold">Time (s)</ion-label>
+          </ion-item>
+          <ion-item-sliding
+            *ngFor="let travelDuration of depot.travelDurations; index as i; trackBy: trackByTravelDuration">
+            <ion-item>
+              <ion-select
+                interface="popover"
+                [value]="travelDuration.formation"
+                (ionChange)="onSelectFormation($event, i)"
+                [compareWith]="compareWithFormation"
+              >
+                <ion-select-option [value]="travelDuration.formation">
+                  {{ travelDuration.formation.name }}
+                </ion-select-option>
+                <ion-select-option *ngFor="let formation of unusedFormations$ | async" [value]="formation">
+                  {{ formation.name }}
+                </ion-select-option>
+              </ion-select>
+              <ion-input i18n-aria-label aria-label="Time in seconds" type="number" [value]="travelDuration.time"
+                         min="0"
+                         (ionChange)="changeTime(i, $event)"></ion-input>
+            </ion-item>
+            <ion-item-options>
+              <ion-item-option (click)="deleteTravelDuration(travelDuration)" color="danger" i18n>
+                <ion-icon slot="start" [ios]="'trash-outline'" [md]="'trash-sharp'"></ion-icon>
+                Delete
+              </ion-item-option>
+            </ion-item-options>
+          </ion-item-sliding>
+        </ion-list>
+        <ion-button (click)="addTravelDuration($event)" [disabled]="(unusedFormations$ | async)?.length == 0">
+          <ion-label i18n>Add travel duration</ion-label>
+        </ion-button>
+      </form>
+    </ion-content>
+    <ion-footer>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button (click)="cancel()" i18n>Cancel</ion-button>
+        </ion-buttons>
+        <ion-buttons slot="end">
+          <ion-button form="createDepotForm" type="submit" button-type="submit" [strong]="true" i18n
+                      [disabled]="!createDepot.form.valid">Confirm
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-footer>
+  </ng-template>
+</ion-modal>
+
+<app-typeahead [isOpen]="isFormationPopoverOpen" (dismissed)="isFormationPopoverOpen = false"
+               (itemSelected)="selectFormation($event)" [items$]="formations$" [usedItems]="usedFormations"
+               [event]="clickEvent"></app-typeahead>

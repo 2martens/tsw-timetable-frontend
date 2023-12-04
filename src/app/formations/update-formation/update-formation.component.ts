@@ -48,10 +48,10 @@ import {FormationsState} from "../store/formations.reducer";
 export class UpdateFormationComponent {
   @ViewChild(IonModal) modal: IonModal | undefined;
 
-  @Input({required: true}) isOpen: boolean = false;
   @Output() dismissed: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   formation: Formation = {...DEFAULT_FORMATION};
+  formationOnOpen: Formation = {...this.formation};
 
   private readonly store: Store<FormationsState> = inject(Store<FormationsState>);
   private readonly storeService: FormationsStoreService = inject(FormationsStoreService);
@@ -60,13 +60,26 @@ export class UpdateFormationComponent {
   constructor() {
   }
 
+  private _isOpen = false;
+  @Input({required: true}) set isOpen(newValue: boolean) {
+    if (!this._isOpen && newValue) {
+      this.formationOnOpen = {...this.formation};
+    }
+    this._isOpen = newValue;
+  }
+
+  get isOpen() {
+    return this._isOpen;
+  }
+
   @Input({required: true}) set updatedFormation(newValue: Formation) {
     this.formation = {...newValue};
+    this.formationOnOpen = {...newValue};
   }
 
   cancel() {
     this.dismissed.emit(true);
-    this.formation = {...DEFAULT_FORMATION};
+    this.formation = {...this.formationOnOpen};
   }
 
   confirm() {
@@ -74,7 +87,6 @@ export class UpdateFormationComponent {
       payload: {...this.formation}
     }))
     this.dismissed.emit(true);
-    this.formation = {...DEFAULT_FORMATION};
   }
 
   compareWith(formation1: Formation, formation2: Formation) {

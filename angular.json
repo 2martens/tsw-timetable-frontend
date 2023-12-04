@@ -197,10 +197,15 @@
   },
   "cli": {
     "schematicCollections": [
+      "@schematics/angular",
       "@ionic/angular-toolkit"
     ]
   },
   "schematics": {
+    "@schematics/angular:component": {
+      "standalone": true,
+      "style": "scss"
+    },
     "@ionic/angular-toolkit:component": {
       "styleext": "scss"
     },
