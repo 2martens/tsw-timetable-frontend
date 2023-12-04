@@ -13,10 +13,9 @@ export class DepotComponent {
   isFormationPopoverOpen = false;
   clickEvent: MouseEvent = new MouseEvent('mouseup');
   travelDurationIndex?: number;
-
+  unusedFormations$!: Observable<Formation[]>;
   private readonly storeService: FormationsStoreService = inject(FormationsStoreService);
   readonly formations$ = this.storeService.getFormations$();
-  unusedFormations$!: Observable<Formation[]>;
 
   compareWithStation(station1: Station, station2: Station) {
     return station1 && station2 ? station1.id === station2.id : station1 === station2;
@@ -76,7 +75,7 @@ export class DepotComponent {
     this.updateUnusedFormations();
   }
 
-  trackBy(_: number, item: TravelDuration) {
+  trackByTravelDuration(_: number, item: TravelDuration) {
     return item.formation.id;
   }
 

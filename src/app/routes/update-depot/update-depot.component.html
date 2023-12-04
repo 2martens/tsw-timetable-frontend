@@ -54,7 +54,8 @@
             <ion-label i18n class="bold">Formation</ion-label>
             <ion-label i18n class="bold">Time (s)</ion-label>
           </ion-item>
-          <ion-item-sliding *ngFor="let travelDuration of depot.travelDurations; index as i; trackBy: trackBy">
+          <ion-item-sliding
+            *ngFor="let travelDuration of depot.travelDurations; index as i; trackBy: trackByTravelDuration">
             <ion-item>
               <ion-select
                 i18n-aria-label
