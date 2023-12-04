@@ -140,9 +140,10 @@ export class RouteComponent {
     }
   }
 
-  updateDepot(depot: Depot) {
+  updateDepot(depot: Depot, index: number) {
     this._updatedDepot = depot;
     this.isUpdateDepotModalOpen = true;
+    this.depotIndex = index;
   }
 
   deleteDepot(deletedDepot: Depot) {
