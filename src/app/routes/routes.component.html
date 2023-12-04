@@ -3,7 +3,12 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title i18n="page title">Routes</ion-title>
+    <ion-title>
+      <span i18n="page title">Routes</span>
+      @if (!(hasPersonalPlan$ | async)) {
+        ({{ (routes$ | async)?.length }} / 1)
+      }
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true">

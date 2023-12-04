@@ -9,7 +9,12 @@
 <ion-content [fullscreen]="true">
   <ion-list>
     <ion-list-header>
-      <ion-label i18n>Routes</ion-label>
+      <ion-label>
+        <span i18n>Routes</span>
+        @if (!(hasPersonalPlan$ | async)) {
+          ({{ (routes$ | async)?.length }} / 1)
+        }
+      </ion-label>
     </ion-list-header>
     <ion-item>
       <ion-label i18n class="bold">Name</ion-label>
