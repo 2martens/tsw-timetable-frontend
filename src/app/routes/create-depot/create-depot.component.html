@@ -54,6 +54,32 @@
           </ion-select-option>
         </ion-select>
 
+        <h6 i18n>Tracks</h6>
+        <ion-list>
+          <ion-item>
+            <ion-label i18n class="bold">Name</ion-label>
+            <ion-label i18n class="bold">Capacity</ion-label>
+          </ion-item>
+          <ion-item-sliding *ngFor="let track of depot.tracks; index as i; trackBy: trackByTrack">
+            <ion-item>
+              <ion-input i18n-aria-label aria-label="Name" type="text" [value]="track.name"
+                         (ionChange)="changeName(i, $event)"></ion-input>
+              <ion-input i18n-aria-label aria-label="Capacity" type="number" [value]="track.capacity"
+                         min="0"
+                         (ionChange)="changeCapacity(i, $event)"></ion-input>
+            </ion-item>
+            <ion-item-options>
+              <ion-item-option (click)="deleteTrack(track)" color="danger" i18n>
+                <ion-icon slot="start" [ios]="'trash-outline'" [md]="'trash-sharp'"></ion-icon>
+                Delete
+              </ion-item-option>
+            </ion-item-options>
+          </ion-item-sliding>
+        </ion-list>
+        <ion-button (click)="addTrack()">
+          <ion-label i18n>Add track</ion-label>
+        </ion-button>
+
         <h6 i18n>Travel Durations to nearest station</h6>
         <ion-list>
           <ion-item>

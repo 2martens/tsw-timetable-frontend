@@ -2,7 +2,7 @@ import {Station} from "../model/station";
 import {InputCustomEvent, SelectCustomEvent} from "@ionic/angular";
 import {Formation} from "../../formations/model/formation";
 import {TravelDuration} from "../model/travel-duration";
-import {DEFAULT_DEPOT, Depot} from "../model/depot";
+import {DEFAULT_DEPOT, Depot, Track} from "../model/depot";
 import {FormationsStoreService} from "../../formations/service/formations-store.service";
 import {inject} from "@angular/core";
 import {map, Observable} from "rxjs";
@@ -25,17 +25,50 @@ export class DepotComponent {
     return formation1 && formation2 ? formation1.id == formation2.id : formation1 === formation2;
   }
 
+  addTrack() {
+    const newTracks = [...this.depot.tracks];
+    const newId = Math.max(...newTracks.map(track => track.id)) + 1;
+    newTracks.push({id: newId, name: '', capacity: 0});
+    this.depot.tracks = newTracks;
+  }
+
+  changeName(index: number, event: InputCustomEvent) {
+    if (event.detail.value != null) {
+      const newTracks = [...this.depot.tracks];
+      newTracks[index] = {...newTracks[index], name: event.detail.value};
+      this.depot.tracks = newTracks;
+    }
+  }
+
+  changeCapacity(index: number, event: InputCustomEvent) {
+    if (event.detail.value != null) {
+      const newTracks = [...this.depot.tracks];
+      newTracks[index] = {...newTracks[index], capacity: +event.detail.value};
+      this.depot.tracks = newTracks;
+    }
+  }
+
+  deleteTrack(deletedTrack: Track) {
+    this.depot.tracks = this.depot.tracks.filter(
+      track => track.id !== deletedTrack.id
+    );
+  }
+
+  trackByTrack(_: number, item: Track) {
+    return item.id;
+  }
+
+  addTravelDuration(event: MouseEvent) {
+    this.clickEvent = event;
+    this.isFormationPopoverOpen = true;
+  }
+
   changeTime(index: number, event: InputCustomEvent) {
     if (event.detail.value != null) {
       const newDurations = [...this.depot.travelDurations];
       newDurations[index] = {...newDurations[index], time: +event.detail.value};
       this.depot.travelDurations = newDurations;
     }
-  }
-
-  addTravelDuration(event: MouseEvent) {
-    this.clickEvent = event;
-    this.isFormationPopoverOpen = true;
   }
 
   onSelectFormation(event: SelectCustomEvent, index: number) {

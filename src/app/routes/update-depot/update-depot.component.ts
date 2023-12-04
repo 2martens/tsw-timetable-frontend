@@ -78,7 +78,7 @@ export class UpdateDepotComponent extends DepotComponent {
   }
 
   confirm() {
-    this.updatedDepotChange.emit(this.depot);
+    this.updatedDepotChange.emit({...this.depot});
     this.dismissed.emit(true);
   }
 }

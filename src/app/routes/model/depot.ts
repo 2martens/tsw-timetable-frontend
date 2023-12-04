@@ -10,8 +10,8 @@ export interface Depot extends Item {
   travelDurations: TravelDuration[];
 }
 
-export interface Track extends Item {
-  id: string;
+export interface Track {
+  id: number;
   name: string;
   capacity: number;
 }
