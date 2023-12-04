@@ -75,7 +75,8 @@
                   {{ formation.name }}
                 </ion-select-option>
               </ion-select>
-              <ion-input i18n-aria-label aria-label="Time in seconds" type="number"
+              <ion-input i18n-aria-label aria-label="Time in seconds" type="number" [value]="travelDuration.time"
+                         min="0"
                          (ionChange)="changeTime(i, $event)"></ion-input>
             </ion-item>
             <ion-item-options>
