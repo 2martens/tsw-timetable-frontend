@@ -103,9 +103,11 @@
       <ion-fab-button i18n-aria-label aria-label="Add timetable" [show]="true">
         <ion-icon [ios]="'time-outline'" [md]="'time-sharp'"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button i18n-aria-label aria-label="Add route" [show]="true" (click)="addRoute()">
-        <ion-icon [ios]="'map-outline'" [md]="'map-sharp'"></ion-icon>
-      </ion-fab-button>
+      @if ((routes$ | async)?.length == 0 || (hasPersonalPlan$ | async)) {
+        <ion-fab-button i18n-aria-label aria-label="Add route" [show]="true" (click)="addRoute()">
+          <ion-icon [ios]="'map-outline'" [md]="'map-sharp'"></ion-icon>
+        </ion-fab-button>
+      }
     </ion-fab-list>
   </ion-fab>
   <app-create-formation [isOpen]="isCreateFormationModalOpen"

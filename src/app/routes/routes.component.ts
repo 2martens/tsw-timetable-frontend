@@ -30,6 +30,8 @@ import {CreateFormationComponent} from "../formations/create-formation/create-fo
 import {UpdateFormationComponent} from "../formations/update-formation/update-formation.component";
 import {CreateRouteComponent} from "./create-route/create-route.component";
 import {UpdateRouteComponent} from "./update-route/update-route.component";
+import {AuthService} from "../auth/service/auth.service";
+import {filter, map} from "rxjs";
 
 @Component({
   selector: 'app-routes',
@@ -69,6 +71,13 @@ export class RoutesComponent {
 
   private readonly storeService: RoutesStoreService = inject(RoutesStoreService);
   routes$ = this.storeService.getRoutes$();
+
+  private readonly authService: AuthService = inject(AuthService);
+  readonly user$ = this.authService.getUser$();
+  readonly hasPersonalPlan$ = this.user$.pipe(
+    map(user => user.roles),
+    filter(roles => roles.includes('PERSONAL_PLAN'))
+  );
 
   constructor(private readonly store: Store<RoutesState>) {
     addIcons({

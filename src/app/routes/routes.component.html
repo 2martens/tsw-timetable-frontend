@@ -35,11 +35,13 @@
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
-  <ion-fab slot="fixed" horizontal="end" vertical="bottom">
-    <ion-fab-button i18n-aria-label aria-label="Add route" (click)="addRoute()">
-      <ion-icon [ios]="'add-outline'" [md]="'add-sharp'"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+  @if ((routes$ | async)?.length == 0 || (hasPersonalPlan$ | async)) {
+    <ion-fab slot="fixed" horizontal="end" vertical="bottom">
+      <ion-fab-button i18n-aria-label aria-label="Add route" (click)="addRoute()">
+        <ion-icon [ios]="'add-outline'" [md]="'add-sharp'"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  }
   <app-create-route [isOpen]="isCreateModalOpen" (dismissed)="isCreateModalOpen = false"></app-create-route>
   <app-update-route [isOpen]="isUpdateModalOpen" [updatedRoute]="updatedRoute!"
                     (dismissed)="isUpdateModalOpen = false"></app-update-route>

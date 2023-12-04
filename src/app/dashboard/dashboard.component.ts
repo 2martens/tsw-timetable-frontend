@@ -58,6 +58,7 @@ import {UpdateRouteComponent} from "../routes/update-route/update-route.componen
 import {RoutesStoreService} from "../routes/service/routes-store.service";
 import {RoutesState} from "../routes/store/routes.reducer";
 import {deleteRouteAction} from "../routes/store/routes.actions";
+import {AuthService} from "../auth/service/auth.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -109,6 +110,13 @@ export class DashboardComponent implements OnDestroy {
   updatedRoute: Route = DEFAULT_ROUTE;
   private readonly routesStoreService: RoutesStoreService = inject(RoutesStoreService);
   routes$ = this.routesStoreService.getRoutes$();
+
+  private readonly authService: AuthService = inject(AuthService);
+  readonly user$ = this.authService.getUser$();
+  readonly hasPersonalPlan$ = this.user$.pipe(
+    map(user => user.roles),
+    filter(roles => roles.includes('PERSONAL_PLAN'))
+  );
 
   private messages: Record<string, Message> = {
     success: {
