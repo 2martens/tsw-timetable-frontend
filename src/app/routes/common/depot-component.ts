@@ -61,12 +61,6 @@ export class DepotComponent {
     this.travelDurationIndex = undefined;
   }
 
-  openPopoverFormation(event: MouseEvent, index?: number) {
-    this.travelDurationIndex = index;
-    this.clickEvent = event;
-    this.isFormationPopoverOpen = true;
-  }
-
   deleteTravelDuration(travelDuration: TravelDuration) {
     this.depot.travelDurations = this.depot.travelDurations.filter(
       duration => duration.formation.id !== travelDuration.formation.id
