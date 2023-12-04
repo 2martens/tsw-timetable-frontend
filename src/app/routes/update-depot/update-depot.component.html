@@ -103,5 +103,5 @@
 </ion-modal>
 
 <app-typeahead [isOpen]="isFormationPopoverOpen" (dismissed)="isFormationPopoverOpen = false"
-               (itemSelected)="selectFormation($event)" [items$]="unusedFormations$" [usedItems]="usedFormations"
+               (itemSelected)="selectFormation($event)" [items$]="formations$" [usedItems]="usedFormations"
                [event]="clickEvent"></app-typeahead>
