@@ -3,7 +3,12 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title i18n="page title">Timetables</ion-title>
+    <ion-title>
+      <span i18n="page title">Timetables</span>
+      @if (!(hasPersonalPlan$ | async)) {
+        ({{ (timetables$ | async)?.length }} / 1)
+      }
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true">
@@ -15,8 +20,8 @@
       <ion-label i18n class="bold">State</ion-label>
       <ion-label i18n class="bold ion-text-end"># Services</ion-label>
     </ion-item>
-    <ion-item-sliding>
-      <ion-item *ngFor="let timetable of timetables">
+    <ion-item-sliding *ngFor="let timetable of timetables$ | async">
+      <ion-item>
         <ion-label>{{ timetable.name }}</ion-label>
         <ion-label>{{ timetable.route }}</ion-label>
         <ion-label>{{ timetable.date }}</ion-label>
@@ -24,17 +29,23 @@
         <ion-label class="ion-text-end">{{ timetable.numberOfServices }}</ion-label>
       </ion-item>
       <ion-item-options side="end">
-        <ion-item-option color="danger" i18n>
+        <ion-item-option (click)="updateTimetable(timetable)" color="secondary" i18n>
+          <ion-icon slot="start" [ios]="'pencil-outline'" [md]="'pencil-sharp'"></ion-icon>
+          Update
+        </ion-item-option>
+        <ion-item-option (click)="deleteTimetable(timetable)" color="danger" i18n>
           <ion-icon slot="start" [ios]="'trash-outline'" [md]="'trash-sharp'"></ion-icon>
           Delete
         </ion-item-option>
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
-  <ion-fab slot="fixed" horizontal="end" vertical="bottom">
-    <ion-fab-button i18n-aria-label aria-label="Add timetable">
-      <ion-icon [ios]="'add-outline'" [md]="'add-sharp'"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+  @if ((timetables$ | async)?.length == 0 || (hasPersonalPlan$ | async)) {
+    <ion-fab slot="fixed" horizontal="end" vertical="bottom">
+      <ion-fab-button i18n-aria-label aria-label="Add timetable" (click)="addTimetable()">
+        <ion-icon [ios]="'add-outline'" [md]="'add-sharp'"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  }
 </ion-content>
-<ion-footer></ion-footer>
+<ion-footer id="footer"></ion-footer>

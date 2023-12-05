@@ -41,7 +41,7 @@ import {
   trashSharp
 } from "ionicons/icons";
 import {DEFAULT_ROUTE, Route} from "../routes/model/route";
-import {Timetable} from "../timetables/model/timetable";
+import {DEFAULT_TIMETABLE, Timetable} from "../timetables/model/timetable";
 import {FormationsStoreService} from "../formations/service/formations-store.service";
 import {DEFAULT_FORMATION, Formation} from "../formations/model/formation";
 import {deleteFormationAction} from "../formations/store/formations.actions";
@@ -59,6 +59,9 @@ import {RoutesStoreService} from "../routes/service/routes-store.service";
 import {RoutesState} from "../routes/store/routes.reducer";
 import {deleteRouteAction} from "../routes/store/routes.actions";
 import {AuthService} from "../auth/service/auth.service";
+import {TimetableStoreService} from "../timetables/service/timetable-store.service";
+import {TimetablesState} from "../timetables/store/timetables.reducer";
+import {deleteTimetableAction} from "../timetables/store/timetables.actions";
 
 @Component({
   selector: 'app-dashboard',
@@ -97,13 +100,17 @@ import {AuthService} from "../auth/service/auth.service";
   ]
 })
 export class DashboardComponent implements OnDestroy {
-  timetables: Timetable[] = [];
-
   isCreateFormationModalOpen = false;
   isUpdateFormationModalOpen = false;
   updatedFormation: Formation = DEFAULT_FORMATION;
   private readonly formationsStoreService: FormationsStoreService = inject(FormationsStoreService);
   formations$ = this.formationsStoreService.getFormations$();
+
+  isCreateTimetableModalOpen = false;
+  isUpdateTimetableModalOpen = false;
+  updatedTimetable: Timetable = DEFAULT_TIMETABLE;
+  private readonly timetableStoreService: TimetableStoreService = inject(TimetableStoreService);
+  timetables$ = this.timetableStoreService.getTimetables$();
 
   isCreateRouteModalOpen = false;
   isUpdateRouteModalOpen = false;
@@ -129,6 +136,7 @@ export class DashboardComponent implements OnDestroy {
   private subscription: Subscription;
 
   constructor(private readonly formationsStore: Store<FormationsState>,
+              private readonly timetablesStore: Store<TimetablesState>,
               private readonly routesStore: Store<RoutesState>,
               private readonly messagesStore: Store<MessagesState>,
               private readonly activatedRoute: ActivatedRoute,
@@ -171,6 +179,19 @@ export class DashboardComponent implements OnDestroy {
 
   deleteFormation(formation: Formation) {
     this.formationsStore.dispatch(deleteFormationAction({payload: formation}));
+  }
+
+  addTimetable() {
+    this.isCreateTimetableModalOpen = true;
+  }
+
+  updateTimetable(timetable: Timetable) {
+    this.isUpdateTimetableModalOpen = true;
+    this.updatedTimetable = timetable;
+  }
+
+  deleteTimetable(timetable: Timetable) {
+    this.timetablesStore.dispatch(deleteTimetableAction({payload: timetable}));
   }
 
   addRoute() {
