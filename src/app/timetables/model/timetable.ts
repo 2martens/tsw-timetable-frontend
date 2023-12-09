@@ -19,7 +19,7 @@ export enum TimetableState {
 
 export const TimetableStateTexts: { [name: number]: string } = {
   0: $localize`New`,
-  1: $localize`Waiting for processing`,
+  1: $localize`Processing`,
   2: $localize`Enter formations`,
   3: $localize`Link services`,
   4: $localize`Ready for usage`
