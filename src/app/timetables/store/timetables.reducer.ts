@@ -1,6 +1,11 @@
 import {Timetable} from "../model/timetable";
 import {createReducer, on} from "@ngrx/store";
-import {loadAllTimetablesCancelledAction, loadAllTimetablesFinishedAction} from "./timetables.actions";
+import {
+  addTimetableAction,
+  deleteTimetableAction,
+  loadAllTimetablesCancelledAction,
+  loadAllTimetablesFinishedAction
+} from "./timetables.actions";
 
 export interface TimetablesState {
   needTimetables: boolean;
@@ -23,4 +28,14 @@ export const timetablesReducer = createReducer(
     ...state,
     needTimetables: false
   })),
+  on(addTimetableAction, (state, action) => ({
+    ...state,
+    timetables: [...state.timetables, action.payload]
+  })),
+  on(deleteTimetableAction, (state, action) => ({
+    ...state,
+    timetables: state.timetables.filter((timetable) => {
+      return timetable.id != action.payload.id
+    })
+  }))
 );

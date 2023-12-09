@@ -23,7 +23,7 @@ import {
   IonTitle,
   IonToolbar
 } from "@ionic/angular/standalone";
-import {AsyncPipe, NgForOf} from "@angular/common";
+import {AsyncPipe, DatePipe, NgForOf} from "@angular/common";
 import {filter, map, Subscription} from "rxjs";
 import {addIcons} from "ionicons";
 import {
@@ -41,7 +41,7 @@ import {
   trashSharp
 } from "ionicons/icons";
 import {DEFAULT_ROUTE, Route} from "../routes/model/route";
-import {DEFAULT_TIMETABLE, Timetable} from "../timetables/model/timetable";
+import {DEFAULT_TIMETABLE, Timetable, TimetableState, TimetableStateTexts} from "../timetables/model/timetable";
 import {FormationsStoreService} from "../formations/service/formations-store.service";
 import {DEFAULT_FORMATION, Formation} from "../formations/model/formation";
 import {deleteFormationAction} from "../formations/store/formations.actions";
@@ -62,6 +62,7 @@ import {AuthService} from "../auth/service/auth.service";
 import {TimetableStoreService} from "../timetables/service/timetable-store.service";
 import {TimetablesState} from "../timetables/store/timetables.reducer";
 import {deleteTimetableAction} from "../timetables/store/timetables.actions";
+import {CreateTimetableComponent} from "../timetables/create-timetable/create-timetable.component";
 
 @Component({
   selector: 'app-dashboard',
@@ -96,7 +97,9 @@ import {deleteTimetableAction} from "../timetables/store/timetables.actions";
     CreateFormationComponent,
     UpdateFormationComponent,
     CreateRouteComponent,
-    UpdateRouteComponent
+    UpdateRouteComponent,
+    CreateTimetableComponent,
+    DatePipe
   ]
 })
 export class DashboardComponent implements OnDestroy {
@@ -213,4 +216,7 @@ export class DashboardComponent implements OnDestroy {
       this.messagesStore.dispatch(addMessageAction({message: this.messages[state]}));
     }
   }
+
+  protected readonly TimetableState = TimetableState;
+  protected readonly TimetableStateTexts = TimetableStateTexts;
 }

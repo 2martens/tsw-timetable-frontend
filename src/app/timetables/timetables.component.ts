@@ -1,5 +1,5 @@
 import {Component, inject} from '@angular/core';
-import {DEFAULT_TIMETABLE, Timetable} from "./model/timetable";
+import {DEFAULT_TIMETABLE, Timetable, TimetableState, TimetableStateTexts} from "./model/timetable";
 import {
   IonButtons,
   IonContent,
@@ -21,13 +21,15 @@ import {
 } from "@ionic/angular/standalone";
 import {addIcons} from "ionicons";
 import {addOutline, addSharp, trashOutline, trashSharp} from "ionicons/icons";
-import {AsyncPipe, NgForOf} from "@angular/common";
+import {AsyncPipe, DatePipe, NgForOf} from "@angular/common";
 import {TimetableStoreService} from "./service/timetable-store.service";
 import {AuthService} from "../auth/service/auth.service";
 import {filter, map} from "rxjs";
 import {Store} from "@ngrx/store";
 import {TimetablesState} from "./store/timetables.reducer";
 import {deleteTimetableAction} from "./store/timetables.actions";
+import {CreateRouteComponent} from "../routes/create-route/create-route.component";
+import {CreateTimetableComponent} from "./create-timetable/create-timetable.component";
 
 @Component({
   selector: 'app-timetables',
@@ -53,7 +55,10 @@ import {deleteTimetableAction} from "./store/timetables.actions";
     IonFabButton,
     IonFooter,
     NgForOf,
-    AsyncPipe
+    AsyncPipe,
+    CreateRouteComponent,
+    CreateTimetableComponent,
+    DatePipe
   ]
 })
 export class TimetablesComponent {
@@ -93,4 +98,6 @@ export class TimetablesComponent {
     this.store.dispatch(deleteTimetableAction({payload: timetable}));
   }
 
+  protected readonly TimetableState = TimetableState;
+  protected readonly TimetableStateTexts = TimetableStateTexts;
 }

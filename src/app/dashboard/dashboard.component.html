@@ -62,9 +62,9 @@
     <ion-item-sliding *ngFor="let timetable of timetables$ | async">
       <ion-item>
         <ion-label>{{ timetable.name }}</ion-label>
-        <ion-label>{{ timetable.route }}</ion-label>
-        <ion-label>{{ timetable.date }}</ion-label>
-        <ion-label>{{ timetable.state }}</ion-label>
+        <ion-label>{{ timetable.route.name }}</ion-label>
+        <ion-label>{{ timetable.date | date }}</ion-label>
+        <ion-label>{{ TimetableStateTexts[timetable.state] }}</ion-label>
         <ion-label class="ion-text-end">{{ timetable.numberOfServices }}</ion-label>
       </ion-item>
       <ion-item-options side="end">
@@ -133,5 +133,7 @@
   <app-create-route [isOpen]="isCreateRouteModalOpen" (dismissed)="isCreateRouteModalOpen = false"></app-create-route>
   <app-update-route [isOpen]="isUpdateRouteModalOpen" [updatedRoute]="updatedRoute"
                     (dismissed)="isUpdateRouteModalOpen = false"></app-update-route>
+  <app-create-timetable [isOpen]="isCreateTimetableModalOpen"
+                        (dismissed)="isCreateTimetableModalOpen = false"></app-create-timetable>
 </ion-content>
 <ion-footer id="footer"></ion-footer>

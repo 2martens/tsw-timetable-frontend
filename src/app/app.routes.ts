@@ -63,7 +63,8 @@ export const ROOT_ROUTES: Routes = [
     canActivate: [AppAuthGuard],
     providers: [
       provideState(timetablesFeature, timetablesReducer),
-      provideEffects(timetablesEffects)
+      provideState(routesFeature, routesReducer),
+      provideEffects(timetablesEffects, routesEffects)
     ]
   },
   {
