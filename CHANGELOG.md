@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.0](https://github.com/2martens/tsw-timetable-frontend/compare/v0.2.0...v0.3.0) (2023-12-04)
+
+
+### Features
+
+* Add route editing functionality ([#20](https://github.com/2martens/tsw-timetable-frontend/issues/20)) ([7a583d8](https://github.com/2martens/tsw-timetable-frontend/commit/7a583d81a6b3ef7b81e5f40d8745b6ea5fa257e5))
+
+
+### Bug Fixes
+
+* **formations:** Don't overwrite existing formations in local storage ([7a583d8](https://github.com/2martens/tsw-timetable-frontend/commit/7a583d81a6b3ef7b81e5f40d8745b6ea5fa257e5))
+
 ## [0.2.0](https://github.com/2martens/tsw-timetable-frontend/compare/v0.1.1...v0.2.0) (2023-11-29)
 
 
