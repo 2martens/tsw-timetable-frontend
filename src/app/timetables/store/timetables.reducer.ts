@@ -3,19 +3,33 @@ import {createReducer, on} from "@ngrx/store";
 import {
   addTimetableAction,
   deleteTimetableAction,
+  loadAllRotationsCancelledAction,
+  loadAllRotationsFinishedAction,
+  loadAllServicesCancelledAction,
+  loadAllServicesFinishedAction,
   loadAllTimetablesCancelledAction,
   loadAllTimetablesFinishedAction,
   updateTimetableAction
 } from "./timetables.actions";
+import {Service} from "../model/service";
+import {Rotation} from "../model/rotation";
 
 export interface TimetablesState {
   needTimetables: boolean;
   timetables: Timetable[];
+  needRotations: boolean;
+  rotations: { [name: string]: Rotation[] }
+  needServices: boolean;
+  services: { [name: string]: Service[] }
 }
 
 export const initialState: TimetablesState = {
   needTimetables: true,
-  timetables: []
+  timetables: [],
+  needRotations: true,
+  rotations: {},
+  needServices: true,
+  services: {}
 };
 
 export const timetablesReducer = createReducer(
@@ -28,6 +42,30 @@ export const timetablesReducer = createReducer(
   on(loadAllTimetablesFinishedAction, loadAllTimetablesCancelledAction, (state, _) => ({
     ...state,
     needTimetables: false
+  })),
+  on(loadAllRotationsFinishedAction, (state, action) => {
+    const newRotations = {...state.rotations};
+    newRotations[action.timetable.id] = action.rotations;
+    return {
+      ...state,
+      rotations: newRotations
+    }
+  }),
+  on(loadAllRotationsFinishedAction, loadAllRotationsCancelledAction, (state, _) => ({
+    ...state,
+    needRotations: false
+  })),
+  on(loadAllServicesFinishedAction, (state, action) => {
+    const newServices = {...state.services};
+    newServices[action.timetable.id] = action.services;
+    return {
+      ...state,
+      services: newServices
+    }
+  }),
+  on(loadAllServicesFinishedAction, loadAllServicesCancelledAction, (state, _) => ({
+    ...state,
+    needServices: false
   })),
   on(addTimetableAction, (state, action) => ({
     ...state,
