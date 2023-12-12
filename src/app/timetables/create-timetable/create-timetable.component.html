@@ -52,6 +52,9 @@
             {{ route.name }}
           </ion-select-option>
         </ion-select>
+        <ion-note i18n>
+          You cannot change this value later on.
+        </ion-note>
         <ion-input
           i18n-label
           label="Date"
@@ -62,7 +65,9 @@
           [min]="minDateString"
           [(ngModel)]="timetable.date"
           i18n-helperText
-          helperText="Only dates at least two days in the future are allowed"
+          helperText="You cannot change this value later on."
+          i18n-title
+          title="Only dates at least two days in the future are allowed"
         ></ion-input>
       </form>
     </ion-content>

@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
-import {CommonModule} from '@angular/common';
 import {CreateDepotComponent} from "../../routes/create-depot/create-depot.component";
 import {CreatePortalComponent} from "../../routes/create-portal/create-portal.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -18,6 +17,7 @@ import {
   IonLabel,
   IonList,
   IonModal,
+  IonNote,
   IonReorder,
   IonReorderGroup,
   IonSelect,
@@ -33,11 +33,16 @@ import {addIcons} from "ionicons";
 import {pencilOutline, pencilSharp, trashOutline, trashSharp} from "ionicons/icons";
 import {DEFAULT_TIMETABLE} from "../model/timetable";
 import {addTimetableAction} from "../store/timetables.actions";
+import {AsyncPipe, NgForOf} from "@angular/common";
 
 @Component({
   selector: 'app-create-timetable',
   standalone: true,
-  imports: [CommonModule, CreateDepotComponent, CreatePortalComponent, FormsModule, IonButton, IonButtons, IonContent, IonFooter, IonHeader, IonIcon, IonInput, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonModal, IonReorder, IonReorderGroup, IonSelect, IonSelectOption, IonTitle, IonToolbar, ReactiveFormsModule, TypeaheadComponent, UpdateDepotComponent, UpdatePortalComponent],
+  imports: [CreateDepotComponent, CreatePortalComponent, FormsModule, IonButton, IonButtons, IonContent, IonFooter,
+    IonHeader, IonIcon, IonInput, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonModal,
+    IonReorder, IonReorderGroup, IonSelect, IonSelectOption, IonTitle, IonToolbar, ReactiveFormsModule,
+    TypeaheadComponent, UpdateDepotComponent, UpdatePortalComponent, IonNote,
+    AsyncPipe, NgForOf],
   templateUrl: './create-timetable.component.html',
   styleUrl: './create-timetable.component.scss'
 })
