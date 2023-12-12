@@ -116,8 +116,8 @@
       </ion-fab-button>
       @if ((timetables$ | async)?.length == 0 || (hasPersonalPlan$ | async)) {
         <ion-fab-button i18n-aria-label aria-label="Add timetable" [show]="true" (click)="addTimetable()">
-        <ion-icon [ios]="'time-outline'" [md]="'time-sharp'"></ion-icon>
-      </ion-fab-button>
+          <ion-icon [ios]="'time-outline'" [md]="'time-sharp'"></ion-icon>
+        </ion-fab-button>
       }
       @if ((routes$ | async)?.length == 0 || (hasPersonalPlan$ | async)) {
         <ion-fab-button i18n-aria-label aria-label="Add route" [show]="true" (click)="addRoute()">
@@ -135,5 +135,7 @@
                     (dismissed)="isUpdateRouteModalOpen = false"></app-update-route>
   <app-create-timetable [isOpen]="isCreateTimetableModalOpen"
                         (dismissed)="isCreateTimetableModalOpen = false"></app-create-timetable>
+  <app-update-timetable [isOpen]="isUpdateTimetableModalOpen" [updatedTimetable]="updatedTimetable!"
+                        (dismissed)="isUpdateTimetableModalOpen = false"></app-update-timetable>
 </ion-content>
 <ion-footer id="footer"></ion-footer>

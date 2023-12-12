@@ -63,6 +63,7 @@ import {TimetableStoreService} from "../timetables/service/timetable-store.servi
 import {TimetablesState} from "../timetables/store/timetables.reducer";
 import {deleteTimetableAction} from "../timetables/store/timetables.actions";
 import {CreateTimetableComponent} from "../timetables/create-timetable/create-timetable.component";
+import {UpdateTimetableComponent} from "../timetables/update-timetable/update-timetable.component";
 
 @Component({
   selector: 'app-dashboard',
@@ -99,7 +100,8 @@ import {CreateTimetableComponent} from "../timetables/create-timetable/create-ti
     CreateRouteComponent,
     UpdateRouteComponent,
     CreateTimetableComponent,
-    DatePipe
+    DatePipe,
+    UpdateTimetableComponent
   ]
 })
 export class DashboardComponent implements OnDestroy {

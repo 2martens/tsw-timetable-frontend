@@ -30,6 +30,7 @@ import {TimetablesState} from "./store/timetables.reducer";
 import {deleteTimetableAction} from "./store/timetables.actions";
 import {CreateRouteComponent} from "../routes/create-route/create-route.component";
 import {CreateTimetableComponent} from "./create-timetable/create-timetable.component";
+import {UpdateTimetableComponent} from "./update-timetable/update-timetable.component";
 
 @Component({
   selector: 'app-timetables',
@@ -58,7 +59,8 @@ import {CreateTimetableComponent} from "./create-timetable/create-timetable.comp
     AsyncPipe,
     CreateRouteComponent,
     CreateTimetableComponent,
-    DatePipe
+    DatePipe,
+    UpdateTimetableComponent
   ]
 })
 export class TimetablesComponent {

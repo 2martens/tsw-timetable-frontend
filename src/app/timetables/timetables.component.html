@@ -48,5 +48,7 @@
     </ion-fab>
   }
   <app-create-timetable [isOpen]="isCreateModalOpen" (dismissed)="isCreateModalOpen = false"></app-create-timetable>
+  <app-update-timetable [isOpen]="isUpdateModalOpen" [updatedTimetable]="updatedTimetable!"
+                        (dismissed)="isUpdateModalOpen = false"></app-update-timetable>
 </ion-content>
 <ion-footer id="footer"></ion-footer>
