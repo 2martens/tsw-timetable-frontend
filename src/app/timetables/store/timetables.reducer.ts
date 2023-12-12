@@ -4,7 +4,8 @@ import {
   addTimetableAction,
   deleteTimetableAction,
   loadAllTimetablesCancelledAction,
-  loadAllTimetablesFinishedAction
+  loadAllTimetablesFinishedAction,
+  updateTimetableAction
 } from "./timetables.actions";
 
 export interface TimetablesState {
@@ -31,6 +32,16 @@ export const timetablesReducer = createReducer(
   on(addTimetableAction, (state, action) => ({
     ...state,
     timetables: [...state.timetables, action.payload]
+  })),
+  on(updateTimetableAction, (state, action) => ({
+    ...state,
+    timetables: state.timetables.map((oldTimetable) => {
+      if (oldTimetable.id == action.payload.id) {
+        return action.payload;
+      } else {
+        return oldTimetable;
+      }
+    })
   })),
   on(deleteTimetableAction, (state, action) => ({
     ...state,
