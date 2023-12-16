@@ -25,6 +25,7 @@ export class RouteService {
   fetchRoutes(): Observable<Route[]> {
     if (environment.mockNetwork) {
       this.routes = JSON.parse(localStorage.getItem("routes") || '[]');
+      this.routes.forEach(route => this.knownRoutes.set(route.id, route));
       return of(this.routes);
     }
 
