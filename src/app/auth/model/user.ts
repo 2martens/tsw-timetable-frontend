@@ -5,6 +5,12 @@ export interface User {
   roles: string[];
 }
 
+export interface BackendUser {
+  id: string;
+  name: string;
+  email: string;
+}
+
 export const ANONYMOUS_USER: User = {
   id: '',
   username: 'ANONYMOUS',

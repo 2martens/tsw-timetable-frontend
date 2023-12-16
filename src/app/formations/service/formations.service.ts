@@ -22,20 +22,20 @@ export class FormationsService {
               private readonly errorService: ErrorService) {
   }
 
-  fetchFormations(): Observable<Formation[]> {
+  fetchFormations(userId: string): Observable<Formation[]> {
     if (environment.mockNetwork || environment.fallbackToMock) {
       this.formations = JSON.parse(localStorage.getItem("formations") || '[]');
       this.formations.forEach(formation => this.knownFormations.set(formation.id, formation));
     }
 
-    return this.http.get<Formation[]>(this.formationsURL, this.httpOptions)
+    return this.http.get<Formation[]>(this.formationsURL + '/' + encodeURIComponent(userId) + '/', this.httpOptions)
       .pipe(
         catchError(this.errorService.handleError<Formation[]>('Formations',
           'fetchFormations', environment.fallbackToMock ? this.formations : []))
       );
   }
 
-  storeFormation(formation: Formation): Observable<Formation> {
+  storeFormation(formation: Formation, userId: string): Observable<Formation> {
     if (environment.mockNetwork || environment.fallbackToMock) {
       this.knownFormations.set(formation.id, formation);
       this.storeFormationsInLocalStorage();
@@ -45,7 +45,7 @@ export class FormationsService {
     }
 
     return this.http.put<Formation>(
-      this.formationsURL + '/' + encodeURIComponent(formation.id),
+      this.formationsURL + '/' + encodeURIComponent(userId) + '/' + encodeURIComponent(formation.id),
       formation,
       this.httpOptions
     ).pipe(
@@ -54,7 +54,7 @@ export class FormationsService {
     )
   }
 
-  deleteFormation(formation: Formation): Observable<ArrayBuffer> {
+  deleteFormation(formation: Formation, userId: string): Observable<ArrayBuffer> {
     if (environment.mockNetwork || environment.fallbackToMock) {
       this.knownFormations.delete(formation.id);
       this.storeFormationsInLocalStorage();
@@ -64,7 +64,7 @@ export class FormationsService {
     }
 
     return this.http.delete<ArrayBuffer>(
-      this.formationsURL + '/' + encodeURIComponent(formation.id),
+      this.formationsURL + '/' + encodeURIComponent(userId) + '/' + encodeURIComponent(formation.id),
       this.httpOptions
     ).pipe(
       catchError(this.errorService.handleError<ArrayBuffer>('Formation',

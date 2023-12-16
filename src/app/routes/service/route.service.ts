@@ -22,7 +22,7 @@ export class RouteService {
               private readonly errorService: ErrorService) {
   }
 
-  fetchRoutes(): Observable<Route[]> {
+  fetchRoutes(userId: string): Observable<Route[]> {
     if (environment.mockNetwork || environment.fallbackToMock) {
       this.routes = JSON.parse(localStorage.getItem("routes") || '[]');
       this.routes.forEach(route => this.knownRoutes.set(route.id, route));
@@ -31,14 +31,14 @@ export class RouteService {
       }
     }
 
-    return this.http.get<Route[]>(this.routesURL, this.httpOptions)
+    return this.http.get<Route[]>(this.routesURL + '/' + encodeURIComponent(userId) + '/', this.httpOptions)
       .pipe(
         catchError(this.errorService.handleError<Route[]>('Routes',
           'fetchRoutes', environment.fallbackToMock ? this.routes : []))
       );
   }
 
-  storeRoute(route: Route): Observable<Route> {
+  storeRoute(route: Route, userId: string): Observable<Route> {
     if (environment.mockNetwork || environment.fallbackToMock) {
       this.knownRoutes.set(route.id, route);
       this.storeRoutesInLocalStorage();
@@ -48,7 +48,7 @@ export class RouteService {
     }
 
     return this.http.put<Route>(
-      this.routesURL + '/' + encodeURIComponent(route.id),
+      this.routesURL + '/' + encodeURIComponent(userId) + '/' + encodeURIComponent(route.id),
       route,
       this.httpOptions
     ).pipe(
@@ -57,7 +57,7 @@ export class RouteService {
     )
   }
 
-  deleteRoute(route: Route): Observable<ArrayBuffer> {
+  deleteRoute(route: Route, userId: string): Observable<ArrayBuffer> {
     if (environment.mockNetwork || environment.fallbackToMock) {
       this.knownRoutes.delete(route.id);
       this.storeRoutesInLocalStorage();
@@ -67,7 +67,7 @@ export class RouteService {
     }
 
     return this.http.delete<ArrayBuffer>(
-      this.routesURL + '/' + encodeURIComponent(route.id),
+      this.routesURL + '/' + encodeURIComponent(userId) + '/' + encodeURIComponent(route.id),
       this.httpOptions
     ).pipe(
       catchError(this.errorService.handleError<ArrayBuffer>('Route',

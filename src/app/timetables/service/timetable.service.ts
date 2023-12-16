@@ -22,7 +22,7 @@ export class TimetableService {
               private readonly errorService: ErrorService) {
   }
 
-  fetchTimetables(): Observable<Timetable[]> {
+  fetchTimetables(userId: string): Observable<Timetable[]> {
     if (environment.mockNetwork || environment.fallbackToMock) {
       this.timetables = JSON.parse(localStorage.getItem("timetables") || '[]');
       this.timetables.forEach(timetable => this.knownTimetables.set(timetable.id, timetable));
@@ -31,14 +31,14 @@ export class TimetableService {
       }
     }
 
-    return this.http.get<Timetable[]>(this.timetablesURL, this.httpOptions)
+    return this.http.get<Timetable[]>(this.timetablesURL + '/' + encodeURIComponent(userId) + '/', this.httpOptions)
       .pipe(
         catchError(this.errorService.handleError<Timetable[]>('Timetables',
           'fetchTimetables', environment.fallbackToMock ? this.timetables : []))
       );
   }
 
-  storeTimetable(timetable: Timetable): Observable<Timetable> {
+  storeTimetable(timetable: Timetable, userId: string): Observable<Timetable> {
     if (environment.mockNetwork || environment.fallbackToMock) {
       this.knownTimetables.set(timetable.id, timetable);
       this.storeRoutesInLocalStorage();
@@ -48,7 +48,7 @@ export class TimetableService {
     }
 
     return this.http.put<Timetable>(
-      this.timetablesURL + '/' + encodeURIComponent(timetable.id),
+      this.timetablesURL + '/' + encodeURIComponent(userId) + '/' + encodeURIComponent(timetable.id),
       timetable,
       this.httpOptions
     ).pipe(
@@ -57,7 +57,7 @@ export class TimetableService {
     )
   }
 
-  deleteTimetable(timetable: Timetable): Observable<ArrayBuffer> {
+  deleteTimetable(timetable: Timetable, userId: string): Observable<ArrayBuffer> {
     if (environment.mockNetwork || environment.fallbackToMock) {
       this.knownTimetables.delete(timetable.id);
       this.storeRoutesInLocalStorage();
@@ -67,7 +67,7 @@ export class TimetableService {
     }
 
     return this.http.delete<ArrayBuffer>(
-      this.timetablesURL + '/' + encodeURIComponent(timetable.id),
+      this.timetablesURL + '/' + encodeURIComponent(userId) + '/' + encodeURIComponent(timetable.id),
       this.httpOptions
     ).pipe(
       catchError(this.errorService.handleError<ArrayBuffer>('Timetables',

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {User} from "../model/user";
-import {catchError, Observable} from "rxjs";
+import {BackendUser, User} from "../model/user";
+import {catchError, map, Observable} from "rxjs";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {ErrorService} from "../../errors/error.service";
 import {environment} from "../../../environments/environment";
@@ -20,11 +20,23 @@ export class UserService {
   }
 
   storeUser(user: User): Observable<User> {
-    return this.http.put<User>(
+    return this.http.put<BackendUser>(
       this.usersURL + '/' + encodeURIComponent(user.id),
-      user,
+      {
+        id: user.id,
+        name: user.username,
+        email: user.email
+      },
       this.httpOptions
     ).pipe(
+      map((receivedUser): User => {
+        return {
+          id: receivedUser.id,
+          username: receivedUser.name,
+          email: receivedUser.email,
+          roles: user.roles
+        }
+      }),
       catchError(this.errorService.handleError<User>('Users',
         'storeUser', user))
     );
