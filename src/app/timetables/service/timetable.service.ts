@@ -25,6 +25,7 @@ export class TimetableService {
   fetchTimetables(): Observable<Timetable[]> {
     if (environment.mockNetwork) {
       this.timetables = JSON.parse(localStorage.getItem("timetables") || '[]');
+      this.timetables.forEach(timetable => this.knownTimetables.set(timetable.id, timetable));
       return of(this.timetables);
     }
 
