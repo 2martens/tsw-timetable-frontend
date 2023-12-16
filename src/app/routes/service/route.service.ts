@@ -23,24 +23,28 @@ export class RouteService {
   }
 
   fetchRoutes(): Observable<Route[]> {
-    if (environment.mockNetwork) {
+    if (environment.mockNetwork || environment.fallbackToMock) {
       this.routes = JSON.parse(localStorage.getItem("routes") || '[]');
       this.routes.forEach(route => this.knownRoutes.set(route.id, route));
-      return of(this.routes);
+      if (environment.mockNetwork) {
+        return of(this.routes);
+      }
     }
 
     return this.http.get<Route[]>(this.routesURL, this.httpOptions)
       .pipe(
         catchError(this.errorService.handleError<Route[]>('Routes',
-          'fetchRoutes', []))
+          'fetchRoutes', environment.fallbackToMock ? this.routes : []))
       );
   }
 
   storeRoute(route: Route): Observable<Route> {
-    if (environment.mockNetwork) {
+    if (environment.mockNetwork || environment.fallbackToMock) {
       this.knownRoutes.set(route.id, route);
       this.storeRoutesInLocalStorage();
-      return of(route);
+      if (environment.mockNetwork) {
+        return of(route);
+      }
     }
 
     return this.http.put<Route>(
@@ -54,10 +58,12 @@ export class RouteService {
   }
 
   deleteRoute(route: Route): Observable<ArrayBuffer> {
-    if (environment.mockNetwork) {
+    if (environment.mockNetwork || environment.fallbackToMock) {
       this.knownRoutes.delete(route.id);
       this.storeRoutesInLocalStorage();
-      return of(new ArrayBuffer(0));
+      if (environment.mockNetwork) {
+        return of(new ArrayBuffer(0));
+      }
     }
 
     return this.http.delete<ArrayBuffer>(

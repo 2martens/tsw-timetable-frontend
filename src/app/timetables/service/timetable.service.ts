@@ -23,24 +23,28 @@ export class TimetableService {
   }
 
   fetchTimetables(): Observable<Timetable[]> {
-    if (environment.mockNetwork) {
+    if (environment.mockNetwork || environment.fallbackToMock) {
       this.timetables = JSON.parse(localStorage.getItem("timetables") || '[]');
       this.timetables.forEach(timetable => this.knownTimetables.set(timetable.id, timetable));
-      return of(this.timetables);
+      if (environment.mockNetwork) {
+        return of(this.timetables);
+      }
     }
 
     return this.http.get<Timetable[]>(this.timetablesURL, this.httpOptions)
       .pipe(
         catchError(this.errorService.handleError<Timetable[]>('Timetables',
-          'fetchTimetables', []))
+          'fetchTimetables', environment.fallbackToMock ? this.timetables : []))
       );
   }
 
   storeTimetable(timetable: Timetable): Observable<Timetable> {
-    if (environment.mockNetwork) {
+    if (environment.mockNetwork || environment.fallbackToMock) {
       this.knownTimetables.set(timetable.id, timetable);
       this.storeRoutesInLocalStorage();
-      return of(timetable);
+      if (environment.mockNetwork) {
+        return of(timetable);
+      }
     }
 
     return this.http.put<Timetable>(
@@ -54,10 +58,12 @@ export class TimetableService {
   }
 
   deleteTimetable(timetable: Timetable): Observable<ArrayBuffer> {
-    if (environment.mockNetwork) {
+    if (environment.mockNetwork || environment.fallbackToMock) {
       this.knownTimetables.delete(timetable.id);
       this.storeRoutesInLocalStorage();
-      return of(new ArrayBuffer(0));
+      if (environment.mockNetwork) {
+        return of(new ArrayBuffer(0));
+      }
     }
 
     return this.http.delete<ArrayBuffer>(

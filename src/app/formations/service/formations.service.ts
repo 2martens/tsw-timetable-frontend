@@ -23,24 +23,25 @@ export class FormationsService {
   }
 
   fetchFormations(): Observable<Formation[]> {
-    if (environment.mockNetwork) {
+    if (environment.mockNetwork || environment.fallbackToMock) {
       this.formations = JSON.parse(localStorage.getItem("formations") || '[]');
       this.formations.forEach(formation => this.knownFormations.set(formation.id, formation));
-      return of(this.formations);
     }
 
     return this.http.get<Formation[]>(this.formationsURL, this.httpOptions)
       .pipe(
         catchError(this.errorService.handleError<Formation[]>('Formations',
-          'fetchFormations', []))
+          'fetchFormations', environment.fallbackToMock ? this.formations : []))
       );
   }
 
   storeFormation(formation: Formation): Observable<Formation> {
-    if (environment.mockNetwork) {
+    if (environment.mockNetwork || environment.fallbackToMock) {
       this.knownFormations.set(formation.id, formation);
       this.storeFormationsInLocalStorage();
-      return of(formation);
+      if (environment.mockNetwork) {
+        return of(formation);
+      }
     }
 
     return this.http.put<Formation>(
@@ -54,10 +55,12 @@ export class FormationsService {
   }
 
   deleteFormation(formation: Formation): Observable<ArrayBuffer> {
-    if (environment.mockNetwork) {
+    if (environment.mockNetwork || environment.fallbackToMock) {
       this.knownFormations.delete(formation.id);
       this.storeFormationsInLocalStorage();
-      return of(new ArrayBuffer(0));
+      if (environment.mockNetwork) {
+        return of(new ArrayBuffer(0));
+      }
     }
 
     return this.http.delete<ArrayBuffer>(
