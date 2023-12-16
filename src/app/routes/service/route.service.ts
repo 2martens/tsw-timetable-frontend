@@ -13,7 +13,7 @@ export class RouteService {
   httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
   };
-  private routesURL = environment.backendURL + '/route';
+  private routesURL = environment.backendURL + '/routes';
 
   private knownRoutes: Map<string, Route> = new Map<string, Route>();
   private routes: Route[] = [];

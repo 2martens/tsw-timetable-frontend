@@ -13,7 +13,7 @@ export class FormationsService {
   httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
   };
-  private formationsURL = environment.backendURL + '/formation';
+  private formationsURL = environment.backendURL + '/formations';
 
   private knownFormations: Map<string, Formation> = new Map<string, Formation>();
   private formations: Formation[] = [];

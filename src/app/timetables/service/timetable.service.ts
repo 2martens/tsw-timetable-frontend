@@ -13,7 +13,7 @@ export class TimetableService {
   httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
   };
-  private timetablesURL = environment.backendURL + '/timetable';
+  private timetablesURL = environment.backendURL + '/timetables';
 
   private knownTimetables: Map<string, Timetable> = new Map<string, Timetable>();
   private timetables: Timetable[] = [];
