@@ -9,8 +9,8 @@ import {Store} from "@ngrx/store";
 import {RoutesState} from "../store/routes.reducer";
 import {inject} from "@angular/core";
 import {allCountries} from "../store";
-import {RoutesStoreService} from "../service/routes-store.service";
 import {map, Observable} from "rxjs";
+import {StationService} from "../service/station.service";
 
 export class RouteComponent {
   route: Route = {...DEFAULT_ROUTE};
@@ -31,9 +31,8 @@ export class RouteComponent {
 
   protected readonly store: Store<RoutesState> = inject(Store<RoutesState>);
   readonly countries$ = this.store.select(allCountries());
-  private readonly storeService: RoutesStoreService = inject(RoutesStoreService);
-  readonly stations$ = this.storeService.getStations$();
-  unusedStations$!: Observable<Station[]>;
+  private readonly stationService: StationService = inject(StationService);
+  stations$?: Observable<Station[]>;
 
   compareWithCountry(country1: Country, country2: Country) {
     return country1 && country2 ? country1.code === country2.code : country1 === country2;
@@ -57,13 +56,11 @@ export class RouteComponent {
     }
     newStations[event.detail.to] = movedItem;
     this.route.stations = newStations;
-    this.updateUnusedStations();
     event.detail.complete();
   }
 
   deleteStation(deletedStation: Station) {
     this.route.stations = this.route.stations.filter(station => station.id !== deletedStation.id);
-    this.updateUnusedStations();
   }
 
   selectStation(newStation: Station) {
@@ -74,8 +71,8 @@ export class RouteComponent {
       newStations.push(newStation);
     }
     this.route.stations = newStations;
-    this.updateUnusedStations();
     this.stationIndex = undefined;
+    this.stations$ = undefined
   }
 
   openPopoverStation(event: MouseEvent, index?: number) {
@@ -150,11 +147,10 @@ export class RouteComponent {
     this.route.depots = this.route.depots.filter(depot => depot.id !== deletedDepot.id);
   }
 
-  updateUnusedStations() {
-    this.unusedStations$ = this.stations$.pipe(
-      map(stations => stations.filter(
-        station => !this.route.stations.some(routeStation => routeStation.id == station.id)
-      )),
+  findStations(pattern: string) {
+    this.stations$ = this.stationService.getStations$(this.route.country, pattern).pipe(
+      map(stations => stations
+        .filter(station => !this.route.stations.some(usedItem => usedItem.id == station.id)))
     );
   }
 }
