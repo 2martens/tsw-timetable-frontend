@@ -16,16 +16,19 @@ import {AuthService} from "../../auth/service/auth.service";
   providedIn: 'root'
 })
 export class FormationsStoreService {
+  private formations$: Observable<Formation[]>;
+
   constructor(
     private readonly formationsService: FormationsService,
     private readonly authService: AuthService,
     private readonly store: Store<FormationsState>
   ) {
+    this.formations$ = this.loadFormations$();
   }
 
   getFormations$() {
     return using(
-      () => this.loadFormations$().subscribe(),
+      () => this.formations$.subscribe(),
       () => this.store.select(allFormations())
     )
   }

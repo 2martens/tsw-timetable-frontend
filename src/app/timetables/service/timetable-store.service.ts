@@ -11,20 +11,23 @@ import {
 } from "../store/timetables.actions";
 import {Timetable} from "../model/timetable";
 import {AuthService} from "../../auth/service/auth.service";
+import {Station} from "../../routes/model/station";
 
 @Injectable({
   providedIn: 'root'
 })
 export class TimetableStoreService {
+  private timetables$: Observable<Station[]>;
 
   constructor(private readonly timetableService: TimetableService,
               private readonly store: Store<TimetablesState>,
               private readonly authService: AuthService) {
+    this.timetables$ = this.loadTimetables$();
   }
 
   getTimetables$() {
     return using(
-      () => this.loadTimetables$().subscribe(),
+      () => this.timetables$.subscribe(),
       () => this.store.select(allTimetables())
     )
   }

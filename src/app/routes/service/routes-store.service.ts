@@ -22,15 +22,18 @@ import {AuthService} from "../../auth/service/auth.service";
 })
 export class RoutesStoreService {
 
+  private routes$: Observable<Route[]>;
+
   constructor(private readonly routeService: RouteService,
               private readonly stationService: StationService,
               private readonly authService: AuthService,
               private readonly store: Store<RoutesState>) {
+    this.routes$ = this.loadRoutes$();
   }
 
   getRoutes$() {
     return using(
-      () => this.loadRoutes$().subscribe(),
+      () => this.routes$.subscribe(),
       () => this.store.select(allRoutes())
     )
   }
