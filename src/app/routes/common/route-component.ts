@@ -148,6 +148,9 @@ export class RouteComponent {
   }
 
   findStations(pattern: string) {
+    if (pattern.length < 3) {
+      return;
+    }
     this.stations$ = this.stationService.getStations$(this.route.country, pattern).pipe(
       map(stations => stations
         .filter(station => !this.route.stations.some(usedItem => usedItem.id == station.id)))
