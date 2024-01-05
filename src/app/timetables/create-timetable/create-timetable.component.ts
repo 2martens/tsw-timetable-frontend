@@ -34,6 +34,7 @@ import {pencilOutline, pencilSharp, trashOutline, trashSharp} from "ionicons/ico
 import {DEFAULT_TIMETABLE} from "../model/timetable";
 import {addTimetableAction} from "../store/timetables.actions";
 import {AsyncPipe, NgForOf} from "@angular/common";
+import {DEFAULT_ROUTE, Route} from "../../routes/model/route";
 
 @Component({
   selector: 'app-create-timetable',
@@ -52,6 +53,7 @@ export class CreateTimetableComponent extends TimetableComponent {
 
   @ViewChild(IonModal) modal: IonModal | undefined;
 
+  route: Route = {...DEFAULT_ROUTE};
   minDate = new Date();
   minDateString: string;
 
@@ -74,7 +76,11 @@ export class CreateTimetableComponent extends TimetableComponent {
 
   confirm() {
     this.store.dispatch(addTimetableAction({
-      payload: {...this.timetable}
+      payload: {
+        ...this.timetable,
+        routeId: this.route.id,
+        routeName: this.route.name
+      }
     }))
     this.dismissed.emit(true);
     this.timetable = {...DEFAULT_TIMETABLE};

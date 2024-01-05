@@ -45,7 +45,7 @@
           name="route"
           interface="popover"
           [compareWith]="compareWithRoute"
-          [(ngModel)]="timetable.route"
+          [(ngModel)]="route"
         >
           <ion-select-option *ngFor="let route of routes$ | async"
                              [value]="route">

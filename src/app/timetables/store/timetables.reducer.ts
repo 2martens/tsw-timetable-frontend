@@ -9,7 +9,8 @@ import {
   loadAllServicesFinishedAction,
   loadAllTimetablesCancelledAction,
   loadAllTimetablesFinishedAction,
-  updateTimetableAction
+  updateTimetableAction,
+  updateTimetableFromBackendAction
 } from "./timetables.actions";
 import {Service} from "../model/service";
 import {Rotation} from "../model/rotation";
@@ -71,7 +72,7 @@ export const timetablesReducer = createReducer(
     ...state,
     timetables: [...state.timetables, action.payload]
   })),
-  on(updateTimetableAction, (state, action) => ({
+  on(updateTimetableAction, updateTimetableFromBackendAction, (state, action) => ({
     ...state,
     timetables: state.timetables.map((oldTimetable) => {
       if (oldTimetable.id == action.payload.id) {

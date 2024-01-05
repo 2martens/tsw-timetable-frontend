@@ -62,7 +62,7 @@
     <ion-item-sliding *ngFor="let timetable of timetables$ | async">
       <ion-item>
         <ion-label>{{ timetable.name }}</ion-label>
-        <ion-label>{{ timetable.route.name }}</ion-label>
+        <ion-label>{{ timetable.routeName }}</ion-label>
         <ion-label>{{ timetable.date | date }}</ion-label>
         <ion-label>{{ TimetableStateTexts[timetable.state] }}</ion-label>
         <ion-label class="ion-text-end">{{ timetable.numberOfServices }}</ion-label>

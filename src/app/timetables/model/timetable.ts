@@ -1,9 +1,8 @@
-import {DEFAULT_ROUTE, Route} from "../../routes/model/route";
-
 export interface Timetable {
   id: string;
   name: string;
-  route: Route;
+  routeId: string;
+  routeName: string;
   date: string;
   state: TimetableState;
   numberOfServices: number;
@@ -17,6 +16,14 @@ export enum TimetableState {
   READY_FOR_USAGE
 }
 
+export const TimetableStateIndices: { [name: string]: number } = {
+  NEW: 0,
+  PROCESSING: 1,
+  ENTER_FORMATIONS: 2,
+  LINK_SERVICES: 3,
+  READY_FOR_USAGE: 4
+}
+
 export const TimetableStateTexts: { [name: number]: string } = {
   0: $localize`New`,
   1: $localize`Processing`,
@@ -28,7 +35,8 @@ export const TimetableStateTexts: { [name: number]: string } = {
 export const DEFAULT_TIMETABLE: Timetable = {
   id: '',
   name: '',
-  route: {...DEFAULT_ROUTE},
+  routeId: '',
+  routeName: '',
   date: '',
   state: TimetableState.NEW,
   numberOfServices: 0

@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
-import {catchError, Observable, of} from "rxjs";
+import {catchError, map, Observable, of} from "rxjs";
 import {ErrorService} from "../../errors/error.service";
-import {Timetable} from "../model/timetable";
+import {Timetable, TimetableStateIndices} from "../model/timetable";
 
 @Injectable({
   providedIn: 'root'
@@ -33,6 +33,12 @@ export class TimetableService {
 
     return this.http.get<Timetable[]>(this.timetablesURL + '/' + encodeURIComponent(userId) + '/', this.httpOptions)
       .pipe(
+        map(timetables => timetables.map(timetable => {
+          return {
+            ...timetable,
+            state: TimetableStateIndices[timetable.state]
+          }
+        })),
         catchError(this.errorService.handleError<Timetable[]>('Timetables',
           'fetchTimetables', environment.fallbackToMock ? this.timetables : []))
       );
@@ -52,6 +58,12 @@ export class TimetableService {
       timetable,
       this.httpOptions
     ).pipe(
+      map(timetable => {
+        return {
+          ...timetable,
+          state: TimetableStateIndices[timetable.state]
+        }
+      }),
       catchError(this.errorService.handleError<Timetable>('Timetables',
         'storeTimetable', timetable))
     )

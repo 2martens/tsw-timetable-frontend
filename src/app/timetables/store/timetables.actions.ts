@@ -18,6 +18,7 @@ export enum ActionTypes {
 
   AddTimetable = '[Timetables] Add Timetable',
   UpdateTimetable = '[Timetables] Update Timetable',
+  UpdateTimetableFromBackend = '[Timetables] Update Timetable From Backend',
   DeleteTimetable = '[Timetables] Delete Timetable',
 }
 
@@ -67,6 +68,11 @@ export const addTimetableAction = createAction(
 
 export const updateTimetableAction = createAction(
   ActionTypes.UpdateTimetable,
+  props<{ payload: Timetable }>()
+);
+
+export const updateTimetableFromBackendAction = createAction(
+  ActionTypes.UpdateTimetableFromBackend,
   props<{ payload: Timetable }>()
 );
 

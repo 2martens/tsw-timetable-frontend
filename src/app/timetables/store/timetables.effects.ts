@@ -1,7 +1,12 @@
 import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {inject} from "@angular/core";
 import {combineLatestWith, map, switchMap} from "rxjs";
-import {addTimetableAction, deleteTimetableAction, updateTimetableAction} from "./timetables.actions";
+import {
+  addTimetableAction,
+  deleteTimetableAction,
+  updateTimetableAction,
+  updateTimetableFromBackendAction
+} from "./timetables.actions";
 import {TimetableService} from "../service/timetable.service";
 import {AuthService} from "../../auth/service/auth.service";
 
@@ -14,10 +19,11 @@ export const storeTimetable = createEffect((
       ofType(addTimetableAction, updateTimetableAction),
       map(action => action.payload),
       combineLatestWith(authService.getUser$()),
-      switchMap(([timetable, user]) => timetableService.storeTimetable(timetable, user.id))
+      switchMap(([timetable, user]) => timetableService.storeTimetable(timetable, user.id)),
+      map(timetable => updateTimetableFromBackendAction({payload: timetable}))
     );
   },
-  {functional: true, dispatch: false});
+  {functional: true});
 
 export const deleteTimetable = createEffect((
     actions$ = inject(Actions),
