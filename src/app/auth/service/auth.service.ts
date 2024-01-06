@@ -46,6 +46,7 @@ export class AuthService {
       map((userProfile) => {
         const roles = this.keycloakService.getUserRoles(false);
         return {
+          id: userProfile.id || '',
           username: userProfile.username || '',
           email: userProfile.email || '',
           roles: roles

@@ -1,15 +1,10 @@
 import {createAction, props} from "@ngrx/store";
 import {Route} from "../model/route";
-import {Station} from "../model/station";
 
 export enum ActionTypes {
   LoadAllRoutes = '[Routes] Load All Routes',
   LoadAllRoutesFinished = '[Routes] Load All Routes Finished',
   LoadAllRoutesCancelled = '[Routes] Load All Routes Cancelled',
-
-  LoadAllStations = '[Routes] Load All Stations',
-  LoadAllStationsFinished = '[Routes] Load All Stations Finished',
-  LoadAllStationsCancelled = '[Routes] Load All Stations Cancelled',
 
   LoadSingleRoute = '[Routes] Load Single Route',
   LoadSingleRouteFinished = '[Routes] Load Single Route Finished',
@@ -55,17 +50,4 @@ export const updateRouteAction = createAction(
 export const deleteRouteAction = createAction(
   ActionTypes.DeleteRoute,
   props<{ payload: Route }>()
-);
-
-export const loadAllStationsAction = createAction(
-  ActionTypes.LoadAllStations
-);
-
-export const loadAllStationsFinishedAction = createAction(
-  ActionTypes.LoadAllStationsFinished,
-  props<{ payload: Station[] }>()
-);
-
-export const loadAllStationsCancelledAction = createAction(
-  ActionTypes.LoadAllStationsCancelled
 );

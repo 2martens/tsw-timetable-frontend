@@ -102,13 +102,11 @@ export class UpdateRouteComponent extends RouteComponent {
   @Input({required: true}) set updatedRoute(newValue: Route) {
     this.route = {...newValue};
     this.routeOnOpen = {...newValue};
-    this.updateUnusedStations();
   }
 
   cancel() {
     this.dismissed.emit(true);
     this.route = this.routeOnOpen;
-    this.updateUnusedStations();
   }
 
   confirm() {

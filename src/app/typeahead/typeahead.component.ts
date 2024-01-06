@@ -25,15 +25,20 @@ export class TypeaheadComponent<T extends Item> implements OnChanges {
   @ViewChild('popover') popover: any;
 
   @Input({required: true}) isOpen: boolean = false;
-  @Input({required: true}) items$!: Observable<T[]>;
+  @Input({required: true}) items$?: Observable<T[]>;
   @Input() usedItems: T[] = [];
+  @Input() itemsAreFiltered: boolean = false
+  @Output() filterChanged: EventEmitter<string> = new EventEmitter<string>()
   _filteredItems!: Observable<T[]>;
 
   ngOnChanges(changes: SimpleChanges) {
     const readyForUpdate = this.items$ != null && this.usedItems != null && this.isOpen != null;
-    if (readyForUpdate
+    if (!this.itemsAreFiltered && readyForUpdate
       && changes['isOpen']?.currentValue
       && !changes['isOpen']?.previousValue) {
+      this.updateFilteredItems();
+    }
+    if (this.itemsAreFiltered && readyForUpdate && changes['items$'] != null && this.isOpen) {
       this.updateFilteredItems();
     }
   }
@@ -43,21 +48,35 @@ export class TypeaheadComponent<T extends Item> implements OnChanges {
   }
 
   private updateFilteredItems() {
-    this._filteredItems = this.items$.pipe(
-      map(items => items.filter(item => !this.usedItems.some(usedItem => usedItem.id == item.id)))
-    );
+    if (this.items$ != null) {
+      if (this.itemsAreFiltered) {
+        this._filteredItems = this.items$;
+      } else {
+        this._filteredItems = this.items$.pipe(
+          map(items => items.filter(item => !this.usedItems.some(usedItem => usedItem.id == item.id)))
+        );
+      }
+    }
   }
 
   filterItems(event: SearchbarCustomEvent) {
     if (typeof event.detail.value === "string") {
       const searchValue = event.detail.value.toLowerCase();
-      this._filteredItems = this.items$.pipe(
-        map(items => items.filter(item => item.name.toLowerCase().includes(searchValue)))
-      );
+      this.filterChanged.emit(searchValue);
+      if (this.items$ != null) {
+        if (!this.itemsAreFiltered) {
+          this._filteredItems = this.items$.pipe(
+            map(items => items.filter(item => item.name.toLowerCase().includes(searchValue)))
+          );
+        }
+      }
     }
   }
 
   selectItem(selectedItem: T) {
+    if (this.itemsAreFiltered) {
+      this.items$ = undefined
+    }
     this.itemSelected.emit(selectedItem);
     this.dismissed.emit(true);
   }

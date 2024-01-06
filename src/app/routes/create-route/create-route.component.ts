@@ -96,7 +96,6 @@ export class CreateRouteComponent extends RouteComponent {
   cancel() {
     this.dismissed.emit(true);
     this.route = {...DEFAULT_ROUTE};
-    this.updateUnusedStations();
   }
 
   confirm() {
@@ -108,6 +107,5 @@ export class CreateRouteComponent extends RouteComponent {
     }))
     this.dismissed.emit(true);
     this.route = {...DEFAULT_ROUTE};
-    this.updateUnusedStations();
   }
 }

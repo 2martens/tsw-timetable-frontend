@@ -5,20 +5,15 @@ import {
   deleteRouteAction,
   loadAllRoutesCancelledAction,
   loadAllRoutesFinishedAction,
-  loadAllStationsCancelledAction,
-  loadAllStationsFinishedAction,
   loadSingleRouteFinishedAction,
   updateRouteAction
 } from "./routes.actions";
 import {Country} from "../model/country";
-import {Station} from "../model/station";
 
 export interface RoutesState {
   needRoutes: boolean;
   routes: Route[];
   countries: Country[];
-  needStations: boolean;
-  stations: Station[];
 }
 
 export const initialState: RoutesState = {
@@ -30,8 +25,6 @@ export const initialState: RoutesState = {
       name: $localize`Germany`
     }
   ],
-  needStations: true,
-  stations: []
 };
 
 export const routesReducer = createReducer(
@@ -49,15 +42,6 @@ export const routesReducer = createReducer(
   on(loadAllRoutesFinishedAction, loadAllRoutesCancelledAction, (state, _) => ({
     ...state,
     needRoutes: false
-  })),
-  on(loadAllStationsFinishedAction, (state,
-                                     action) => ({
-    ...state,
-    stations: [...action.payload]
-  })),
-  on(loadAllStationsFinishedAction, loadAllStationsCancelledAction, (state, _) => ({
-    ...state,
-    needStations: false
   })),
   on(addRouteAction, (state, action) => ({
     ...state,
