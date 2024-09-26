@@ -63,7 +63,7 @@
             </ion-item-sliding>
           </ion-reorder-group>
         </ion-list>
-        <ion-button (click)="openPopoverStation($event)" [disabled]="(unusedStations$ | async)?.length == 0">
+        <ion-button (click)="openPopoverStation($event)">
           <ion-label i18n class="no-pointer-events">Add station</ion-label>
         </ion-button>
 
@@ -138,5 +138,6 @@
                   [stations]="route.stations" [(updatedDepot)]="updatedDepot"></app-update-depot>
 
 <app-typeahead [isOpen]="isStationPopoverOpen" (dismissed)="isStationPopoverOpen = false"
-               (itemSelected)="selectStation($event)" [usedItems]="route.stations" [items$]="stations$"
+               (itemSelected)="selectStation($event)" [items$]="stations$" [usedItems]="route.stations"
+               [itemsAreFiltered]="true" (filterChanged)="findStations($event)"
                [event]="clickEvent"></app-typeahead>

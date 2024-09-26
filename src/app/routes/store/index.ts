@@ -28,13 +28,3 @@ export const allCountries = () => createSelector(
   getRoutesFeatureState,
   (state: RoutesState) => state.countries
 );
-
-export const needStations = () => createSelector(
-  getRoutesFeatureState,
-  (state: RoutesState) => state.needStations
-);
-
-export const allStations = () => createSelector(
-  getRoutesFeatureState,
-  (state: RoutesState) => state.stations
-);

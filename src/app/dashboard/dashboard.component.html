@@ -45,7 +45,12 @@
   </ion-list>
   <ion-list>
     <ion-list-header>
-      <ion-label i18n>Timetables</ion-label>
+      <ion-label>
+        <span i18n>Timetables</span>
+        @if (!(hasPersonalPlan$ | async)) {
+          ({{ (timetables$ | async)?.length }} / 1)
+        }
+      </ion-label>
     </ion-list-header>
     <ion-item>
       <ion-label i18n class="bold">Name</ion-label>
@@ -54,16 +59,20 @@
       <ion-label i18n class="bold">State</ion-label>
       <ion-label i18n class="bold ion-text-end"># Services</ion-label>
     </ion-item>
-    <ion-item-sliding *ngFor="let timetable of timetables">
+    <ion-item-sliding *ngFor="let timetable of timetables$ | async">
       <ion-item>
         <ion-label>{{ timetable.name }}</ion-label>
-        <ion-label>{{ timetable.route }}</ion-label>
-        <ion-label>{{ timetable.date }}</ion-label>
-        <ion-label>{{ timetable.state }}</ion-label>
+        <ion-label>{{ timetable.routeName }}</ion-label>
+        <ion-label>{{ timetable.date | date }}</ion-label>
+        <ion-label>{{ TimetableStateTexts[timetable.state] }}</ion-label>
         <ion-label class="ion-text-end">{{ timetable.numberOfServices }}</ion-label>
       </ion-item>
       <ion-item-options side="end">
-        <ion-item-option color="danger" i18n>
+        <ion-item-option (click)="updateTimetable(timetable)" color="secondary" i18n>
+          <ion-icon slot="start" [ios]="'pencil-outline'" [md]="'pencil-sharp'"></ion-icon>
+          Update
+        </ion-item-option>
+        <ion-item-option (click)="deleteTimetable(timetable)" color="danger" i18n>
           <ion-icon slot="start" [ios]="'trash-outline'" [md]="'trash-sharp'"></ion-icon>
           Delete
         </ion-item-option>
@@ -105,9 +114,11 @@
       <ion-fab-button i18n-aria-label aria-label="Add formation" [show]="true" (click)="addFormation()">
         <ion-icon [ios]="'train-outline'" [md]="'train-sharp'"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button i18n-aria-label aria-label="Add timetable" [show]="true">
-        <ion-icon [ios]="'time-outline'" [md]="'time-sharp'"></ion-icon>
-      </ion-fab-button>
+      @if ((timetables$ | async)?.length == 0 || (hasPersonalPlan$ | async)) {
+        <ion-fab-button i18n-aria-label aria-label="Add timetable" [show]="true" (click)="addTimetable()">
+          <ion-icon [ios]="'time-outline'" [md]="'time-sharp'"></ion-icon>
+        </ion-fab-button>
+      }
       @if ((routes$ | async)?.length == 0 || (hasPersonalPlan$ | async)) {
         <ion-fab-button i18n-aria-label aria-label="Add route" [show]="true" (click)="addRoute()">
           <ion-icon [ios]="'map-outline'" [md]="'map-sharp'"></ion-icon>
@@ -122,5 +133,9 @@
   <app-create-route [isOpen]="isCreateRouteModalOpen" (dismissed)="isCreateRouteModalOpen = false"></app-create-route>
   <app-update-route [isOpen]="isUpdateRouteModalOpen" [updatedRoute]="updatedRoute"
                     (dismissed)="isUpdateRouteModalOpen = false"></app-update-route>
+  <app-create-timetable [isOpen]="isCreateTimetableModalOpen"
+                        (dismissed)="isCreateTimetableModalOpen = false"></app-create-timetable>
+  <app-update-timetable [isOpen]="isUpdateTimetableModalOpen" [updatedTimetable]="updatedTimetable!"
+                        (dismissed)="isUpdateTimetableModalOpen = false"></app-update-timetable>
 </ion-content>
 <ion-footer id="footer"></ion-footer>

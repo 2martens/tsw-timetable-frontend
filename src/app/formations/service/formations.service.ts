@@ -13,7 +13,7 @@ export class FormationsService {
   httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
   };
-  private formationsURL = environment.backendURL + '/formation';
+  private formationsURL = environment.backendURL + '/formations';
 
   private knownFormations: Map<string, Formation> = new Map<string, Formation>();
   private formations: Formation[] = [];
@@ -22,29 +22,30 @@ export class FormationsService {
               private readonly errorService: ErrorService) {
   }
 
-  fetchFormations(): Observable<Formation[]> {
-    if (environment.mockNetwork) {
+  fetchFormations(userId: string): Observable<Formation[]> {
+    if (environment.mockNetwork || environment.fallbackToMock) {
       this.formations = JSON.parse(localStorage.getItem("formations") || '[]');
       this.formations.forEach(formation => this.knownFormations.set(formation.id, formation));
-      return of(this.formations);
     }
 
-    return this.http.get<Formation[]>(this.formationsURL, this.httpOptions)
+    return this.http.get<Formation[]>(this.formationsURL + '/' + encodeURIComponent(userId) + '/', this.httpOptions)
       .pipe(
         catchError(this.errorService.handleError<Formation[]>('Formations',
-          'fetchFormations', []))
+          'fetchFormations', environment.fallbackToMock ? this.formations : []))
       );
   }
 
-  storeFormation(formation: Formation): Observable<Formation> {
-    if (environment.mockNetwork) {
+  storeFormation(formation: Formation, userId: string): Observable<Formation> {
+    if (environment.mockNetwork || environment.fallbackToMock) {
       this.knownFormations.set(formation.id, formation);
       this.storeFormationsInLocalStorage();
-      return of(formation);
+      if (environment.mockNetwork) {
+        return of(formation);
+      }
     }
 
     return this.http.put<Formation>(
-      this.formationsURL + '/' + encodeURIComponent(formation.id),
+      this.formationsURL + '/' + encodeURIComponent(userId) + '/' + encodeURIComponent(formation.id),
       formation,
       this.httpOptions
     ).pipe(
@@ -53,15 +54,17 @@ export class FormationsService {
     )
   }
 
-  deleteFormation(formation: Formation): Observable<ArrayBuffer> {
-    if (environment.mockNetwork) {
+  deleteFormation(formation: Formation, userId: string): Observable<ArrayBuffer> {
+    if (environment.mockNetwork || environment.fallbackToMock) {
       this.knownFormations.delete(formation.id);
       this.storeFormationsInLocalStorage();
-      return of(new ArrayBuffer(0));
+      if (environment.mockNetwork) {
+        return of(new ArrayBuffer(0));
+      }
     }
 
     return this.http.delete<ArrayBuffer>(
-      this.formationsURL + '/' + encodeURIComponent(formation.id),
+      this.formationsURL + '/' + encodeURIComponent(userId) + '/' + encodeURIComponent(formation.id),
       this.httpOptions
     ).pipe(
       catchError(this.errorService.handleError<ArrayBuffer>('Formation',
