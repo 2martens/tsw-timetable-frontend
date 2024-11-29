@@ -3,7 +3,8 @@ export const environment = {
   keycloakURL: "https://id.2martens.de",
   realm: "2martens",
   clientId: "tsw-timetable-frontend",
-  mockNetwork: false
+  mockNetwork: false,
+  fallbackToMock: true
 };
 
 /*

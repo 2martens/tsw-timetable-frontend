@@ -1,0 +1,88 @@
+<ion-modal aria-labelledby="create-route-title" [isOpen]="isOpen"
+           (keyup.escape)="cancel()"
+           backdrop-dismiss="false">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title id="create-route-title" i18n>Create Timetable</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <form id="createTimetableForm" #createTimetable="ngForm" (ngSubmit)="confirm()">
+        <ion-input
+          i18n-label
+          label="ID"
+          labelPlacement="stacked"
+          type="text"
+          [required]="true"
+          name="id"
+          i18n-placeholder
+          placeholder="unique-id"
+          i18n-helper-text
+          helper-text="You cannot change this value later on. Uniquely identifies this timetable."
+          pattern="^[\w\-]+$"
+          i18n-title
+          title="Only letters and dashes (-) are allowed."
+          [(ngModel)]="timetable.id"
+        ></ion-input>
+        <ion-input
+          i18n-label
+          label="Name"
+          labelPlacement="stacked"
+          type="text"
+          name="name"
+          [required]="true"
+          i18n-placeholder
+          placeholder="Name of the timetable"
+          [(ngModel)]="timetable.name"
+        ></ion-input>
+        <ion-select
+          i18n-label
+          label="Route"
+          labelPlacement="stacked"
+          i18n-placeholder
+          placeholder="Route of the timetable"
+          name="route"
+          interface="popover"
+          [compareWith]="compareWithRoute"
+          [(ngModel)]="route"
+        >
+          <ion-select-option *ngFor="let route of routes$ | async"
+                             [value]="route">
+            {{ route.name }}
+          </ion-select-option>
+        </ion-select>
+        <ion-note i18n>
+          You cannot change this value later on.
+        </ion-note>
+        <ion-input
+          i18n-label
+          label="Date"
+          labelPlacement="stacked"
+          type="date"
+          name="date"
+          [required]="true"
+          [min]="minDateString"
+          [(ngModel)]="timetable.date"
+          i18n-helperText
+          helperText="You cannot change this value later on."
+          i18n-title
+          title="Only dates at least two days in the future are allowed"
+        ></ion-input>
+      </form>
+    </ion-content>
+    <ion-footer>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button (click)="cancel()" i18n>Cancel</ion-button>
+        </ion-buttons>
+        <ion-buttons slot="end">
+          <ion-button form="createTimetableForm" type="submit" button-type="submit" [strong]="true" i18n
+                      [disabled]="!createTimetable.form.valid">Confirm
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-footer>
+  </ng-template>
+</ion-modal>
+

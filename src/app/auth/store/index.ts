@@ -1,13 +1,14 @@
 import {createFeatureSelector, createSelector} from "@ngrx/store";
 import {AuthState} from "./auth.reducer";
 import {FunctionalEffect} from "@ngrx/effects";
-import {logIn, logOut} from "./auth.effects";
+import {logIn, logOut, storeUser} from "./auth.effects";
 
 export const authFeature = 'auth';
 
 export const authEffects: Record<string, FunctionalEffect> = {
   logIn,
-  logOut
+  logOut,
+  storeUser
 }
 
 export const getAuthFeatureState = createFeatureSelector<AuthState>(

@@ -30,6 +30,7 @@ function initializeKeycloak(keycloak: KeycloakService, locationService: Location
         silentCheckSsoRedirectUri: `${window.location.origin}${locationService.prepareExternalUrl('/assets/silent-check-sso.html')}`,
         flow: "standard"
       },
+      enableBearerInterceptor: true,
       shouldAddToken: (request) => {
         const {url} = request;
         return url.startsWith(environment.backendURL);

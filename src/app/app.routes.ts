@@ -8,6 +8,8 @@ import {subscriptionReducer} from "./subscription/store/subscription.reducer";
 import {subscriptionEffects, subscriptionFeature} from "./subscription/store";
 import {routesReducer} from "./routes/store/routes.reducer";
 import {featureStateName as routesFeature, routesEffects} from "./routes/store";
+import {featureStateName as timetablesFeature, timetablesEffects} from "./timetables/store";
+import {timetablesReducer} from "./timetables/store/timetables.reducer";
 
 export const ROOT_ROUTES: Routes = [
   {
@@ -58,7 +60,12 @@ export const ROOT_ROUTES: Routes = [
   {
     path: 'timetables',
     loadComponent: () => import("./timetables/timetables.component").then(mod => mod.TimetablesComponent),
-    canActivate: [AppAuthGuard]
+    canActivate: [AppAuthGuard],
+    providers: [
+      provideState(timetablesFeature, timetablesReducer),
+      provideState(routesFeature, routesReducer),
+      provideEffects(timetablesEffects, routesEffects)
+    ]
   },
   {
     path: 'formations',
@@ -76,7 +83,8 @@ export const ROOT_ROUTES: Routes = [
     providers: [
       provideState(formationsFeature, formationsReducer),
       provideState(routesFeature, routesReducer),
-      provideEffects(formationsEffects, routesEffects)
+      provideState(timetablesFeature, timetablesReducer),
+      provideEffects(formationsEffects, routesEffects, timetablesEffects)
     ],
   },
   {
