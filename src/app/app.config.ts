@@ -6,7 +6,7 @@ import {ROOT_ROUTES} from "./app.routes";
 import {provideState, provideStore} from "@ngrx/store";
 import {provideEffects} from "@ngrx/effects";
 import {provideAnimations} from "@angular/platform-browser/animations";
-import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from "@angular/common/http";
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
 import {provideServiceWorker} from "@angular/service-worker";
 import {environment} from "../environments/environment";
 import {IonicRouteStrategy, provideIonicAngular} from "@ionic/angular/standalone";
@@ -60,7 +60,7 @@ export const appConfig: ApplicationConfig = {
       autoPause: true, // Pauses recording actions and state changes when the extension window is not open
       trace: false, //  If set to true, will include stack trace for every dispatched action, so you can see it in trace tab jumping directly to that part of code
       traceLimit: 75, // maximum stack trace frames to be stored (in case trace option was provided as true)
-      connectOutsideZone: true // If set to true, the connection is established outside the Angular zone for better performance
+      connectInZone: false // If set to true, the connection is established outside the Angular zone for better performance
     }),
     provideAnimations(),
     provideHttpClient(withInterceptorsFromDi()),

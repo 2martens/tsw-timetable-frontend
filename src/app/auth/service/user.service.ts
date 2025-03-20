@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {BackendUser, User} from "../model/user";
 import {catchError, map, Observable} from "rxjs";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import {ErrorService} from "../../errors/error.service";
 import {environment} from "../../../environments/environment";
 

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable, of} from "rxjs";
-import {HttpStatusCode} from "@angular/common/http";
+import { HttpStatusCode } from "@angular/common/http";
 import {MessageType} from "../messages/model/message-type";
 import {addMessageAction} from "../messages/store/messages.actions";
 import {MessagesState} from "../messages/store/messages.reducer";

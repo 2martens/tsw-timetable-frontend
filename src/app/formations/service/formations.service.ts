@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Formation} from "../model/formation";
 import {catchError, Observable, of} from "rxjs";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {ErrorService} from "../../errors/error.service";
 
