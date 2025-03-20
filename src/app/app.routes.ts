@@ -1,5 +1,4 @@
 import {Routes} from '@angular/router';
-import {AppAuthGuard} from "./auth/auth.guard";
 import {provideState} from "@ngrx/store";
 import {featureStateName as formationsFeature, formationsEffects} from "./formations/store";
 import {provideEffects} from "@ngrx/effects";
@@ -10,6 +9,7 @@ import {routesReducer} from "./routes/store/routes.reducer";
 import {featureStateName as routesFeature, routesEffects} from "./routes/store";
 import {featureStateName as timetablesFeature, timetablesEffects} from "./timetables/store";
 import {timetablesReducer} from "./timetables/store/timetables.reducer";
+import { canActivateAuthRole } from './auth/auth.guard';
 
 export const ROOT_ROUTES: Routes = [
   {
@@ -40,17 +40,17 @@ export const ROOT_ROUTES: Routes = [
   {
     path: 'logout',
     loadComponent: () => import("./auth/logout/logout.component").then(mod => mod.LogoutComponent),
-    canActivate: [AppAuthGuard],
+    canActivate: [canActivateAuthRole],
   },
   {
     path: 'account',
     loadComponent: () => import("./auth/account/account.component").then(mod => mod.AccountComponent),
-    canActivate: [AppAuthGuard],
+    canActivate: [canActivateAuthRole],
   },
   {
     path: 'routes',
     loadComponent: () => import("./routes/routes.component").then(mod => mod.RoutesComponent),
-    canActivate: [AppAuthGuard],
+    canActivate: [canActivateAuthRole],
     providers: [
       provideState(routesFeature, routesReducer),
       provideState(formationsFeature, formationsReducer),
@@ -60,7 +60,7 @@ export const ROOT_ROUTES: Routes = [
   {
     path: 'timetables',
     loadComponent: () => import("./timetables/timetables.component").then(mod => mod.TimetablesComponent),
-    canActivate: [AppAuthGuard],
+    canActivate: [canActivateAuthRole],
     providers: [
       provideState(timetablesFeature, timetablesReducer),
       provideState(routesFeature, routesReducer),
@@ -70,7 +70,7 @@ export const ROOT_ROUTES: Routes = [
   {
     path: 'formations',
     loadComponent: () => import("./formations/formations.component").then(mod => mod.FormationsComponent),
-    canActivate: [AppAuthGuard],
+    canActivate: [canActivateAuthRole],
     providers: [
       provideState(formationsFeature, formationsReducer),
       provideEffects(formationsEffects)
@@ -79,7 +79,7 @@ export const ROOT_ROUTES: Routes = [
   {
     path: 'dashboard',
     loadComponent: () => import("./dashboard/dashboard.component").then(mod => mod.DashboardComponent),
-    canActivate: [AppAuthGuard],
+    canActivate: [canActivateAuthRole],
     providers: [
       provideState(formationsFeature, formationsReducer),
       provideState(routesFeature, routesReducer),

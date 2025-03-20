@@ -4,7 +4,7 @@ import {Store} from "@ngrx/store";
 import {defaultIfEmpty, filter, map, Observable, of, share, switchMap, tap, using} from "rxjs";
 import {getUser, isLoggedIn, needsUserData} from "../store";
 import {User} from "../model/user";
-import {KeycloakService} from "keycloak-angular";
+import Keycloak from 'keycloak-js';
 import {loggedInAction, loggedInFinishedAction} from "../store/auth.actions";
 
 @Injectable({
@@ -13,7 +13,7 @@ import {loggedInAction, loggedInFinishedAction} from "../store/auth.actions";
 export class AuthService {
 
   constructor(private readonly store: Store<AuthState>,
-              private readonly keycloakService: KeycloakService) {
+              private readonly keycloak: Keycloak) {
   }
 
   isLoggedIn$(): Observable<boolean> {
@@ -24,8 +24,8 @@ export class AuthService {
   }
 
   private determineLogInStatus$(): Observable<boolean> {
-    return of(this.keycloakService.isLoggedIn()).pipe(
-      filter(isLoggedIn => isLoggedIn),
+    return of(this.keycloak.authenticated).pipe(
+      filter(isLoggedIn => isLoggedIn !== undefined && isLoggedIn),
       tap(_ => this.store.dispatch(loggedInAction())),
       defaultIfEmpty(false),
       share(),
@@ -42,9 +42,9 @@ export class AuthService {
   private loadUser$(): Observable<User> {
     return this.store.select(needsUserData()).pipe(
       filter(needsUserData => needsUserData),
-      switchMap(() => this.keycloakService.loadUserProfile()),
+      switchMap(() => this.keycloak.loadUserProfile()),
       map((userProfile) => {
-        const roles = this.keycloakService.getUserRoles(false);
+        const roles = (this.keycloak.realmAccess?.roles ?? []).concat(this.keycloak.resourceAccess?.['tsw-timetable-frontend']?.roles ?? []);
         return {
           id: userProfile.id || '',
           username: userProfile.username || '',

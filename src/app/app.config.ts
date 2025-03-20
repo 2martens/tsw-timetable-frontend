@@ -1,12 +1,11 @@
-import {APP_INITIALIZER, ApplicationConfig, isDevMode} from "@angular/core";
-import {KeycloakBearerInterceptor, KeycloakService} from "keycloak-angular";
-import {Location} from "@angular/common";
+import {ApplicationConfig, isDevMode, provideZoneChangeDetection} from "@angular/core";
+import {createInterceptorCondition, INCLUDE_BEARER_TOKEN_INTERCEPTOR_CONFIG, IncludeBearerTokenCondition, includeBearerTokenInterceptor, provideKeycloak} from "keycloak-angular";
 import {provideRouter, RouteReuseStrategy, withComponentInputBinding} from "@angular/router";
 import {ROOT_ROUTES} from "./app.routes";
 import {provideState, provideStore} from "@ngrx/store";
 import {provideEffects} from "@ngrx/effects";
 import {provideAnimations} from "@angular/platform-browser/animations";
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
+import { provideHttpClient, withInterceptors, withInterceptorsFromDi } from "@angular/common/http";
 import {provideServiceWorker} from "@angular/service-worker";
 import {environment} from "../environments/environment";
 import {IonicRouteStrategy, provideIonicAngular} from "@ionic/angular/standalone";
@@ -17,9 +16,14 @@ import {messagesEffects, messagesFeature} from "./messages/store";
 import {messagesReducer} from "./messages/store/messages.reducer";
 import {redirectEffects} from "./redirect/store";
 
-function initializeKeycloak(keycloak: KeycloakService, locationService: Location) {
-  return () =>
-    keycloak.init({
+const urlCondition = createInterceptorCondition<IncludeBearerTokenCondition>({
+  urlPattern: /^(http:\/\/localhost:12100|https:\/\/api\.2martens\.de)(\/.*)?$/i,
+  bearerPrefix: 'Bearer'
+});
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideKeycloak({
       config: {
         url: environment.keycloakURL,
         realm: environment.realm,
@@ -27,26 +31,10 @@ function initializeKeycloak(keycloak: KeycloakService, locationService: Location
       },
       initOptions: {
         onLoad: 'check-sso',
-        silentCheckSsoRedirectUri: `${window.location.origin}${locationService.prepareExternalUrl('/assets/silent-check-sso.html')}`,
+        silentCheckSsoRedirectUri: `${window.location.origin}/assets/silent-check-sso.html`,
         flow: "standard"
-      },
-      enableBearerInterceptor: true,
-      shouldAddToken: (request) => {
-        const {url} = request;
-        return url.startsWith(environment.backendURL);
-      },
-      loadUserProfileAtStartUp: true
-    });
-}
-
-export const appConfig: ApplicationConfig = {
-  providers: [
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeKeycloak,
-      multi: true,
-      deps: [KeycloakService, Location],
-    },
+      }
+    }),
     {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
     provideIonicAngular(),
     provideRouter(ROOT_ROUTES, withComponentInputBinding()),
@@ -63,13 +51,12 @@ export const appConfig: ApplicationConfig = {
       connectInZone: false // If set to true, the connection is established outside the Angular zone for better performance
     }),
     provideAnimations(),
-    provideHttpClient(withInterceptorsFromDi()),
-    KeycloakService,
+    provideHttpClient(withInterceptorsFromDi(), withInterceptors([includeBearerTokenInterceptor])),
     {
-      provide: HTTP_INTERCEPTORS,
-      useClass: KeycloakBearerInterceptor,
-      multi: true
+      provide: INCLUDE_BEARER_TOKEN_INTERCEPTOR_CONFIG,
+      useValue: [urlCondition] // <-- Note that multiple conditions might be added.
     },
+    provideZoneChangeDetection({ eventCoalescing: true }),
     provideServiceWorker('ngsw-worker.js', {
       enabled: !isDevMode(),
       registrationStrategy: 'registerWhenStable:30000'
