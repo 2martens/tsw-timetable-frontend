@@ -6,17 +6,16 @@ import {Store} from "@ngrx/store";
 import {logOutAction} from "../store/auth.actions";
 
 @Component({
-  selector: 'app-logout',
-  templateUrl: './logout.component.html',
-  imports: [
-    IonButtons,
-    IonContent,
-    IonHeader,
-    IonMenuButton,
-    IonTitle,
-    IonToolbar
-  ],
-  standalone: true
+    selector: 'app-logout',
+    templateUrl: './logout.component.html',
+    imports: [
+        IonButtons,
+        IonContent,
+        IonHeader,
+        IonMenuButton,
+        IonTitle,
+        IonToolbar
+    ]
 })
 export class LogoutComponent implements OnInit {
 

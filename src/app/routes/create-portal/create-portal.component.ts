@@ -30,15 +30,14 @@ import {addIcons} from "ionicons";
 import {trashOutline, trashSharp} from "ionicons/icons";
 
 @Component({
-  selector: 'app-create-portal',
-  standalone: true,
-  imports: [
-    FormsModule, IonContent, IonHeader, IonInput, IonModal, IonTitle, IonToolbar,
-    ReactiveFormsModule, IonSelect, IonSelectOption, IonButton, IonButtons, IonFooter, IonIcon, IonItem, IonItemOption,
-    IonItemOptions, IonItemSliding, IonLabel, IonList, TypeaheadComponent, IonDatetime, NgForOf, AsyncPipe
-  ],
-  templateUrl: './create-portal.component.html',
-  styleUrl: './create-portal.component.scss'
+    selector: 'app-create-portal',
+    imports: [
+        FormsModule, IonContent, IonHeader, IonInput, IonModal, IonTitle, IonToolbar,
+        ReactiveFormsModule, IonSelect, IonSelectOption, IonButton, IonButtons, IonFooter, IonIcon, IonItem, IonItemOption,
+        IonItemOptions, IonItemSliding, IonLabel, IonList, TypeaheadComponent, IonDatetime, NgForOf, AsyncPipe
+    ],
+    templateUrl: './create-portal.component.html',
+    styleUrl: './create-portal.component.scss'
 })
 export class CreatePortalComponent extends PortalComponent {
   @Input({required: true}) isOpen: boolean = false;

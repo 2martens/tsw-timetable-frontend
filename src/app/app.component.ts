@@ -49,13 +49,12 @@ import {AuthService} from "./auth/service/auth.service";
 import {SubscriptionService} from "./subscription/service/subscription.service";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss'],
-  standalone: true,
-  imports: [RouterLink, RouterLinkActive, IonApp, IonSplitPane, IonMenu, IonContent, IonList,
-    IonListHeader, IonNote, IonMenuToggle, IonItem, IonIcon, IonLabel, IonRouterOutlet, NgFor, AsyncPipe,
-    IonItemDivider, IonHeader, IonToolbar, IonTitle],
+    selector: 'app-root',
+    templateUrl: 'app.component.html',
+    styleUrls: ['app.component.scss'],
+    imports: [RouterLink, RouterLinkActive, IonApp, IonSplitPane, IonMenu, IonContent, IonList,
+        IonListHeader, IonNote, IonMenuToggle, IonItem, IonIcon, IonLabel, IonRouterOutlet, NgFor, AsyncPipe,
+        IonItemDivider, IonHeader, IonToolbar, IonTitle]
 })
 export class AppComponent {
   public accountPages = [

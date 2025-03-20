@@ -42,16 +42,15 @@ import {ActivatedRoute, EventType, NavigationEnd, Router} from "@angular/router"
 import {addMessageAction} from "../../messages/store/messages.actions";
 
 @Component({
-  selector: 'app-pricing',
-  templateUrl: './pricing.component.html',
-  styleUrls: ['./pricing.component.scss'],
-  standalone: true,
-  imports: [
-    IonContent, IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, AsyncPipe, IonGrid, IonRow, IonCol,
-    IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCardSubtitle, IonSegment, IonSegmentButton, IonLabel,
-    IonButton, NgForOf, IonList, IonListHeader, IonItem, IonIcon, FormsModule, IonFooter,
-  ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    selector: 'app-pricing',
+    templateUrl: './pricing.component.html',
+    styleUrls: ['./pricing.component.scss'],
+    imports: [
+        IonContent, IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, AsyncPipe, IonGrid, IonRow, IonCol,
+        IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCardSubtitle, IonSegment, IonSegmentButton, IonLabel,
+        IonButton, NgForOf, IonList, IonListHeader, IonItem, IonIcon, FormsModule, IonFooter,
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class PricingComponent implements OnDestroy {
   private readonly store: Store<SubscriptionState> = inject(Store<SubscriptionState>);

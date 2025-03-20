@@ -6,17 +6,16 @@ import {Store} from "@ngrx/store";
 import {logInAction} from "../store/auth.actions";
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  imports: [
-    IonButtons,
-    IonContent,
-    IonHeader,
-    IonMenuButton,
-    IonTitle,
-    IonToolbar
-  ],
-  standalone: true
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    imports: [
+        IonButtons,
+        IonContent,
+        IonHeader,
+        IonMenuButton,
+        IonTitle,
+        IonToolbar
+    ]
 })
 export class LoginComponent implements OnInit {
 

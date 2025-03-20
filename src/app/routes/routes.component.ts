@@ -34,35 +34,34 @@ import {AuthService} from "../auth/service/auth.service";
 import {filter, map} from "rxjs";
 
 @Component({
-  selector: 'app-routes',
-  templateUrl: './routes.component.html',
-  styleUrls: ['./routes.component.scss'],
-  standalone: true,
-  imports: [
-    IonHeader,
-    NgForOf,
-    IonToolbar,
-    IonButtons,
-    IonMenuButton,
-    IonTitle,
-    IonContent,
-    IonList,
-    IonListHeader,
-    IonLabel,
-    IonItem,
-    IonItemSliding,
-    IonItemOptions,
-    IonItemOption,
-    IonIcon,
-    IonFab,
-    IonFabButton,
-    IonFooter,
-    AsyncPipe,
-    CreateFormationComponent,
-    UpdateFormationComponent,
-    CreateRouteComponent,
-    UpdateRouteComponent
-  ]
+    selector: 'app-routes',
+    templateUrl: './routes.component.html',
+    styleUrls: ['./routes.component.scss'],
+    imports: [
+        IonHeader,
+        NgForOf,
+        IonToolbar,
+        IonButtons,
+        IonMenuButton,
+        IonTitle,
+        IonContent,
+        IonList,
+        IonListHeader,
+        IonLabel,
+        IonItem,
+        IonItemSliding,
+        IonItemOptions,
+        IonItemOption,
+        IonIcon,
+        IonFab,
+        IonFabButton,
+        IonFooter,
+        AsyncPipe,
+        CreateFormationComponent,
+        UpdateFormationComponent,
+        CreateRouteComponent,
+        UpdateRouteComponent
+    ]
 })
 export class RoutesComponent {
   isCreateModalOpen = false;

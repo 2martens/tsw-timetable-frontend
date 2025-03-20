@@ -29,11 +29,10 @@ import {Station} from "../model/station";
 import {Depot} from "../model/depot";
 
 @Component({
-  selector: 'app-update-depot',
-  standalone: true,
-  imports: [CommonModule, FormsModule, IonButton, IonButtons, IonContent, IonFooter, IonHeader, IonIcon, IonInput, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonModal, IonSelect, IonSelectOption, IonTitle, IonToolbar, TypeaheadComponent],
-  templateUrl: './update-depot.component.html',
-  styleUrl: './update-depot.component.scss'
+    selector: 'app-update-depot',
+    imports: [CommonModule, FormsModule, IonButton, IonButtons, IonContent, IonFooter, IonHeader, IonIcon, IonInput, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonModal, IonSelect, IonSelectOption, IonTitle, IonToolbar, TypeaheadComponent],
+    templateUrl: './update-depot.component.html',
+    styleUrl: './update-depot.component.scss'
 })
 export class UpdateDepotComponent extends DepotComponent {
   @Input({required: true}) isOpen: boolean = false;

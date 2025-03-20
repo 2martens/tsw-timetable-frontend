@@ -37,15 +37,14 @@ import {AsyncPipe, NgForOf} from "@angular/common";
 import {DEFAULT_ROUTE, Route} from "../../routes/model/route";
 
 @Component({
-  selector: 'app-create-timetable',
-  standalone: true,
-  imports: [CreateDepotComponent, CreatePortalComponent, FormsModule, IonButton, IonButtons, IonContent, IonFooter,
-    IonHeader, IonIcon, IonInput, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonModal,
-    IonReorder, IonReorderGroup, IonSelect, IonSelectOption, IonTitle, IonToolbar, ReactiveFormsModule,
-    TypeaheadComponent, UpdateDepotComponent, UpdatePortalComponent, IonNote,
-    AsyncPipe, NgForOf],
-  templateUrl: './create-timetable.component.html',
-  styleUrl: './create-timetable.component.scss'
+    selector: 'app-create-timetable',
+    imports: [CreateDepotComponent, CreatePortalComponent, FormsModule, IonButton, IonButtons, IonContent, IonFooter,
+        IonHeader, IonIcon, IonInput, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonModal,
+        IonReorder, IonReorderGroup, IonSelect, IonSelectOption, IonTitle, IonToolbar, ReactiveFormsModule,
+        TypeaheadComponent, UpdateDepotComponent, UpdatePortalComponent, IonNote,
+        AsyncPipe, NgForOf],
+    templateUrl: './create-timetable.component.html',
+    styleUrl: './create-timetable.component.scss'
 })
 export class CreateTimetableComponent extends TimetableComponent {
   @Input() isOpen: boolean = false;

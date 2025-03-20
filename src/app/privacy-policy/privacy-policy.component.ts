@@ -10,21 +10,20 @@ import {
 } from "@ionic/angular/standalone";
 
 @Component({
-  selector: 'app-privacy-policy',
-  standalone: true,
-  templateUrl: './privacy-policy.component.html',
-  styleUrls: ['./privacy-policy.component.scss'],
-  imports: [
-    IonButtons,
-    IonContent,
-    IonHeader,
-    IonMenuButton,
-    IonTitle,
-    IonToolbar,
-    IonGrid,
-    IonRow,
-    IonCol
-  ],
+    selector: 'app-privacy-policy',
+    templateUrl: './privacy-policy.component.html',
+    styleUrls: ['./privacy-policy.component.scss'],
+    imports: [
+        IonButtons,
+        IonContent,
+        IonHeader,
+        IonMenuButton,
+        IonTitle,
+        IonToolbar,
+        IonGrid,
+        IonRow,
+        IonCol
+    ]
 })
 export class PrivacyPolicyComponent {
 

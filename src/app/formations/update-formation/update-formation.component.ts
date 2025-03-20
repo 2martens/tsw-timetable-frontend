@@ -23,27 +23,26 @@ import {updateFormationAction} from "../store/formations.actions";
 import {FormationsState} from "../store/formations.reducer";
 
 @Component({
-  selector: 'app-update-formation',
-  templateUrl: './update-formation.component.html',
-  styleUrls: ['./update-formation.component.scss'],
-  standalone: true,
-  imports: [
-    IonModal,
-    AsyncPipe,
-    FormsModule,
-    IonButton,
-    IonButtons,
-    IonContent,
-    IonFooter,
-    IonHeader,
-    IonInput,
-    IonItem,
-    IonSelect,
-    IonSelectOption,
-    IonTitle,
-    IonToolbar,
-    NgForOf
-  ]
+    selector: 'app-update-formation',
+    templateUrl: './update-formation.component.html',
+    styleUrls: ['./update-formation.component.scss'],
+    imports: [
+        IonModal,
+        AsyncPipe,
+        FormsModule,
+        IonButton,
+        IonButtons,
+        IonContent,
+        IonFooter,
+        IonHeader,
+        IonInput,
+        IonItem,
+        IonSelect,
+        IonSelectOption,
+        IonTitle,
+        IonToolbar,
+        NgForOf
+    ]
 })
 export class UpdateFormationComponent {
   @ViewChild(IonModal) modal: IonModal | undefined;

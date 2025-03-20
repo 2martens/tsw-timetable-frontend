@@ -9,11 +9,10 @@ type PositionAlign = "start" | "center" | "end";
 type PositionSide = "top" | "right" | "bottom" | "left" | "start" | "end";
 
 @Component({
-  selector: 'app-typeahead',
-  standalone: true,
-  imports: [IonContent, IonItem, IonLabel, IonList, IonPopover, IonSearchbar, AsyncPipe, NgForOf],
-  templateUrl: './typeahead.component.html',
-  styleUrl: './typeahead.component.scss'
+    selector: 'app-typeahead',
+    imports: [IonContent, IonItem, IonLabel, IonList, IonPopover, IonSearchbar, AsyncPipe, NgForOf],
+    templateUrl: './typeahead.component.html',
+    styleUrl: './typeahead.component.scss'
 })
 export class TypeaheadComponent<T extends Item> implements OnChanges {
   @Input() debounce: number = 300;

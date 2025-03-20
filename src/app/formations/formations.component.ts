@@ -30,33 +30,32 @@ import {UpdateFormationComponent} from "./update-formation/update-formation.comp
 import {FormationsState} from "./store/formations.reducer";
 
 @Component({
-  selector: 'app-formations',
-  templateUrl: './formations.component.html',
-  styleUrls: ['./formations.component.scss'],
-  standalone: true,
-  imports: [
-    IonHeader,
-    IonToolbar,
-    IonButtons,
-    IonMenuButton,
-    IonTitle,
-    IonContent,
-    IonList,
-    IonListHeader,
-    IonLabel,
-    IonItem,
-    IonItemSliding,
-    IonItemOptions,
-    IonItemOption,
-    IonIcon,
-    IonFab,
-    IonFabButton,
-    IonFooter,
-    NgForOf,
-    AsyncPipe,
-    CreateFormationComponent,
-    UpdateFormationComponent
-  ]
+    selector: 'app-formations',
+    templateUrl: './formations.component.html',
+    styleUrls: ['./formations.component.scss'],
+    imports: [
+        IonHeader,
+        IonToolbar,
+        IonButtons,
+        IonMenuButton,
+        IonTitle,
+        IonContent,
+        IonList,
+        IonListHeader,
+        IonLabel,
+        IonItem,
+        IonItemSliding,
+        IonItemOptions,
+        IonItemOption,
+        IonIcon,
+        IonFab,
+        IonFabButton,
+        IonFooter,
+        NgForOf,
+        AsyncPipe,
+        CreateFormationComponent,
+        UpdateFormationComponent
+    ]
 })
 export class FormationsComponent {
   isCreateModalOpen = false;

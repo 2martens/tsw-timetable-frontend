@@ -21,25 +21,24 @@ import {SubscriptionService} from "../../subscription/service/subscription.servi
 import {AsyncPipe} from "@angular/common";
 
 @Component({
-  selector: 'app-account',
-  templateUrl: './account.component.html',
-  styleUrls: ['./account.component.scss'],
-  imports: [
-    IonContent,
-    IonButtons,
-    IonHeader,
-    IonMenuButton,
-    IonTitle,
-    IonToolbar,
-    IonCard,
-    IonCardHeader,
-    IonCardContent,
-    IonButton,
-    IonCardTitle,
-    IonIcon,
-    AsyncPipe
-  ],
-  standalone: true
+    selector: 'app-account',
+    templateUrl: './account.component.html',
+    styleUrls: ['./account.component.scss'],
+    imports: [
+        IonContent,
+        IonButtons,
+        IonHeader,
+        IonMenuButton,
+        IonTitle,
+        IonToolbar,
+        IonCard,
+        IonCardHeader,
+        IonCardContent,
+        IonButton,
+        IonCardTitle,
+        IonIcon,
+        AsyncPipe
+    ]
 })
 export class AccountComponent {
   keycloakURL: string = environment.keycloakURL

@@ -35,11 +35,10 @@ import {Timetable} from "../model/timetable";
 import {updateTimetableAction} from "../store/timetables.actions";
 
 @Component({
-  selector: 'app-update-timetable',
-  standalone: true,
-  imports: [NgForOf, AsyncPipe, CreateDepotComponent, CreatePortalComponent, FormsModule, IonButton, IonButtons, IonContent, IonFooter, IonHeader, IonIcon, IonInput, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonModal, IonReorder, IonReorderGroup, IonSelect, IonSelectOption, IonTitle, IonToolbar, TypeaheadComponent, UpdateDepotComponent, UpdatePortalComponent, DatePipe],
-  templateUrl: './update-timetable.component.html',
-  styleUrl: './update-timetable.component.scss'
+    selector: 'app-update-timetable',
+    imports: [NgForOf, AsyncPipe, CreateDepotComponent, CreatePortalComponent, FormsModule, IonButton, IonButtons, IonContent, IonFooter, IonHeader, IonIcon, IonInput, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonModal, IonReorder, IonReorderGroup, IonSelect, IonSelectOption, IonTitle, IonToolbar, TypeaheadComponent, UpdateDepotComponent, UpdatePortalComponent, DatePipe],
+    templateUrl: './update-timetable.component.html',
+    styleUrl: './update-timetable.component.scss'
 })
 export class UpdateTimetableComponent extends TimetableComponent {
   @Output() dismissed: EventEmitter<boolean> = new EventEmitter<boolean>();

@@ -33,35 +33,34 @@ import {CreateTimetableComponent} from "./create-timetable/create-timetable.comp
 import {UpdateTimetableComponent} from "./update-timetable/update-timetable.component";
 
 @Component({
-  selector: 'app-timetables',
-  templateUrl: './timetables.component.html',
-  styleUrls: ['./timetables.component.scss'],
-  standalone: true,
-  imports: [
-    IonHeader,
-    IonToolbar,
-    IonButtons,
-    IonMenuButton,
-    IonTitle,
-    IonContent,
-    IonList,
-    IonListHeader,
-    IonLabel,
-    IonItem,
-    IonItemSliding,
-    IonItemOptions,
-    IonItemOption,
-    IonIcon,
-    IonFab,
-    IonFabButton,
-    IonFooter,
-    NgForOf,
-    AsyncPipe,
-    CreateRouteComponent,
-    CreateTimetableComponent,
-    DatePipe,
-    UpdateTimetableComponent
-  ]
+    selector: 'app-timetables',
+    templateUrl: './timetables.component.html',
+    styleUrls: ['./timetables.component.scss'],
+    imports: [
+        IonHeader,
+        IonToolbar,
+        IonButtons,
+        IonMenuButton,
+        IonTitle,
+        IonContent,
+        IonList,
+        IonListHeader,
+        IonLabel,
+        IonItem,
+        IonItemSliding,
+        IonItemOptions,
+        IonItemOption,
+        IonIcon,
+        IonFab,
+        IonFabButton,
+        IonFooter,
+        NgForOf,
+        AsyncPipe,
+        CreateRouteComponent,
+        CreateTimetableComponent,
+        DatePipe,
+        UpdateTimetableComponent
+    ]
 })
 export class TimetablesComponent {
   isCreateModalOpen = false;

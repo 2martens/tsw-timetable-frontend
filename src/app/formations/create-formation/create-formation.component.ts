@@ -23,28 +23,27 @@ import {FormationsStoreService} from "../service/formations-store.service";
 import {FormationsState} from "../store/formations.reducer";
 
 @Component({
-  selector: 'app-create-formation',
-  templateUrl: './create-formation.component.html',
-  styleUrls: ['./create-formation.component.scss'],
-  standalone: true,
-  imports: [
-    IonHeader,
-    IonModal,
-    IonToolbar,
-    IonButtons,
-    IonButton,
-    IonTitle,
-    IonContent,
-    IonItem,
-    IonInput,
-    FormsModule,
-    IonFooter,
-    IonSelect,
-    IonSelectOption,
-    NgForOf,
-    AsyncPipe,
-    ReactiveFormsModule
-  ]
+    selector: 'app-create-formation',
+    templateUrl: './create-formation.component.html',
+    styleUrls: ['./create-formation.component.scss'],
+    imports: [
+        IonHeader,
+        IonModal,
+        IonToolbar,
+        IonButtons,
+        IonButton,
+        IonTitle,
+        IonContent,
+        IonItem,
+        IonInput,
+        FormsModule,
+        IonFooter,
+        IonSelect,
+        IonSelectOption,
+        NgForOf,
+        AsyncPipe,
+        ReactiveFormsModule
+    ]
 })
 export class CreateFormationComponent {
   @Input() isOpen: boolean = false;
