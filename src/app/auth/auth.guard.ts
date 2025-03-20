@@ -14,8 +14,7 @@ const isAccessAllowed = async (
   const { authenticated, grantedRoles } = authData;
 
   const store = inject(Store<AuthService>);
-  const requiredRoles = route.data['roles'];
-  if (!requiredRoles) {
+  if (!authenticated) {
     const redirectUri = `${window.location.origin}${state.url}`;
     store.dispatch(logInAction({redirectUrl: redirectUri}));
     return false;
@@ -23,10 +22,16 @@ const isAccessAllowed = async (
 
   store.dispatch(loggedInAction());
 
+  const requiredRoles = route.data['roles'];
+  // Allow the user to proceed if no additional roles are required to access the route.
+  if (!(requiredRoles instanceof Array) || requiredRoles.length === 0) {
+    return true;
+  }
+
   const hasRequiredRole = (role: string): boolean =>
     Object.values(grantedRoles.resourceRoles).some((roles) => roles.includes(role));
 
-  if (authenticated && requiredRoles.every(hasRequiredRole)) {
+  if (requiredRoles.every(hasRequiredRole)) {
     return true;
   }
 
