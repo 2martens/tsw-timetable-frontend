@@ -21,14 +21,6 @@
     "lint": "ng lint"
   },
   "private": true,
-  "overrides": {
-    "@ngrx/effects": {
-      "@angular/core": "^17.0.2"
-    },
-    "@ngrx/store": {
-      "@angular/core": "^17.0.2"
-    }
-  },
   "resolutions": {
     "graceful-fs": "^4.2.11"
   },
@@ -52,7 +44,7 @@
     "@ngrx/store": "^18.1.1",
     "@ngrx/store-devtools": "^18.1.1",
     "ionicons": "^7.2.1",
-    "keycloak-angular": "^15.0.0",
+    "keycloak-angular": "^16.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.10",
