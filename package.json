@@ -40,15 +40,15 @@
     "@capacitor/keyboard": "5.0.6",
     "@capacitor/status-bar": "5.0.6",
     "@ionic/angular": "^7.5.5",
-    "@ngrx/effects": "^18.1.1",
-    "@ngrx/store": "^18.1.1",
-    "@ngrx/store-devtools": "^18.1.1",
+    "@ngrx/effects": "^19.0.1",
+    "@ngrx/store": "^19.0.1",
+    "@ngrx/store-devtools": "^19.0.1",
     "ionicons": "^7.2.1",
     "keycloak-angular": "^16.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0",
-    "@ngrx/operators": "^18.0.0"
+    "@ngrx/operators": "^19.0.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^19.2.4",
