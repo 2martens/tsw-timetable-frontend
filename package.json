@@ -39,7 +39,7 @@
     "@capacitor/haptics": "5.0.6",
     "@capacitor/keyboard": "5.0.6",
     "@capacitor/status-bar": "5.0.6",
-    "@ionic/angular": "^7.5.5",
+    "@ionic/angular": "^8.5.1",
     "@ngrx/effects": "^19.0.1",
     "@ngrx/operators": "^19.0.1",
     "@ngrx/store": "^19.0.1",
